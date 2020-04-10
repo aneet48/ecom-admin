@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/login', 'LoginController@login')->name('login');
+Route::get('/login', 'LoginController@index')->name('login')->middleware('guest');
+Route::post('/login', 'LoginController@login')->name('login.check')->middleware('guest');
 
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/', function () {
-        return view('welcome');
-    });
+        return view('dashboard');
+    })->name('dashboard');
 
 });

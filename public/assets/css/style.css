@@ -1,0 +1,53 @@
+body {
+    background-color: #f8f8f8;
+    font-family: Nunito, sans-serif;
+}
+
+.auth-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.auth-box .card {
+    min-width: 40%;
+}
+
+.auth-box label {
+    color: #363636;
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-dark {
+    background-color: #0a0a0a;
+    border-color: transparent;
+    color: #fff;
+}
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.card-title {
+    color: #363636;
+    font-weight: 700;
+}
+
+.actions {
+    text-align: center;
+}
+.actions .btn {
+    padding: 10px 40px;
+}
+
+@media (max-width: 992px) {
+    .auth-box .card {
+        width: 100%;
+    }
+}
