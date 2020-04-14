@@ -1,34 +1,18 @@
 <template>
-    <v-app id="inspire">
-        <v-navigation-drawer v-model="drawer" app>
-            <Sidebar />
-        </v-navigation-drawer>
-
-        <v-app-bar app color="white" light dense>
-            <div class="d-flex justify-space-between app-bar">
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-
-                <div class="d-flex justify-flex-end">
-                    <v-icon class="app-bar-icon">mdi-bell</v-icon>
-                    <v-icon class="app-bar-icon">mdi-logout</v-icon>
-                </div>
-            </div>
-        </v-app-bar>
-
-        <v-content>
-            <router-view />
-        </v-content>
-        <!-- <v-footer color="indigo" app>
-            <span class="white--text">&copy; 2019</span>
-        </v-footer> -->
-    </v-app>
+   <div >
+      <BreadCrumb/>
+      <ComingSoon/>
+  </div>
 </template>
 
 <script>
 import Sidebar from "../components/Sidebar";
+import BreadCrumb from "../components/BreadCrumb";
+import ComingSoon from "../components/ComingSoon";
+
 export default {
     components: {
-        Sidebar
+        Sidebar,BreadCrumb,ComingSoon
     },
     props: {
         source: String
@@ -48,5 +32,12 @@ export default {
     padding-left: 18px;
     padding-right: 18px;
     font-size: 18px;
+}
+#dashboard{
+    background-color: #f8f8f8;
+    font-family: Nunito, sans-serif;
+}
+.drawer{
+    background: #2e323a;
 }
 </style>

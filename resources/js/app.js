@@ -24,19 +24,21 @@ Vue.use(VueRouter);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component("dashboard-component", require("./pages/Dashboard.vue").default);
+// Vue.component("dashboard-component", require("./pages/Dashboard.vue").default);
+Vue.component("dashboard-component", require("./App.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-import Page1 from "./pages/Page1";
-import Page2 from "./pages/Page2";
+import Dashboard from "./pages/Dashboard.vue";
+import Users from "./pages/users/Users.vue";
+import CreateUser from "./pages/users/create-user.vue";
 const routes = [
-    { path: "/", component: Page2 },
-    { path: "/page1", component: Page1 },
-    { path: "/page2", component: Page2 }
+    { path: "/", component: Dashboard, name: "Dashboard" },
+    { path: "/users", component: Users, name: "Users" },
+    { path: "/users/create", component: CreateUser, name: "Create User" }
 ];
 
 const router = new VueRouter({

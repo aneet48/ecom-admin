@@ -1,11 +1,11 @@
 <template>
   <div>
+      <BreadCrumb/>
        <v-row align="center" justify="center">
                     <v-col class="text-center">
                         <v-tooltip left>
                             <template v-slot:activator="{ on }">
                                 <v-btn
-                                    :href="source"
                                     icon
                                     large
                                     target="_blank"
@@ -39,8 +39,12 @@
 </template>
 
 <script>
-export default {
+import BreadCrumb from "../components/BreadCrumb";
 
+export default {
+components: {
+        BreadCrumb
+    },
 }
 </script>
 
