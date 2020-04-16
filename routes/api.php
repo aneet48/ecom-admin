@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', 'LoginController@index');
+Route::get('/states', 'Api\ApiController@states');

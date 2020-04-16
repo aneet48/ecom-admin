@@ -2192,9 +2192,85 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      valid: false,
+      firstname: "",
+      lastname: "",
+      phonenumber: "",
+      select: "",
+      nameRules: [function (v) {
+        return !!v || "Name is required";
+      }, function (v) {
+        return v.length <= 10 || "Name must be less than 10 characters";
+      }],
+      email: "",
+      emailRules: [function (v) {
+        return !!v || "E-mail is required";
+      }, function (v) {
+        return /.+@.+/.test(v) || "E-mail must be valid";
+      }],
+      items: ["Item 1", "Item 2", "Item 3", "Item 4"]
+    };
+  },
+  methods: {
+    submit: function submit() {
+      console.log(this.$refs.form.validate());
+    }
+  },
   components: {
     BreadCrumb: _components_BreadCrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
     PageHeader: _components_PageHeader__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -38896,7 +38972,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "PageHeader",
-        { attrs: { title: "Add User Form" } },
+        { attrs: { title: "Add New User Form" } },
         [
           _c(
             "v-btn",
@@ -38909,6 +38985,281 @@ var render = function() {
                 _vm._v("mdi-arrow-left")
               ]),
               _vm._v("Back\n    ")
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        [
+          _c(
+            "v-card",
+            { staticClass: "mx-auto px-10 mb-5", attrs: { outlined: "" } },
+            [
+              _c(
+                "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  model: {
+                    value: _vm.valid,
+                    callback: function($$v) {
+                      _vm.valid = $$v
+                    },
+                    expression: "valid"
+                  }
+                },
+                [
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              rules: _vm.nameRules,
+                              label: "First name",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.firstname,
+                              callback: function($$v) {
+                                _vm.firstname = $$v
+                              },
+                              expression: "firstname"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              rules: _vm.nameRules,
+                              label: "Last name",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.lastname,
+                              callback: function($$v) {
+                                _vm.lastname = $$v
+                              },
+                              expression: "lastname"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              rules: _vm.emailRules,
+                              label: "E-mail",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.email,
+                              callback: function($$v) {
+                                _vm.email = $$v
+                              },
+                              expression: "email"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              rules: _vm.nameRules,
+                              label: "Phone Number",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.phonenumber,
+                              callback: function($$v) {
+                                _vm.phonenumber = $$v
+                              },
+                              expression: "phonenumber"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "4" } },
+                        [
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.items,
+                              label: "University",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.select,
+                              callback: function($$v) {
+                                _vm.select = $$v
+                              },
+                              expression: "select"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "4" } },
+                        [
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.items,
+                              label: "College",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.select,
+                              callback: function($$v) {
+                                _vm.select = $$v
+                              },
+                              expression: "select"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "4" } },
+                        [
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.items,
+                              label: "Branch",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.select,
+                              callback: function($$v) {
+                                _vm.select = $$v
+                              },
+                              expression: "select"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              rules: _vm.emailRules,
+                              label: "City",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.email,
+                              callback: function($$v) {
+                                _vm.email = $$v
+                              },
+                              expression: "email"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "6" } },
+                        [
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.items,
+                              label: "State",
+                              required: ""
+                            },
+                            model: {
+                              value: _vm.select,
+                              callback: function($$v) {
+                                _vm.select = $$v
+                              },
+                              expression: "select"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", md: "4" } },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "mr-4",
+                              attrs: { color: "error" },
+                              on: { click: _vm.submit }
+                            },
+                            [_vm._v("Submit")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
             ],
             1
           )
@@ -96344,14 +96695,38 @@ var menus = [{
   link: "/",
   icon: "desktop-mac"
 }, {
+  id: "3",
   title: "users",
   type: "subheader",
   link: ""
 }, {
-  id: "3",
+  id: "4",
   title: "Users",
   type: "link",
   link: "/users",
+  icon: "account-group"
+}, {
+  id: "5",
+  title: "Settings",
+  type: "subheader",
+  link: ""
+}, {
+  id: "6",
+  title: "Universities",
+  type: "link",
+  link: "/universities",
+  icon: "account-group"
+}, {
+  id: "7",
+  title: "Colleges",
+  type: "link",
+  link: "/colleges",
+  icon: "account-group"
+}, {
+  id: "8",
+  title: "States",
+  type: "link",
+  link: "/states",
   icon: "account-group"
 }];
 /* harmony default export */ __webpack_exports__["default"] = (menus);
