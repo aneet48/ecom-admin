@@ -15,4 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', 'LoginController@index');
-Route::get('/states', 'Api\ApiController@states');
+Route::get('/states/{show_all?}', 'Api\StateController@states');
+Route::get('/state/{id}', 'Api\StateController@state');
+Route::post('/state', 'Api\StateController@create');
+Route::post('/state/{id}', 'Api\StateController@update');
+Route::post('/state/delete/{id}', 'Api\StateController@delete');

@@ -57,3 +57,24 @@ export default {
   background: #2e323a;
 }
 </style>
+
+<style >
+.theme--light.v-data-table thead th {
+  color: black !important;
+}
+.theme--light.v-data-table thead tr th {
+  font-size: 16px;
+}
+.gray-dot{
+    background: #bebbbb;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+.green-dot{
+    background: green;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+</style>

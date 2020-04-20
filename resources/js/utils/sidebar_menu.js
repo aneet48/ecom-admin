@@ -36,21 +36,21 @@ const menus = [
         title: "Universities",
         type: "link",
         link: "/universities",
-        icon: "account-group"
+        icon: "school"
     },
     {
         id: "7",
         title: "Colleges",
         type: "link",
         link: "/colleges",
-        icon: "account-group"
+        icon: "school"
     },
     {
         id: "8",
         title: "States",
         type: "link",
         link: "/states",
-        icon: "account-group"
+        icon: "map"
     }
 ];
 

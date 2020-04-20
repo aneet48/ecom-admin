@@ -8,13 +8,5 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    /**
-     * list states
-     */
 
-     public function states()
-     {
-         $states = State::all();
-         return response()->json($states);
-     }
 }

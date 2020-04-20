@@ -22,9 +22,9 @@
                                 <input type="password" class="form-control" id="pwd" required name="password">
                             </div>
 
-                            <div class="checkbox">
+                            {{-- <div class="checkbox">
                                 <span><input type="checkbox"> Remember me</span>
-                            </div>
+                            </div> --}}
 
                             <hr>
                             <div class="actions">

@@ -17,6 +17,7 @@ class StatesSeeder extends Seeder
             State::updateOrCreate(['code' => $list['code']], [
                 'code' => $list['code'],
                 'name' => $list['name'],
+                'active' => true,
             ]);
         }
     }

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class State extends Model
+class City extends Model
 {
     protected $fillable = [
-        'code', 'name','active'
+        'state_id', 'name', 'active',
     ];
 }
