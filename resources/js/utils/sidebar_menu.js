@@ -47,6 +47,13 @@ const menus = [
     },
     {
         id: "8",
+        title: "Cities",
+        type: "link",
+        link: "/cities",
+        icon: "map"
+    },
+    {
+        id: "9",
         title: "States",
         type: "link",
         link: "/states",

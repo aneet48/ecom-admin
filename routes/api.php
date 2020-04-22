@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', 'LoginController@index');
+Route::get('/cities/{show_all?}', 'Api\CityController@cities');
+Route::get('/city/{id}', 'Api\CityController@city');
+Route::post('/city', 'Api\CityController@create');
+Route::post('/city/{id}', 'Api\CityController@update');
+Route::post('/city/delete/{id}', 'Api\CityController@delete');
+
 Route::get('/states/{show_all?}', 'Api\StateController@states');
 Route::get('/state/{id}', 'Api\StateController@state');
 Route::post('/state', 'Api\StateController@create');
