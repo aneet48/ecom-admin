@@ -38,11 +38,14 @@ import Dashboard from "./pages/Dashboard.vue";
 import Users from "./pages/users/Users.vue";
 import CreateUser from "./pages/users/create-user.vue";
 import States from "./pages/settings/States.vue";
+import Products from "./pages/Products/ProductsList.vue";
+
 const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
     { path: "/users", component: Users, name: "Users" },
     { path: "/users/create", component: CreateUser, name: "Create User" },
-    { path: "/states", component: States, name: "States" }
+    { path: "/states", component: States, name: "States" },
+    { path: "/products-list", component: Products, name: "Products" }
 ];
 
 const router = new VueRouter({

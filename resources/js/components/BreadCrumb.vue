@@ -1,5 +1,5 @@
 <template>
-  <v-container class="admin-breadcrumb">
+  <v-container fluid class="admin-breadcrumb">
     <v-breadcrumbs :items="items"></v-breadcrumbs>
   </v-container>
 </template>
