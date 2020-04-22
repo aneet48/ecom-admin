@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StateController extends Controller
 {
-    /**
-     * list states
-     */
+
 
     public function states($show_all = false)
     {

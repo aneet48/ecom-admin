@@ -2137,6 +2137,360 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/settings/Cities.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_BreadCrumb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/BreadCrumb */ "./resources/js/components/BreadCrumb.vue");
+/* harmony import */ var _components_PageHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/PageHeader */ "./resources/js/components/PageHeader.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      posts: [],
+      loader: true,
+      dialog: false,
+      modal_title: "Add New City",
+      currentPage: 1,
+      TotalPages: 0,
+      totalVisible: 15,
+      m_name: "",
+      m_type: "add",
+      valid: false,
+      nameRules: [function (v) {
+        return !!v || "Name is required";
+      }],
+      stateRules: [function (v) {
+        return !!v || "State is required";
+      }],
+      snackbar: false,
+      snackbarText: "",
+      multiLine: true,
+      errors: [],
+      overlay: false,
+      editItem: {},
+      snackbarColor: "info",
+      m_active: false,
+      states: [],
+      isStatesLoading: true,
+      search: "",
+      clubs: [{
+        id: 1,
+        name: "chelsea",
+        test: "1"
+      }, {
+        id: 2,
+        name: "mu",
+        test: "1"
+      }, {
+        id: 3,
+        name: "arsenal",
+        test: "1"
+      }],
+      m_state: {
+        id: null,
+        name: null
+      }
+    };
+  },
+  components: {
+    BreadCrumb: _components_BreadCrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
+    PageHeader: _components_PageHeader__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mounted: function mounted() {
+    this.loader = true;
+    this.fetchCities();
+    this.fetchStates();
+  },
+  watch: {
+    currentPage: function currentPage(val) {
+      //do something when the data changes.
+      if (val) {
+        this.loader = true;
+        this.fetchCities();
+      }
+    }
+  },
+  methods: {
+    addNew: function addNew() {
+      this.modal_title = "Add New City";
+      this.m_type = "add";
+      this.dialog = true;
+    },
+    editCity: function editCity(item) {
+      //   this.isStatesLoading = true;
+      this.modal_title = "Edit City";
+      this.editItem = item;
+      console.log(item.state_id);
+      var state_id = item.state_id;
+      var state = this.states.find(function (item) {
+        return item.id == state_id;
+      });
+      this.m_state = {
+        id: state.id,
+        name: state.name
+      };
+      this.m_name = item.name;
+      this.m_active = item.active;
+      this.m_type = "edit";
+      this.dialog = true;
+    },
+    deleteItem: function deleteItem(item) {
+      var _this = this;
+
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ff3860",
+        // cancelButtonColor: "#fff",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        if (result.value && item) {
+          _this.overlay = true;
+          axios.post("api/city/delete/".concat(item.id)).then(function (res) {
+            var data = res.data;
+
+            if (data.error && data.msg) {
+              _this.errors = data.msg;
+            } else {
+              _this.$swal("Deleted!", data.msg, "success");
+
+              _this.overlay = true;
+
+              _this.fetchCities();
+            }
+          })["catch"](function (err) {
+            _this.unknownError();
+
+            console.log(err);
+          });
+        }
+      });
+    },
+    saveDialog: function saveDialog() {
+      var _this2 = this;
+
+      this.errors = [];
+      var is_valid = this.$refs.form.validate();
+      if (!is_valid) return;
+      var api_url = this.m_type == "edit" ? "api/city/".concat(this.editItem.id) : "api/city";
+      axios({
+        method: "post",
+        url: api_url,
+        data: {
+          name: this.m_name,
+          active: this.m_active,
+          state_id: this.m_state.id
+        }
+      }).then(function (res) {
+        var data = res.data;
+
+        if (data.error && data.msg) {
+          _this2.errors = data.msg;
+        } else {
+          _this2.overlay = true;
+          _this2.snackbarColor = "success";
+          _this2.snackbarText = data.msg;
+          _this2.snackbar = true;
+
+          _this2.closeDialog();
+
+          _this2.fetchCities();
+        }
+      })["catch"](function (err) {
+        _this2.unknownError();
+
+        console.log(err);
+      });
+    },
+    closeDialog: function closeDialog() {
+      this.resetValidation();
+      this.resetForm();
+      this.isStatesLoading = false;
+      this.dialog = false;
+      this.m_active = false;
+      this.editItem = {};
+      this.errors = [];
+    },
+    resetForm: function resetForm() {
+      this.$refs.form.reset();
+    },
+    resetValidation: function resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    fetchCities: function fetchCities() {
+      var _this3 = this;
+
+      axios.get("/api/cities/true?page=" + this.currentPage).then(function (res) {
+        _this3.overlay = false;
+        _this3.loader = false;
+        _this3.posts = res.data.data;
+        _this3.TotalPages = res.data.last_page;
+      })["catch"](function (err) {
+        _this3.unknownError();
+
+        console.log(err);
+      });
+    },
+    fetchStates: function fetchStates() {
+      var _this4 = this;
+
+      axios.get("/api/states/true").then(function (res) {
+        _this4.states = res.data;
+        _this4.isStatesLoading = false;
+      })["catch"](function (err) {
+        _this4.unknownError();
+
+        console.log(err);
+      });
+    },
+    unknownError: function unknownError() {
+      this.overlay = false;
+      this.snackbarText = "Oops!! There was some error. Please try again later or report ";
+      this.snackbar = true;
+      this.snackbarColor = "red";
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/States.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/settings/States.vue?vue&type=script&lang=js& ***!
@@ -7227,6 +7581,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.app-bar[data-v-82704d4a]{\n    width: 100%;\n}\n.app-bar-icon[data-v-82704d4a]{\n  border-left: 1px solid #f5efef;\n    padding-left: 18px;\n    padding-right: 18px;\n    font-size: 18px;\n}\n#dashboard[data-v-82704d4a]{\n    background-color: #f8f8f8;\n    font-family: Nunito, sans-serif;\n}\n.drawer[data-v-82704d4a]{\n    background: #2e323a;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.action-btn:hover {\n  text-decoration: none;\n}\n.error-text\n  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {\n  color: red !important;\n}\n", ""]);
 
 // exports
 
@@ -38317,6 +38690,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Cities.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/States.vue?vue&type=style&index=0&lang=css&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/settings/States.vue?vue&type=style&index=0&lang=css& ***!
@@ -42390,6 +42793,562 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [_c("BreadCrumb"), _vm._v(" "), _c("ComingSoon")], 1)
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=template&id=09842408&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/settings/Cities.vue?vue&type=template&id=09842408& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("BreadCrumb"),
+      _vm._v(" "),
+      _c(
+        "PageHeader",
+        { attrs: { title: "Cities" } },
+        [
+          _c(
+            "v-btn",
+            {
+              staticClass: "ma-2 action-btn",
+              attrs: { color: "teal accent-4", dark: "" },
+              on: { click: _vm.addNew }
+            },
+            [
+              _c("v-icon", { staticClass: "app-bar-icon" }, [
+                _vm._v("mdi-plus")
+              ]),
+              _vm._v("Add New\n    ")
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        [
+          _vm.loader
+            ? _c("v-skeleton-loader", { attrs: { type: "table" } })
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.loader
+            ? _c("v-simple-table", {
+                scopedSlots: _vm._u(
+                  [
+                    {
+                      key: "default",
+                      fn: function() {
+                        return [
+                          _c("thead", [
+                            _c("tr", [
+                              _c("th", { staticClass: "text-left" }, [
+                                _vm._v("Name")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "text-left" }, [
+                                _vm._v("State")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "text-left" }, [
+                                _vm._v("Active")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "text-left" })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.posts, function(item, i) {
+                              return _c("tr", { key: i }, [
+                                _c("td", [_vm._v(_vm._s(item.name))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.state.name))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  item.active
+                                    ? _c("div", { staticClass: "green-dot" })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  !item.active
+                                    ? _c("div", { staticClass: "gray-dot" })
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c(
+                                      "v-row",
+                                      { staticClass: "d-none d-sm-block" },
+                                      [
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              fab: "",
+                                              dark: "",
+                                              "x-small": "",
+                                              color: "teal accent-4"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.editCity(item)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                attrs: { dark: "", small: "" }
+                                              },
+                                              [_vm._v("mdi-pencil")]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              fab: "",
+                                              dark: "",
+                                              "x-small": "",
+                                              color: "pink"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.deleteItem(item)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                attrs: { dark: "", small: "" }
+                                              },
+                                              [_vm._v("mdi-trash-can")]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-row",
+                                      { staticClass: "d-sm-none" },
+                                      [
+                                        _c(
+                                          "v-menu",
+                                          {
+                                            scopedSlots: _vm._u(
+                                              [
+                                                {
+                                                  key: "activator",
+                                                  fn: function(ref) {
+                                                    var on = ref.on
+                                                    return [
+                                                      _c(
+                                                        "v-btn",
+                                                        _vm._g(
+                                                          {
+                                                            attrs: {
+                                                              dark: "",
+                                                              icon: ""
+                                                            }
+                                                          },
+                                                          on
+                                                        ),
+                                                        [
+                                                          _c(
+                                                            "v-icon",
+                                                            {
+                                                              attrs: {
+                                                                light: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "mdi-dots-vertical"
+                                                              )
+                                                            ]
+                                                          )
+                                                        ],
+                                                        1
+                                                      )
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              null,
+                                              true
+                                            )
+                                          },
+                                          [
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list",
+                                              [
+                                                _c(
+                                                  "v-list-item",
+                                                  {
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.editCity(
+                                                          item
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("v-list-item-title", [
+                                                      _vm._v("Edit")
+                                                    ])
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-list-item",
+                                                  {
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.deleteItem(
+                                                          item
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("v-list-item-title", [
+                                                      _vm._v("Delete")
+                                                    ])
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            }),
+                            0
+                          )
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ],
+                  null,
+                  false,
+                  523591453
+                )
+              })
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        { attrs: { justify: "center" } },
+        [
+          _c(
+            "v-dialog",
+            {
+              attrs: { persistent: "", "max-width": "600px" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
+            [
+              _c(
+                "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  model: {
+                    value: _vm.valid,
+                    callback: function($$v) {
+                      _vm.valid = $$v
+                    },
+                    expression: "valid"
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c("v-card-title", [
+                        _c("span", { staticClass: "headline" }, [
+                          _vm._v(_vm._s(_vm.modal_title))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-row",
+                            [
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Name*",
+                                      required: "",
+                                      rules: _vm.nameRules
+                                    },
+                                    model: {
+                                      value: _vm.m_name,
+                                      callback: function($$v) {
+                                        _vm.m_name = $$v
+                                      },
+                                      expression: "m_name"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12" } },
+                                [
+                                  _c("v-autocomplete", {
+                                    attrs: {
+                                      label: "State",
+                                      items: _vm.states,
+                                      "item-text": "name",
+                                      "item-value": "id",
+                                      "return-object": "",
+                                      loading: _vm.isStatesLoading
+                                    },
+                                    model: {
+                                      value: _vm.m_state,
+                                      callback: function($$v) {
+                                        _vm.m_state = $$v
+                                      },
+                                      expression: "m_state"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12" } },
+                                [
+                                  _c("v-checkbox", {
+                                    attrs: { label: "Activate" },
+                                    model: {
+                                      value: _vm.m_active,
+                                      callback: function($$v) {
+                                        _vm.m_active = $$v
+                                      },
+                                      expression: "m_active"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.length
+                            ? _c(
+                                "v-list",
+                                {
+                                  staticClass: "error-text",
+                                  attrs: { dense: "" }
+                                },
+                                [
+                                  _c("v-subheader", [
+                                    _vm._v("Please look at these errors:")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-group",
+                                    _vm._l(_vm.errors, function(item, i) {
+                                      return _c(
+                                        "v-list-item",
+                                        { key: i },
+                                        [
+                                          _c(
+                                            "v-list-item-content",
+                                            [
+                                              _c("v-list-item-title", {
+                                                domProps: {
+                                                  innerHTML: _vm._s(item)
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    }),
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { light: "", color: "white " },
+                              on: { click: _vm.closeDialog }
+                            },
+                            [_vm._v("Close")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { dark: "", color: "pink " },
+                              on: { click: _vm.saveDialog }
+                            },
+                            [_vm._v("Save")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.currentPage && _vm.TotalPages
+        ? _c(
+            "div",
+            { staticClass: "text-center" },
+            [
+              _c("v-pagination", {
+                attrs: {
+                  length: _vm.TotalPages,
+                  "total-visible": _vm.totalVisible
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: {
+            color: _vm.snackbarColor,
+            timeout: 5000,
+            "multi-line": _vm.multiLine
+          },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    " + _vm._s(_vm.snackbarText) + "\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { dark: "", text: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("Close")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-overlay",
+        { attrs: { value: _vm.overlay } },
+        [
+          _c("v-progress-circular", {
+            attrs: { indeterminate: "", color: "teal" }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -100088,6 +101047,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_users_Users_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/users/Users.vue */ "./resources/js/pages/users/Users.vue");
 /* harmony import */ var _pages_users_create_user_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/users/create-user.vue */ "./resources/js/pages/users/create-user.vue");
 /* harmony import */ var _pages_settings_States_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/settings/States.vue */ "./resources/js/pages/settings/States.vue");
+/* harmony import */ var _pages_settings_Cities_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/settings/Cities.vue */ "./resources/js/pages/settings/Cities.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -100124,6 +101084,7 @@ Vue.component("dashboard-component", __webpack_require__(/*! ./App.vue */ "./res
 
 
 
+
 var routes = [{
   path: "/",
   component: _pages_Dashboard_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -100140,6 +101101,10 @@ var routes = [{
   path: "/states",
   component: _pages_settings_States_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
   name: "States"
+}, {
+  path: "/cities",
+  component: _pages_settings_Cities_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
+  name: "Cities"
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: routes
@@ -100632,6 +101597,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/pages/settings/Cities.vue":
+/*!************************************************!*\
+  !*** ./resources/js/pages/settings/Cities.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Cities_vue_vue_type_template_id_09842408___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Cities.vue?vue&type=template&id=09842408& */ "./resources/js/pages/settings/Cities.vue?vue&type=template&id=09842408&");
+/* harmony import */ var _Cities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Cities.vue?vue&type=script&lang=js& */ "./resources/js/pages/settings/Cities.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _Cities_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Cities.vue?vue&type=style&index=0&lang=css& */ "./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _Cities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Cities_vue_vue_type_template_id_09842408___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Cities_vue_vue_type_template_id_09842408___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/pages/settings/Cities.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/pages/settings/Cities.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/pages/settings/Cities.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Cities.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Cities.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/pages/settings/Cities.vue?vue&type=template&id=09842408&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/pages/settings/Cities.vue?vue&type=template&id=09842408& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_template_id_09842408___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Cities.vue?vue&type=template&id=09842408& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/settings/Cities.vue?vue&type=template&id=09842408&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_template_id_09842408___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cities_vue_vue_type_template_id_09842408___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/pages/settings/States.vue":
 /*!************************************************!*\
   !*** ./resources/js/pages/settings/States.vue ***!
@@ -100925,6 +101977,12 @@ var menus = [{
   icon: "school"
 }, {
   id: "8",
+  title: "Cities",
+  type: "link",
+  link: "/cities",
+  icon: "map"
+}, {
+  id: "9",
   title: "States",
   type: "link",
   link: "/states",
