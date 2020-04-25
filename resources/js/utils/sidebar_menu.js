@@ -60,13 +60,13 @@ const menus = [
         icon: "map"
     },
     {
-        id: "9",
+        id: "20",
         title: "Products",
         type: "subheader",
         link: ""
     },
     {
-        id: "10",
+        id: "21",
         title: "Products List",
         type: "link",
         link: "/products-list",

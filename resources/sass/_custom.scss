@@ -1,0 +1,61 @@
+.container{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.chip.v-chip{
+   color:#fff;
+}
+
+.v-pagination{
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+.product{
+    display: flex;
+    align-items: center;
+    max-width: 250px;
+    min-width: 250px;
+    padding: 10px 0;
+
+    &__thumbnail{
+        width:50px;
+        height:50px;
+        border-radius: 50%;
+        margin-top:0.5rem;
+        margin-top:0.5rem;
+        margin-bottom:0.5rem;
+        margin-right:1rem;
+    }
+
+    &__detail{
+        flex:1
+    }
+
+    &__name{
+        font-weight: bold;
+        font-size: 1rem;
+    }
+}
+
+#app thead{
+    background-color: #167df0;
+
+    th{
+        color:#fff !important;
+    }
+}
+
+.page-searchbar{
+    margin: 0 12px 12px auto;
+    width: 20rem;
+    padding-top: 5px;
+    padding-left: 1rem;
+    border: solid #1976d2 3px;
+
+    @include mobile {    
+      width:auto;
+      margin-left: 12px; 
+   }
+}

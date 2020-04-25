@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="mb-4">
     <v-card outlined class="py-2">
       <v-toolbar flat>
         <v-toolbar-title class="heading">{{title}}</v-toolbar-title>
