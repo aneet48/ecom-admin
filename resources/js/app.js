@@ -10,10 +10,13 @@ window.Vue = require("vue");
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 import VueSweetalert2 from "vue-sweetalert2";
+import store from "./store";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
+
+// axios.defaults.baseURL = "http://woodbox.test/api";
 
 /**
  * The following block of code may be used to automatically register your
@@ -39,12 +42,14 @@ import Users from "./pages/users/Users.vue";
 import CreateUser from "./pages/users/create-user.vue";
 import States from "./pages/settings/States.vue";
 import Cities from "./pages/settings/Cities.vue";
+import Universities from "./pages/settings/Universities.vue";
 const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
     { path: "/users", component: Users, name: "Users" },
     { path: "/users/create", component: CreateUser, name: "Create User" },
     { path: "/states", component: States, name: "States" },
-    { path: "/cities", component: Cities, name: "Cities" }
+    { path: "/cities", component: Cities, name: "Cities" },
+    { path: "/universities", component: Universities, name: "Universities" }
 ];
 
 const router = new VueRouter({
@@ -54,5 +59,23 @@ const router = new VueRouter({
 const app = new Vue({
     el: "#app",
     vuetify: new Vuetify(),
-    router
+    router,
+    store,
+    created() {
+        const userInfo = localStorage.getItem("user");
+        const userData = JSON.parse(userInfo);
+
+        if (!userData || !userData.api_token) {
+            this.$store
+                .dispatch("login")
+                .then(() => {
+                    location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        } else {
+            this.$store.commit("setUserData", userData);
+        }
+    }
 });

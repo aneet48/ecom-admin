@@ -34,7 +34,7 @@ class CityController extends Controller
         $validator = Validator::make($request->all(), [
             // 'code' => 'required|string|max:10|unique:cities,code,' . $id,
             // 'name' => 'required|string|unique:cities,name,' . $id,
-            'name' => 'required|string|max:10|unique:states,name,'.$id,
+            'name' => 'required|string|max:10|unique:states,name,' . $id,
             'state_id' => 'required',
         ]);
 
@@ -43,7 +43,7 @@ class CityController extends Controller
         }
 
         $city = City::where('id', $id)->update([
-          'state_id' => $request->get('state_id'),
+            'state_id' => $request->get('state_id'),
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
@@ -88,5 +88,11 @@ class CityController extends Controller
         $error = $city ? false : true;
 
         return generate_response($error, $msg);
+    }
+
+    public function search($q)
+    {
+        $result = City::where('name','like','%'.$q.'%')->paginate(30);
+        return response()->json($result);
     }
 }
