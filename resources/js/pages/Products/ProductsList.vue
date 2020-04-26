@@ -67,7 +67,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-          <v-btn depressed color="primary" @click="filterdialog = !filterdialog"> <v-icon class="filterIcon" dark small>shuffle</v-icon> Filter</v-btn>
+          <v-btn class="filterBtn" depressed color="primary" @click="filterdialog = !filterdialog"> <v-icon class="filterIcon" dark small>shuffle</v-icon> Filter</v-btn>
         </v-col>
         <v-col cols="12" :lg="3" :md="4" :sm="4">
           <v-text-field

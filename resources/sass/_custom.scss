@@ -20,6 +20,11 @@
     margin-right: 10px;
 }
 
+#app .filterBtn{
+    height: 2.7rem;
+    width: 8rem;
+}
+
 .product{
     display: flex;
     align-items: center;
@@ -58,9 +63,19 @@
 .page-searchbar{
     margin: 0 0 12px auto;
     width: 20rem;
-    padding-top: 0;
-    padding-left: 1rem;
-    border: solid #1976d2 3px;
+    padding: 5px 1rem;
+    border: solid #ccc 1px;
+    background: #eee;
+    border-radius: 2px;
+
+     .v-input__slot::after,
+     .v-input__slot::before{
+        display: none;
+    }
+
+    i{
+        cursor: pointer;
+    }
 
     @include mobile {    
       width:auto;

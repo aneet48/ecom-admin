@@ -43543,6 +43543,7 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
+                      staticClass: "filterBtn",
                       attrs: { depressed: "", color: "primary" },
                       on: {
                         click: function($event) {
