@@ -15,7 +15,7 @@
       </div>
     </v-app-bar>
 
-    <v-content>
+    <v-content class="dashboard-content-wrapper">
       <router-view />
     </v-content>
     <!-- <v-footer color="indigo" app>
@@ -83,5 +83,8 @@ export default {
   height: 10px;
   width: 10px;
   border-radius: 50%;
+}
+.dashboard-content-wrapper .v-content__wrap{
+  padding: 0 1rem 1rem;
 }
 </style>

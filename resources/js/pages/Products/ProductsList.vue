@@ -1,43 +1,60 @@
 <template>
   <div>
     <BreadCrumb />
-    <PageHeader title="Cities">
-      <v-btn class="ma-2 action-btn" color="teal accent-4" dark @click="addNew">
+    <PageHeader title="Products List">
+    <v-btn class="ma-2 action-btn" color="teal accent-4" dark @click="addNew">
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
-      </v-btn>
+    </v-btn>
     </PageHeader>
-    <v-container>
-      <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader>
+    <v-text-field
+        class="page-searchbar"
+        hide-details
+        placeholder="Type your search here.."
+        append-icon="search"
+        single-line
+      ></v-text-field>
+    <v-container fluid>
+      <!-- <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader> -->
 
       <v-simple-table v-if="!loader">
         <template v-slot:default>
           <thead>
             <tr>
-              <th class="text-left">Name</th>
-              <th class="text-left">State</th>
+              <th class="text-left">Product</th>
+              <th class="text-left">SKU</th>
+              <th class="text-left">Amount</th>
               <th class="text-left">Status</th>
-              <th class="text-left"></th>
+              <th class="text-left">Categories</th>
+              <th class="text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item , i) in posts" :key="i">
-              <td>{{ item.name }}</td>
-              <td>{{ item.state.name }}</td>
               <td>
-                <div v-if="item.active"><v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip></div>
-                <div v-if="!item.active"><v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip></div>
+                <div class="product">
+                  <img class="product__thumbnail" src="https://source.unsplash.com/collection/190727/320x240" alt="">
+                  <div class="product__detail">
+                    <span class="product__name">
+                      This is a  Large Product Name for style testing
+                    </span>
+                  </div>
+                </div>
               </td>
+              <td>{{ item.state.name }}</td>
+              <td>₹2000</td>
+              <td><v-chip class="ma-2 chip" color="teal accent-4">In Processing</v-chip></td>
+              <td>{{ item.state.name }},  {{ item.state.name }}, {{ item.state.name }}</td>
               <td class="text-right">
-                <v-row class="d-none d-sm-block">
+                <div class="d-none d-sm-block">
                   <v-btn fab dark x-small color="teal accent-4" @click="editCity(item)">
                     <v-icon dark small>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn fab dark x-small color="pink" @click="deleteItem(item)">
                     <v-icon dark small>mdi-trash-can</v-icon>
                   </v-btn>
-                </v-row>
+                </div>
 
-                <v-row class="d-sm-none">
+                <div class="d-sm-none">
                   <v-menu>
                     <template v-slot:activator="{ on }">
                       <v-btn dark icon v-on="on">
@@ -54,7 +71,7 @@
                       </v-list-item>
                     </v-list>
                   </v-menu>
-                </v-row>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -62,7 +79,7 @@
       </v-simple-table>
     </v-container>
 
-    <v-row justify="center">
+    <!-- <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="600px">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card>
@@ -109,7 +126,7 @@
           </v-card>
         </v-form>
       </v-dialog>
-    </v-row>
+    </v-row> -->
 
     <div class="text-center" v-if="currentPage && TotalPages">
       <v-pagination v-model="currentPage" :length="TotalPages" :total-visible="totalVisible"></v-pagination>
@@ -335,5 +352,11 @@ export default {
 .error-text
   .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
   color: red !important;
+}
+
+.flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

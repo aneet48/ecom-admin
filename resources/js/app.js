@@ -41,15 +41,18 @@ import Dashboard from "./pages/Dashboard.vue";
 import Users from "./pages/users/Users.vue";
 import CreateUser from "./pages/users/create-user.vue";
 import States from "./pages/settings/States.vue";
+import Products from "./pages/Products/ProductsList.vue";
 import Cities from "./pages/settings/Cities.vue";
 import Universities from "./pages/settings/Universities.vue";
+
 const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
     { path: "/users", component: Users, name: "Users" },
     { path: "/users/create", component: CreateUser, name: "Create User" },
     { path: "/states", component: States, name: "States" },
     { path: "/cities", component: Cities, name: "Cities" },
-    { path: "/universities", component: Universities, name: "Universities" }
+    { path: "/universities", component: Universities, name: "Universities" },
+    { path: "/products-list", component: Products, name: "Products" },
 ];
 
 const router = new VueRouter({

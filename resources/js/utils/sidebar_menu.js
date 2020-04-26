@@ -58,7 +58,20 @@ const menus = [
         type: "link",
         link: "/states",
         icon: "map"
-    }
+    },
+    {
+        id: "20",
+        title: "Products",
+        type: "subheader",
+        link: ""
+    },
+    {
+        id: "21",
+        title: "Products List",
+        type: "link",
+        link: "/products-list",
+        icon: "account-group"
+    },
 ];
 
 export default menus;
