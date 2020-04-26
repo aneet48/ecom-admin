@@ -12,6 +12,14 @@
     padding-bottom:20px;
 }
 
+.padding20{
+    padding: 2rem;
+}
+
+.filterIcon{
+    margin-right: 10px;
+}
+
 .product{
     display: flex;
     align-items: center;
@@ -48,14 +56,13 @@
 }
 
 .page-searchbar{
-    margin: 0 12px 12px auto;
+    margin: 0 0 12px auto;
     width: 20rem;
-    padding-top: 5px;
+    padding-top: 0;
     padding-left: 1rem;
     border: solid #1976d2 3px;
 
     @include mobile {    
       width:auto;
-      margin-left: 12px; 
    }
 }

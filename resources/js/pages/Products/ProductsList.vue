@@ -6,13 +6,80 @@
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
     </v-btn>
     </PageHeader>
-    <v-text-field
-        class="page-searchbar"
-        hide-details
-        placeholder="Type your search here.."
-        append-icon="search"
-        single-line
-      ></v-text-field>
+    <v-container fluid>
+      <v-row>
+        <v-col cols="12" :lg="9" :md="8" :sm="8" class="text-right">
+        <v-dialog v-model="filterdialog" max-width="500px">
+          <v-card class="padding20">
+            <v-combobox
+              v-model="select"
+              :items="items"
+              label="Categoires"
+              multiple
+              clearable
+              chips
+            >
+              <template v-slot:selection="data">
+                <v-chip
+                  :key="JSON.stringify(data.item)"
+                  v-bind="data.attrs"
+                  :input-value="data.selected"
+                  :disabled="data.disabled"
+                  @click:close="data.parent.selectItem(data.item)"
+                >
+                  <v-avatar
+                    class="accent white--text"
+                    left
+                    v-text="data.item.slice(0, 1).toUpperCase()"
+                  ></v-avatar>
+                  {{ data.item }}
+                </v-chip>
+              </template>
+            </v-combobox>
+            <v-combobox
+              v-model="select"
+              :items="items"
+              label="Subcategoires"
+              multiple
+              clearable
+              chips
+            >
+              <template v-slot:selection="data">
+                <v-chip
+                  :key="JSON.stringify(data.item)"
+                  v-bind="data.attrs"
+                  :input-value="data.selected"
+                  :disabled="data.disabled"
+                  @click:close="data.parent.selectItem(data.item)"
+                >
+                  <v-avatar
+                    class="accent white--text"
+                    left
+                    v-text="data.item.slice(0, 1).toUpperCase()"
+                  ></v-avatar>
+                  {{ data.item }}
+                </v-chip>
+              </template>
+            </v-combobox>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn depressed color="primary" @click="filterdialog = false">Filter</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+          <v-btn depressed color="primary" @click="filterdialog = !filterdialog"> <v-icon class="filterIcon" dark small>shuffle</v-icon> Filter</v-btn>
+        </v-col>
+        <v-col cols="12" :lg="3" :md="4" :sm="4">
+          <v-text-field
+            class="page-searchbar"
+            hide-details
+            placeholder="Type your search here.."
+            append-icon="search"
+            single-line
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-container fluid>
       <!-- <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader> -->
 
@@ -150,9 +217,17 @@ import PageHeader from "../../components/PageHeader";
 export default {
   data() {
     return {
+    select: [],
+    items: [
+        'Programming',
+        'Design',
+        'Vue',
+        'Vuetify',
+      ],
       posts: [],
       loader: true,
       dialog: false,
+      filterdialog: false,
       modal_title: "Add New City",
       currentPage: 1,
       TotalPages: 0,
@@ -359,4 +434,6 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
+
 </style>

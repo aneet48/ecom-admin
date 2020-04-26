@@ -2302,14 +2302,84 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      select: [],
+      items: ['Programming', 'Design', 'Vue', 'Vuetify'],
       posts: [],
       loader: true,
       dialog: false,
+      filterdialog: false,
       modal_title: "Add New City",
       currentPage: 1,
       TotalPages: 0,
@@ -8347,7 +8417,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.action-btn:hover {\r\n  text-decoration: none;\n}\n.error-text\r\n  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {\r\n  color: red !important;\n}\n.flex{\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\n}\r\n", ""]);
+exports.push([module.i, "\n.action-btn:hover {\r\n  text-decoration: none;\n}\n.error-text\r\n  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {\r\n  color: red !important;\n}\n.flex{\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\n}\r\n\r\n\r\n", ""]);
 
 // exports
 
@@ -43708,15 +43778,247 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("v-text-field", {
-        staticClass: "page-searchbar",
-        attrs: {
-          "hide-details": "",
-          placeholder: "Type your search here..",
-          "append-icon": "search",
-          "single-line": ""
-        }
-      }),
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            [
+              _c(
+                "v-col",
+                {
+                  staticClass: "text-right",
+                  attrs: { cols: "12", lg: 9, md: 8, sm: 8 }
+                },
+                [
+                  _c(
+                    "v-dialog",
+                    {
+                      attrs: { "max-width": "500px" },
+                      model: {
+                        value: _vm.filterdialog,
+                        callback: function($$v) {
+                          _vm.filterdialog = $$v
+                        },
+                        expression: "filterdialog"
+                      }
+                    },
+                    [
+                      _c(
+                        "v-card",
+                        { staticClass: "padding20" },
+                        [
+                          _c("v-combobox", {
+                            attrs: {
+                              items: _vm.items,
+                              label: "Categoires",
+                              multiple: "",
+                              clearable: "",
+                              chips: ""
+                            },
+                            scopedSlots: _vm._u([
+                              {
+                                key: "selection",
+                                fn: function(data) {
+                                  return [
+                                    _c(
+                                      "v-chip",
+                                      _vm._b(
+                                        {
+                                          key: JSON.stringify(data.item),
+                                          attrs: {
+                                            "input-value": data.selected,
+                                            disabled: data.disabled
+                                          },
+                                          on: {
+                                            "click:close": function($event) {
+                                              return data.parent.selectItem(
+                                                data.item
+                                              )
+                                            }
+                                          }
+                                        },
+                                        "v-chip",
+                                        data.attrs,
+                                        false
+                                      ),
+                                      [
+                                        _c("v-avatar", {
+                                          staticClass: "accent white--text",
+                                          attrs: { left: "" },
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              data.item
+                                                .slice(0, 1)
+                                                .toUpperCase()
+                                            )
+                                          }
+                                        }),
+                                        _vm._v(
+                                          "\n                " +
+                                            _vm._s(data.item) +
+                                            "\n              "
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ]
+                                }
+                              }
+                            ]),
+                            model: {
+                              value: _vm.select,
+                              callback: function($$v) {
+                                _vm.select = $$v
+                              },
+                              expression: "select"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("v-combobox", {
+                            attrs: {
+                              items: _vm.items,
+                              label: "Subcategoires",
+                              multiple: "",
+                              clearable: "",
+                              chips: ""
+                            },
+                            scopedSlots: _vm._u([
+                              {
+                                key: "selection",
+                                fn: function(data) {
+                                  return [
+                                    _c(
+                                      "v-chip",
+                                      _vm._b(
+                                        {
+                                          key: JSON.stringify(data.item),
+                                          attrs: {
+                                            "input-value": data.selected,
+                                            disabled: data.disabled
+                                          },
+                                          on: {
+                                            "click:close": function($event) {
+                                              return data.parent.selectItem(
+                                                data.item
+                                              )
+                                            }
+                                          }
+                                        },
+                                        "v-chip",
+                                        data.attrs,
+                                        false
+                                      ),
+                                      [
+                                        _c("v-avatar", {
+                                          staticClass: "accent white--text",
+                                          attrs: { left: "" },
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              data.item
+                                                .slice(0, 1)
+                                                .toUpperCase()
+                                            )
+                                          }
+                                        }),
+                                        _vm._v(
+                                          "\n                " +
+                                            _vm._s(data.item) +
+                                            "\n              "
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ]
+                                }
+                              }
+                            ]),
+                            model: {
+                              value: _vm.select,
+                              callback: function($$v) {
+                                _vm.select = $$v
+                              },
+                              expression: "select"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { depressed: "", color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.filterdialog = false
+                                    }
+                                  }
+                                },
+                                [_vm._v("Filter")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { depressed: "", color: "primary" },
+                      on: {
+                        click: function($event) {
+                          _vm.filterdialog = !_vm.filterdialog
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "v-icon",
+                        {
+                          staticClass: "filterIcon",
+                          attrs: { dark: "", small: "" }
+                        },
+                        [_vm._v("shuffle")]
+                      ),
+                      _vm._v(" Filter")
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { cols: "12", lg: 3, md: 4, sm: 4 } },
+                [
+                  _c("v-text-field", {
+                    staticClass: "page-searchbar",
+                    attrs: {
+                      "hide-details": "",
+                      placeholder: "Type your search here..",
+                      "append-icon": "search",
+                      "single-line": ""
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-container",
