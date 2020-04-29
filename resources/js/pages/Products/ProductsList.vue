@@ -80,6 +80,49 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">User Profile</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="12">
+                <v-file-input multiple label="Product Image"></v-file-input>
+              </v-col>
+              <v-col cols="12" sm="6" md="12">
+                <v-text-field label="Product Name" required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field label="Sku"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field label="Amount"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                Status
+                <v-switch v-model="status" class="ma-2" label="Processing"></v-switch>
+                <v-switch v-model="status" class="ma-2" label="Paid"></v-switch>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-autocomplete
+                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                  label="Categories"
+                  multiple
+                ></v-autocomplete>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-container fluid>
       <!-- <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader> -->
 
@@ -96,7 +139,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item , i) in posts" :key="i">
+            <tr>
               <td>
                 <div class="product">
                   <img class="product__thumbnail" src="https://source.unsplash.com/collection/190727/320x240" alt="">
@@ -107,10 +150,55 @@
                   </div>
                 </div>
               </td>
-              <td>{{ item.state.name }}</td>
+              <td>FCG567</td>
               <td>₹2000</td>
               <td><v-chip class="ma-2 chip" color="teal accent-4">In Processing</v-chip></td>
-              <td>{{ item.state.name }},  {{ item.state.name }}, {{ item.state.name }}</td>
+              <td>Electronics, Phones, under2000</td>
+              <td class="text-right">
+                <div class="d-none d-sm-block">
+                  <v-btn fab dark x-small color="teal accent-4" @click="editCity(item)">
+                    <v-icon dark small>mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-btn fab dark x-small color="pink" @click="deleteItem(item)">
+                    <v-icon dark small>mdi-trash-can</v-icon>
+                  </v-btn>
+                </div>
+
+                <div class="d-sm-none">
+                  <v-menu>
+                    <template v-slot:activator="{ on }">
+                      <v-btn dark icon v-on="on">
+                        <v-icon light>mdi-dots-vertical</v-icon>
+                      </v-btn>
+                    </template>
+
+                    <v-list>
+                      <v-list-item @click="editCity(item)">
+                        <v-list-item-title>Edit</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item @click="deleteItem(item)">
+                        <v-list-item-title>Delete</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="product">
+                  <img class="product__thumbnail" src="https://source.unsplash.com/collection/190727/320x240" alt="">
+                  <div class="product__detail">
+                    <span class="product__name">
+                      This is a  Large Product Name for style testing
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td>FCG567</td>
+              <td>₹2000</td>
+              <td><v-chip class="ma-2 chip" color="orange accent-4">Paid</v-chip></td>
+              <td>Electronics, Phones, under2000</td>
               <td class="text-right">
                 <div class="d-none d-sm-block">
                   <v-btn fab dark x-small color="teal accent-4" @click="editCity(item)">
@@ -146,54 +234,6 @@
       </v-simple-table>
     </v-container>
 
-    <!-- <v-row justify="center">
-      <v-dialog v-model="dialog" persistent max-width="600px">
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{modal_title}}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field label="Name*" required v-model="m_name" :rules="nameRules"></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-autocomplete
-                    label="State"
-                    :items="states"
-                    item-text="name"
-                    item-value="id"
-                    return-object
-                    v-model="m_state"
-                    :loading="isStatesLoading"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col cols="12">
-                  <v-checkbox v-model="m_active" label="Activate"></v-checkbox>
-                </v-col>
-              </v-row>
-
-              <v-list v-if="errors.length" dense class="error-text">
-                <v-subheader>Please look at these errors:</v-subheader>
-                <v-list-item-group>
-                  <v-list-item v-for="(item, i) in errors" :key="i">
-                    <v-list-item-content>
-                      <v-list-item-title v-html="item"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn light color="white " @click="closeDialog">Close</v-btn>
-              <v-btn dark color="pink " @click="saveDialog">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </v-dialog>
-    </v-row> -->
 
     <div class="text-center" v-if="currentPage && TotalPages">
       <v-pagination v-model="currentPage" :length="TotalPages" :total-visible="totalVisible"></v-pagination>

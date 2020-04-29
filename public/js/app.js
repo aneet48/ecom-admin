@@ -2362,6 +2362,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -43592,6 +43632,183 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", "max-width": "600px" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _c("span", { staticClass: "headline" }, [
+                  _vm._v("User Profile")
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "12" } },
+                            [
+                              _c("v-file-input", {
+                                attrs: { multiple: "", label: "Product Image" }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "12" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Product Name", required: "" }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "6" } },
+                            [_c("v-text-field", { attrs: { label: "Sku" } })],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "6" } },
+                            [
+                              _c("v-text-field", { attrs: { label: "Amount" } })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6", md: "6" } },
+                            [
+                              _vm._v("\n              Status\n              "),
+                              _c("v-switch", {
+                                staticClass: "ma-2",
+                                attrs: { label: "Processing" },
+                                model: {
+                                  value: _vm.status,
+                                  callback: function($$v) {
+                                    _vm.status = $$v
+                                  },
+                                  expression: "status"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("v-switch", {
+                                staticClass: "ma-2",
+                                attrs: { label: "Paid" },
+                                model: {
+                                  value: _vm.status,
+                                  callback: function($$v) {
+                                    _vm.status = $$v
+                                  },
+                                  expression: "status"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "6" } },
+                            [
+                              _c("v-autocomplete", {
+                                attrs: {
+                                  items: [
+                                    "Skiing",
+                                    "Ice hockey",
+                                    "Soccer",
+                                    "Basketball",
+                                    "Hockey",
+                                    "Reading",
+                                    "Writing",
+                                    "Coding",
+                                    "Basejump"
+                                  ],
+                                  label: "Categories",
+                                  multiple: ""
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("small", [_vm._v("*indicates required field")])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_vm._v("Close")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_vm._v("Save")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
         "v-container",
         { attrs: { fluid: "" } },
         [
@@ -43631,228 +43848,435 @@ var render = function() {
                             ])
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "tbody",
-                            _vm._l(_vm.posts, function(item, i) {
-                              return _c("tr", { key: i }, [
-                                _c("td", [
-                                  _c("div", { staticClass: "product" }, [
-                                    _c("img", {
-                                      staticClass: "product__thumbnail",
-                                      attrs: {
-                                        src:
-                                          "https://source.unsplash.com/collection/190727/320x240",
-                                        alt: ""
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "product__detail" },
-                                      [
-                                        _c(
-                                          "span",
-                                          { staticClass: "product__name" },
-                                          [
-                                            _vm._v(
-                                              "\n                    This is a  Large Product Name for style testing\n                  "
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(item.state.name))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v("₹2000")]),
-                                _vm._v(" "),
+                          _c("tbody", [
+                            _c("tr", [
+                              _c("td", [
+                                _c("div", { staticClass: "product" }, [
+                                  _c("img", {
+                                    staticClass: "product__thumbnail",
+                                    attrs: {
+                                      src:
+                                        "https://source.unsplash.com/collection/190727/320x240",
+                                      alt: ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "product__detail" },
+                                    [
+                                      _c(
+                                        "span",
+                                        { staticClass: "product__name" },
+                                        [
+                                          _vm._v(
+                                            "\n                    This is a  Large Product Name for style testing\n                  "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v("FCG567")]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v("₹2000")]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                [
+                                  _c(
+                                    "v-chip",
+                                    {
+                                      staticClass: "ma-2 chip",
+                                      attrs: { color: "teal accent-4" }
+                                    },
+                                    [_vm._v("In Processing")]
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v("Electronics, Phones, under2000")
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-right" }, [
                                 _c(
-                                  "td",
+                                  "div",
+                                  { staticClass: "d-none d-sm-block" },
                                   [
                                     _c(
-                                      "v-chip",
+                                      "v-btn",
                                       {
-                                        staticClass: "ma-2 chip",
-                                        attrs: { color: "teal accent-4" }
+                                        attrs: {
+                                          fab: "",
+                                          dark: "",
+                                          "x-small": "",
+                                          color: "teal accent-4"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.editCity(_vm.item)
+                                          }
+                                        }
                                       },
-                                      [_vm._v("In Processing")]
+                                      [
+                                        _c(
+                                          "v-icon",
+                                          { attrs: { dark: "", small: "" } },
+                                          [_vm._v("mdi-pencil")]
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          fab: "",
+                                          dark: "",
+                                          "x-small": "",
+                                          color: "pink"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteItem(_vm.item)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "v-icon",
+                                          { attrs: { dark: "", small: "" } },
+                                          [_vm._v("mdi-trash-can")]
+                                        )
+                                      ],
+                                      1
                                     )
                                   ],
                                   1
                                 ),
                                 _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(item.state.name) +
-                                      ",  " +
-                                      _vm._s(item.state.name) +
-                                      ", " +
-                                      _vm._s(item.state.name)
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "text-right" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "d-none d-sm-block" },
-                                    [
-                                      _c(
-                                        "v-btn",
-                                        {
-                                          attrs: {
-                                            fab: "",
-                                            dark: "",
-                                            "x-small": "",
-                                            color: "teal accent-4"
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.editCity(item)
+                                _c(
+                                  "div",
+                                  { staticClass: "d-sm-none" },
+                                  [
+                                    _c(
+                                      "v-menu",
+                                      {
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "activator",
+                                              fn: function(ref) {
+                                                var on = ref.on
+                                                return [
+                                                  _c(
+                                                    "v-btn",
+                                                    _vm._g(
+                                                      {
+                                                        attrs: {
+                                                          dark: "",
+                                                          icon: ""
+                                                        }
+                                                      },
+                                                      on
+                                                    ),
+                                                    [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: { light: "" }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "mdi-dots-vertical"
+                                                          )
+                                                        ]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
                                             }
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            { attrs: { dark: "", small: "" } },
-                                            [_vm._v("mdi-pencil")]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-btn",
-                                        {
-                                          attrs: {
-                                            fab: "",
-                                            dark: "",
-                                            "x-small": "",
-                                            color: "pink"
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.deleteItem(item)
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            { attrs: { dark: "", small: "" } },
-                                            [_vm._v("mdi-trash-can")]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  ),
+                                          ],
+                                          null,
+                                          false,
+                                          4068066956
+                                        )
+                                      },
+                                      [
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-list",
+                                          [
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.editCity(
+                                                      _vm.item
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Edit")
+                                                ])
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.deleteItem(
+                                                      _vm.item
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Delete")
+                                                ])
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", [
+                                _c("div", { staticClass: "product" }, [
+                                  _c("img", {
+                                    staticClass: "product__thumbnail",
+                                    attrs: {
+                                      src:
+                                        "https://source.unsplash.com/collection/190727/320x240",
+                                      alt: ""
+                                    }
+                                  }),
                                   _vm._v(" "),
                                   _c(
                                     "div",
-                                    { staticClass: "d-sm-none" },
+                                    { staticClass: "product__detail" },
                                     [
                                       _c(
-                                        "v-menu",
-                                        {
-                                          scopedSlots: _vm._u(
-                                            [
-                                              {
-                                                key: "activator",
-                                                fn: function(ref) {
-                                                  var on = ref.on
-                                                  return [
-                                                    _c(
-                                                      "v-btn",
-                                                      _vm._g(
-                                                        {
-                                                          attrs: {
-                                                            dark: "",
-                                                            icon: ""
-                                                          }
-                                                        },
-                                                        on
-                                                      ),
-                                                      [
-                                                        _c(
-                                                          "v-icon",
-                                                          {
-                                                            attrs: { light: "" }
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "mdi-dots-vertical"
-                                                            )
-                                                          ]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  ]
-                                                }
-                                              }
-                                            ],
-                                            null,
-                                            true
-                                          )
-                                        },
+                                        "span",
+                                        { staticClass: "product__name" },
                                         [
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-list",
-                                            [
-                                              _c(
-                                                "v-list-item",
-                                                {
-                                                  on: {
-                                                    click: function($event) {
-                                                      return _vm.editCity(item)
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c("v-list-item-title", [
-                                                    _vm._v("Edit")
-                                                  ])
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-list-item",
-                                                {
-                                                  on: {
-                                                    click: function($event) {
-                                                      return _vm.deleteItem(
-                                                        item
-                                                      )
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c("v-list-item-title", [
-                                                    _vm._v("Delete")
-                                                  ])
-                                                ],
-                                                1
-                                              )
-                                            ],
-                                            1
+                                          _vm._v(
+                                            "\n                    This is a  Large Product Name for style testing\n                  "
                                           )
-                                        ],
-                                        1
+                                        ]
                                       )
-                                    ],
-                                    1
+                                    ]
                                   )
                                 ])
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v("FCG567")]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v("₹2000")]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                [
+                                  _c(
+                                    "v-chip",
+                                    {
+                                      staticClass: "ma-2 chip",
+                                      attrs: { color: "orange accent-4" }
+                                    },
+                                    [_vm._v("Paid")]
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v("Electronics, Phones, under2000")
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-right" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "d-none d-sm-block" },
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          fab: "",
+                                          dark: "",
+                                          "x-small": "",
+                                          color: "teal accent-4"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.editCity(_vm.item)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "v-icon",
+                                          { attrs: { dark: "", small: "" } },
+                                          [_vm._v("mdi-pencil")]
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          fab: "",
+                                          dark: "",
+                                          "x-small": "",
+                                          color: "pink"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteItem(_vm.item)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "v-icon",
+                                          { attrs: { dark: "", small: "" } },
+                                          [_vm._v("mdi-trash-can")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "d-sm-none" },
+                                  [
+                                    _c(
+                                      "v-menu",
+                                      {
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "activator",
+                                              fn: function(ref) {
+                                                var on = ref.on
+                                                return [
+                                                  _c(
+                                                    "v-btn",
+                                                    _vm._g(
+                                                      {
+                                                        attrs: {
+                                                          dark: "",
+                                                          icon: ""
+                                                        }
+                                                      },
+                                                      on
+                                                    ),
+                                                    [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: { light: "" }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "mdi-dots-vertical"
+                                                          )
+                                                        ]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          false,
+                                          4068066956
+                                        )
+                                      },
+                                      [
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-list",
+                                          [
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.editCity(
+                                                      _vm.item
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Edit")
+                                                ])
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.deleteItem(
+                                                      _vm.item
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Delete")
+                                                ])
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
                               ])
-                            }),
-                            0
-                          )
+                            ])
+                          ])
                         ]
                       },
                       proxy: true
@@ -43860,7 +44284,7 @@ var render = function() {
                   ],
                   null,
                   false,
-                  2553800016
+                  3245308309
                 )
               })
             : _vm._e()
