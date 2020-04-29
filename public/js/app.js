@@ -43648,9 +43648,7 @@ var render = function() {
             "v-card",
             [
               _c("v-card-title", [
-                _c("span", { staticClass: "headline" }, [
-                  _vm._v("User Profile")
-                ])
+                _c("span", { staticClass: "headline" }, [_vm._v("Add Product")])
               ]),
               _vm._v(" "),
               _c(
