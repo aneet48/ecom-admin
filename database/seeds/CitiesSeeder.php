@@ -150,6 +150,11 @@ class CitiesSeeder extends Seeder
                 'name' => 'Siliguri',
                 'state' => 'West Bengal',
             ),
+            23454 => array(
+                'id' => '24',
+                'name' => 'Cooch Behar',
+                'state' => 'West Bengal',
+            ),
             24 => array(
                 'id' => '25',
                 'name' => 'Nashik',
@@ -213,6 +218,11 @@ class CitiesSeeder extends Seeder
             36 => array(
                 'id' => '37',
                 'name' => 'Allahabad',
+                'state' => 'Uttar Pradesh',
+            ),
+            369898 => array(
+                'id' => '37',
+                'name' => 'Jaunpur',
                 'state' => 'Uttar Pradesh',
             ),
             37 => array(
@@ -310,6 +320,11 @@ class CitiesSeeder extends Seeder
                 'name' => 'Warangal',
                 'state' => 'Telangana',
             ),
+            55655 => array(
+                'id' => '56',
+                'name' => 'Mahabubnagar',
+                'state' => 'Telangana',
+            ),
             56 => array(
                 'id' => '57',
                 'name' => 'Mira-Bhayandar',
@@ -385,6 +400,11 @@ class CitiesSeeder extends Seeder
                 'name' => 'Dehradun',
                 'state' => 'Uttarakhand',
             ),
+            70002 => array(
+                'id' => '71',
+                'name' => 'Pantnagar',
+                'state' => 'Uttarakhand',
+            ),
             71 => array(
                 'id' => '72',
                 'name' => 'Asansol',
@@ -393,6 +413,11 @@ class CitiesSeeder extends Seeder
             72 => array(
                 'id' => '73',
                 'name' => 'Nanded-Waghala',
+                'state' => 'Maharashtra',
+            ),
+            728878787 => array(
+                'id' => '73',
+                'name' => 'Nanded',
                 'state' => 'Maharashtra',
             ),
             73 => array(
@@ -423,6 +448,11 @@ class CitiesSeeder extends Seeder
             78 => array(
                 'id' => '79',
                 'name' => 'Jhansi',
+                'state' => 'Uttar Pradesh',
+            ),
+            7878787 => array(
+                'id' => '79',
+                'name' => 'Gorakhpur',
                 'state' => 'Uttar Pradesh',
             ),
             79 => array(
@@ -458,6 +488,11 @@ class CitiesSeeder extends Seeder
             85 => array(
                 'id' => '86',
                 'name' => 'Tirunelveli',
+                'state' => 'Tamil Nadu',
+            ),
+            855454 => array(
+                'id' => '86',
+                'name' => 'Kodaikanal',
                 'state' => 'Tamil Nadu',
             ),
             86 => array(
@@ -1010,6 +1045,11 @@ class CitiesSeeder extends Seeder
                 'name' => 'Rae Bareli',
                 'state' => 'Uttar Pradesh',
             ),
+            19589898 => array(
+                'id' => '196',
+                'name' => 'Bareilly',
+                'state' => 'Uttar Pradesh',
+            ),
             196 => array(
                 'id' => '197',
                 'name' => 'Jalpaiguri',
@@ -1102,7 +1142,7 @@ class CitiesSeeder extends Seeder
             ),
             214 => array(
                 'id' => '215',
-                'name' => 'Haldwani-cum-Kathgodam',
+                'name' => 'Haldwani',
                 'state' => 'Uttarakhand',
             ),
             215 => array(
@@ -1180,6 +1220,16 @@ class CitiesSeeder extends Seeder
                 'name' => 'Medinipur',
                 'state' => 'West Bengal',
             ),
+            2298787 => array(
+                'id' => '230',
+                'name' => 'Barasat',
+                'state' => 'West Bengal',
+            ),
+            22987 => array(
+                'id' => '230',
+                'name' => 'Shibpur',
+                'state' => 'West Bengal',
+            ),
             230 => array(
                 'id' => '231',
                 'name' => 'Habra',
@@ -1218,6 +1268,11 @@ class CitiesSeeder extends Seeder
             237 => array(
                 'id' => '238',
                 'name' => 'Tiruvannamalai',
+                'state' => 'Tamil Nadu',
+            ),
+            2378787 => array(
+                'id' => '238',
+                'name' => 'Annamalai Nagar',
                 'state' => 'Tamil Nadu',
             ),
             238 => array(
@@ -1475,6 +1530,11 @@ class CitiesSeeder extends Seeder
                 'name' => 'Purulia',
                 'state' => 'West Bengal',
             ),
+            288878 => array(
+                'id' => '289',
+                'name' => 'Bardhaman',
+                'state' => 'West Bengal',
+            ),
             289 => array(
                 'id' => '290',
                 'name' => 'Patan',
@@ -1527,7 +1587,7 @@ class CitiesSeeder extends Seeder
             ),
             299 => array(
                 'id' => '300',
-                'name' => 'Baripada Town',
+                'name' => 'Baripada',
                 'state' => 'Odisha',
             ),
             300 => array(
@@ -2415,6 +2475,16 @@ class CitiesSeeder extends Seeder
                 'name' => 'Arambagh',
                 'state' => 'West Bengal',
             ),
+            476121 => array(
+                'id' => '477',
+                'name' => 'Sibpur',
+                'state' => 'West Bengal',
+            ),
+            476189 => array(
+                'id' => '477',
+                'name' => 'Haringhata',
+                'state' => 'West Bengal',
+            ),
             477 => array(
                 'id' => '478',
                 'name' => 'Gohana',
@@ -2503,6 +2573,11 @@ class CitiesSeeder extends Seeder
             494 => array(
                 'id' => '495',
                 'name' => 'Vrindavan',
+                'state' => 'Uttar Pradesh',
+            ),
+            4949898 => array(
+                'id' => '495',
+                'name' => 'Faizabad',
                 'state' => 'Uttar Pradesh',
             ),
             495 => array(
@@ -5420,6 +5495,11 @@ class CitiesSeeder extends Seeder
                 'name' => 'Malda',
                 'state' => 'West Bengal',
             ),
+            1077989 => array(
+                'id' => '1078',
+                'name' => 'Kalyani',
+                'state' => 'West Bengal',
+            ),
             1078 => array(
                 'id' => '1079',
                 'name' => 'Tharangambadi',
@@ -6135,6 +6215,177 @@ class CitiesSeeder extends Seeder
                 'name' => 'Dispur',
                 'state' => 'Assam',
             ),
+            1221 => array(
+                'id' => '18',
+                'name' => 'Etcherla',
+                'state' => 'Andhra Pradesh',
+            ),
+            1222 => array(
+                'id' => '18',
+                'name' => 'Kuppam',
+                'state' => 'Andhra Pradesh',
+            ),
+            1223 => array(
+                'id' => '18',
+                'name' => 'Nalgonda',
+                'state' => 'Telangana',
+            ),
+            1224 => array(
+                'id' => '18',
+                'name' => 'Muzzafarpur',
+                'state' => 'Bihar',
+            ),
+            1225 => array(
+                'id' => '18',
+                'name' => 'Pusa',
+                'state' => 'Bihar',
+            ),
+            1226 => array(
+                'id' => '18',
+                'name' => 'Khairagarh',
+                'state' => 'Chhattisgarh',
+            ),
+            1227 => array(
+                'id' => '18',
+                'name' => 'Taleigao',
+                'state' => 'Goa',
+            ),
+            1228 => array(
+                'id' => '18',
+                'name' => 'Vallabh Vidhyanagar',
+                'state' => 'Gujarat',
+            ),
+            1229 => array(
+                'id' => '18',
+                'name' => 'Murthal',
+                'state' => 'Haryana',
+            ),
+            123078 => array(
+                'id' => '18',
+                'name' => 'Kurukshetra',
+                'state' => 'Haryana',
+            ),
+            1230 => array(
+                'id' => '18',
+                'name' => 'Hamirpur',
+                'state' => 'Himachal Pradesh',
+            ),
+            1231 => array(
+                'id' => '18',
+                'name' => 'Pulwama',
+                'state' => 'Jammu and Kashmir',
+            ),
+            1232 => array(
+                'id' => '18',
+                'name' => 'Katra',
+                'state' => 'Jammu and Kashmir',
+            ),
+            1233878 => array(
+                'id' => '18',
+                'name' => 'Palamu',
+                'state' => 'Jharkhand',
+            ),
+            1233 => array(
+                'id' => '18',
+                'name' => 'Hazaribagh',
+                'state' => 'Jharkhand',
+            ),
+            1234 => array(
+                'id' => '18',
+                'name' => 'Gulbarga',
+                'state' => 'Karnataka',
+            ),
+            1235 => array(
+                'id' => '18',
+                'name' => 'Hampi',
+                'state' => 'Karnataka',
+            ),
+            1236 => array(
+                'id' => '18',
+                'name' => 'Dharwad',
+                'state' => 'Karnataka',
+            ),
+            1237 => array(
+                'id' => '18',
+                'name' => 'Hubli',
+                'state' => 'Karnataka',
+            ),
+            1238 => array(
+                'id' => '18',
+                'name' => 'Bidar',
+                'state' => 'Karnataka',
+            ),
+            1240 => array(
+                'id' => '18',
+                'name' => 'Konaje',
+                'state' => 'Karnataka',
+            ),
+            1241 => array(
+                'id' => '18',
+                'name' => 'Kalamassery',
+                'state' => 'Kerala',
+            ),
+            1242 => array(
+                'id' => '18',
+                'name' => 'Wayanad',
+                'state' => 'Kerala',
+            ),
+            1243 => array(
+                'id' => '18',
+                'name' => 'Kalady',
+                'state' => 'Kerala',
+            ),
+            1244 => array(
+                'id' => '18',
+                'name' => 'Katni',
+                'state' => 'Telangana',
+            ),
+            1245 => array(
+                'id' => '18',
+                'name' => 'Chitrakoot',
+                'state' => 'Madhya Pradesh',
+            ),
+            1246 => array(
+                'id' => '18',
+                'name' => 'Dapoli',
+                'state' => 'Maharashtra',
+            ),
+            1247 => array(
+                'id' => '18',
+                'name' => 'Jalgaon',
+                'state' => 'Maharashtra',
+            ),
+            1248 => array(
+                'id' => '18',
+                'name' => 'Kolhapur',
+                'state' => 'Maharashtra',
+            ),
+            1245448 => array(
+                'id' => '18',
+                'name' => 'Lonere',
+                'state' => 'Maharashtra',
+            ),
+            1249 => array(
+                'id' => '18',
+                'name' => 'Berhampur',
+                'state' => 'Odisha',
+            ),
+            1250 => array(
+                'id' => '18',
+                'name' => 'Rourkela',
+                'state' => 'Odisha',
+            ),
+            1251 => array(
+                'id' => '18',
+                'name' => 'Karaikudi',
+                'state' => 'Tamil Nadu',
+            ),
+            1252 => array(
+                'id' => '18',
+                'name' => 'Haridwar',
+                'state' => 'Uttarakhand',
+            ),
+
         );
     }
 }

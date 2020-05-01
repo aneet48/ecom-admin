@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\City;
 use App\Http\Controllers\Controller;
+use App\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CityController extends Controller
+class UniversityController extends Controller
 {
-
-    public function cities($show_all = false)
+    public function universities($show_all = false)
     {
         if (!$show_all) {
-            $cities = City::with('state')->where('active', 1)->orderBy('name')->paginate(15);
+            $universities = University::with('city')->where('active', 1)->orderBy('name')->paginate(15);
         } else {
-            $cities = City::with('state')->orderBy('name')->paginate(15);
+            $universities = University::with('city')->orderBy('name')->paginate(15);
 
         }
-        return response()->json($cities);
+        return response()->json($universities);
     }
 
-    public function city($id)
+    public function university($id)
     {
-        $city = City::find($id);
-        return response()->json($city);
+        $university = University::find($id);
+        return response()->json($university);
 
     }
 
@@ -32,23 +31,21 @@ class CityController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            // 'code' => 'required|string|max:10|unique:cities,code,' . $id,
-            // 'name' => 'required|string|unique:cities,name,' . $id,
             'name' => 'required|string|unique:states,name,' . $id,
-            'state_id' => 'required',
+            'city_id' => 'required',
         ]);
 
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
         }
 
-        $city = City::where('id', $id)->update([
-            'state_id' => $request->get('state_id'),
+        $university = University::where('id', $id)->update([
+            'city_id' => $request->get('city_id'),
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
-        $msg = $city ? 'City updated successfully' : "City not Found";
-        $error = $city ? false : true;
+        $msg = $university ? 'University updated successfully' : "University not Found";
+        $error = $university ? false : true;
 
         return generate_response($error, $msg);
     }
@@ -58,7 +55,7 @@ class CityController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:states',
-            'state_id' => 'required',
+            'city_id' => 'required',
 
         ]);
 
@@ -66,15 +63,15 @@ class CityController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $city = City::create([
-            'state_id' => $request->get('state_id'),
+        $university = University::create([
+            'city_id' => $request->get('city_id'),
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
-        $msg = $city ? 'City created successfully' : "City not Found";
-        $error = $city ? false : true;
+        $msg = $university ? 'University created successfully' : "University not Found";
+        $error = $university ? false : true;
         $body = [
-            'city' => $city,
+            'university' => $university,
         ];
 
         return generate_response($error, $msg, $body);
@@ -83,16 +80,16 @@ class CityController extends Controller
     public function delete($id)
     {
 
-        $city = City::where('id', $id)->delete();
-        $msg = $city ? 'City deleted successfully' : "City not Found";
-        $error = $city ? false : true;
+        $university = University::where('id', $id)->delete();
+        $msg = $university ? 'University deleted successfully' : "University not Found";
+        $error = $university ? false : true;
 
         return generate_response($error, $msg);
     }
 
     public function search($q)
     {
-        $result = City::where('name','like','%'.$q.'%')->paginate(30);
+        $result = University::with('city','city.state')->where('name', 'like', '%' . $q . '%')->paginate(30);
         return response()->json($result);
     }
 }

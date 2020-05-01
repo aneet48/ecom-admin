@@ -10,7 +10,7 @@
 
         <div class="d-flex justify-flex-end">
           <v-icon class="app-bar-icon">mdi-bell</v-icon>
-          <v-icon class="app-bar-icon">mdi-logout</v-icon>
+          <v-icon class="app-bar-icon" link @click="logout">mdi-logout</v-icon>
         </div>
       </div>
     </v-app-bar>
@@ -26,6 +26,8 @@
 
 <script>
 import Sidebar from "./components/Sidebar";
+import store from "./store";
+
 export default {
   components: {
     Sidebar
@@ -35,7 +37,12 @@ export default {
   },
   data: () => ({
     drawer: null
-  })
+  }),
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    }
+  }
 };
 </script>
 
@@ -65,17 +72,17 @@ export default {
 .theme--light.v-data-table thead tr th {
   font-size: 16px;
 }
-.gray-dot{
-    background: #bebbbb;
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
+.gray-dot {
+  background: #bebbbb;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
 }
-.green-dot{
-    background: green;
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
+.green-dot {
+  background: green;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
 }
 .dashboard-content-wrapper .v-content__wrap{
   padding: 0 1rem 1rem;
