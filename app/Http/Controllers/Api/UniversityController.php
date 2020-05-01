@@ -31,7 +31,7 @@ class UniversityController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:10|unique:states,name,' . $id,
+            'name' => 'required|string|unique:states,name,' . $id,
             'city_id' => 'required',
         ]);
 
@@ -54,7 +54,7 @@ class UniversityController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:states|max:10,',
+            'name' => 'required|string|unique:states',
             'city_id' => 'required',
 
         ]);
@@ -85,5 +85,11 @@ class UniversityController extends Controller
         $error = $university ? false : true;
 
         return generate_response($error, $msg);
+    }
+
+    public function search($q)
+    {
+        $result = University::with('city','city.state')->where('name', 'like', '%' . $q . '%')->paginate(30);
+        return response()->json($result);
     }
 }

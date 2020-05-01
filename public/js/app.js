@@ -3621,12 +3621,284 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      posts: [],
+      loader: true,
+      dialog: false,
+      modal_title: "Add New user",
+      currentPage: 1,
+      TotalPages: 0,
+      totalVisible: 15,
+      m_name: "",
+      m_type: "add",
+      valid: false,
+      nameRules: [function (v) {
+        return !!v || "Name is required";
+      }],
+      stateRules: [function (v) {
+        return !!v || "State is required";
+      }],
+      snackbar: false,
+      snackbarText: "",
+      multiLine: true,
+      errors: [],
+      overlay: false,
+      editItem: {},
+      snackbarColor: "info",
+      m_active: false,
+      states: [],
+      isStatesLoading: true,
+      search: "",
+      clubs: [{
+        id: 1,
+        name: "chelsea",
+        test: "1"
+      }, {
+        id: 2,
+        name: "mu",
+        test: "1"
+      }, {
+        id: 3,
+        name: "arsenal",
+        test: "1"
+      }],
+      m_state: {
+        id: null,
+        name: null
+      }
+    };
+  },
   components: {
     BreadCrumb: _components_BreadCrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
     PageHeader: _components_PageHeader__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mounted: function mounted() {
+    this.loader = true;
+    this.fetchusers();
+    this.fetchStates();
+  },
+  watch: {
+    currentPage: function currentPage(val) {
+      //do something when the data changes.
+      if (val) {
+        this.loader = true;
+        this.fetchusers();
+      }
+    }
+  },
+  methods: {
+    addNew: function addNew() {
+      this.modal_title = "Add New user";
+      this.m_type = "add";
+      this.dialog = true;
+    },
+    edituser: function edituser(item) {
+      this.$router.push({
+        path: "users/edit/".concat(item.id),
+        params: {
+          item: item
+        }
+      }); //   //   this.isStatesLoading = true;
+      //   this.modal_title = "Edit user";
+      //   this.editItem = item;
+      //   console.log(item.state_id);
+      //   let state_id = item.state_id;
+      //   let state = this.states.find(item => item.id == state_id);
+      //   this.m_state = { id: state.id, name: state.name };
+      //   this.m_name = item.name;
+      //   this.m_active = item.active;
+      //   this.m_type = "edit";
+      //   this.dialog = true;
+    },
+    deleteItem: function deleteItem(item) {
+      var _this = this;
+
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ff3860",
+        // cancelButtonColor: "#fff",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        if (result.value && item) {
+          _this.overlay = true;
+          axios.post("api/user/delete/".concat(item.id)).then(function (res) {
+            var data = res.data;
+
+            if (data.error && data.msg) {
+              _this.errors = data.msg;
+            } else {
+              _this.$swal("Deleted!", data.msg, "success");
+
+              _this.overlay = true;
+
+              _this.fetchusers();
+            }
+          })["catch"](function (err) {
+            _this.unknownError();
+
+            console.log(err);
+          });
+        }
+      });
+    },
+    saveDialog: function saveDialog() {
+      var _this2 = this;
+
+      this.errors = [];
+      var is_valid = this.$refs.form.validate();
+      if (!is_valid) return;
+      var api_url = this.m_type == "edit" ? "api/user/".concat(this.editItem.id) : "api/user";
+      axios({
+        method: "post",
+        url: api_url,
+        data: {
+          name: this.m_name,
+          active: this.m_active,
+          state_id: this.m_state.id
+        }
+      }).then(function (res) {
+        var data = res.data;
+
+        if (data.error && data.msg) {
+          _this2.errors = data.msg;
+        } else {
+          _this2.overlay = true;
+          _this2.snackbarColor = "success";
+          _this2.snackbarText = data.msg;
+          _this2.snackbar = true;
+
+          _this2.closeDialog();
+
+          _this2.fetchusers();
+        }
+      })["catch"](function (err) {
+        _this2.unknownError();
+
+        console.log(err);
+      });
+    },
+    closeDialog: function closeDialog() {
+      this.resetValidation();
+      this.resetForm();
+      this.isStatesLoading = false;
+      this.dialog = false;
+      this.m_active = false;
+      this.editItem = {};
+      this.errors = [];
+    },
+    resetForm: function resetForm() {
+      this.$refs.form.reset();
+    },
+    resetValidation: function resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    fetchusers: function fetchusers() {
+      var _this3 = this;
+
+      axios.get("/api/users?page=" + this.currentPage).then(function (res) {
+        _this3.overlay = false;
+        _this3.loader = false;
+        _this3.posts = res.data.data;
+        _this3.TotalPages = res.data.last_page;
+      })["catch"](function (err) {
+        _this3.unknownError();
+
+        console.log(err);
+      });
+    },
+    fetchStates: function fetchStates() {
+      var _this4 = this;
+
+      axios.get("/api/states/true").then(function (res) {
+        _this4.states = res.data;
+        _this4.isStatesLoading = false;
+      })["catch"](function (err) {
+        _this4.unknownError();
+
+        console.log(err);
+      });
+    },
+    unknownError: function unknownError() {
+      this.overlay = false;
+      this.snackbarText = "Oops!! There was some error. Please try again later or report ";
+      this.snackbar = true;
+      this.snackbarColor = "red";
+    }
   }
 });
 
@@ -3704,33 +3976,190 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      emailDisabled: false,
       valid: false,
       firstname: "",
       lastname: "",
       phonenumber: "",
       select: "",
+      password: "",
       nameRules: [function (v) {
-        return !!v || "Name is required";
-      }, function (v) {
-        return v.length <= 10 || "Name must be less than 10 characters";
-      }],
+        return !!v || "Required";
+      } //   v => v.length <= 10 || " must be less than 10 characters"
+      ],
       email: "",
       emailRules: [function (v) {
         return !!v || "E-mail is required";
       }, function (v) {
         return /.+@.+/.test(v) || "E-mail must be valid";
       }],
-      items: ["Item 1", "Item 2", "Item 3", "Item 4"]
+      universities: [],
+      m_uni: {
+        name: "",
+        id: ""
+      },
+      isuniLoading: false,
+      uniRules: [function (v) {
+        return !!v || "Required";
+      } //   v => v.length <= 10 || " must be less than 10 characters"
+      ],
+      searchUni: "",
+      timeout: null,
+      snackbar: false,
+      snackbarText: "",
+      overlay: true,
+      snackbarColor: "info",
+      items: [],
+      multiLine: true,
+      m_city: "",
+      m_state: "",
+      errors: [],
+      form_type: '',
+      user_id: ''
     };
+  },
+  mounted: function mounted() {
+    this.form_type = this.$router.currentRoute.name == 'Edit User' ? 'edit' : 'create';
+
+    if (this.form_type == 'edit') {
+      var id = this.$router.currentRoute.params.id;
+      this.user_id = id;
+      this.fetchUser(id);
+    } else {
+      this.overlay = false;
+    }
+
+    console.log(this.form_type);
+  },
+  watch: {
+    m_uni: function m_uni(val) {
+      if (val && val.city) {
+        this.m_city = val.city.name;
+        this.m_state = val.city.state.name;
+      }
+    },
+    searchUni: function searchUni(val) {
+      clearTimeout(this.timeout);
+      var self = this;
+      this.timeout = setTimeout(function () {
+        self.isuniLoading = true;
+        self.fetchuni(val);
+        console.log("searching:", val);
+      }, 1000);
+    }
   },
   methods: {
     submit: function submit() {
-      console.log(this.$refs.form.validate());
+      var _this = this;
+
+      var isValid = this.$refs.form.validate();
+      if (!isValid) return;
+      this.overlay = true;
+      var url = this.form_type == 'edit' ? "update/".concat(this.user_id) : 'sign-up';
+      axios.post("api/user/".concat(url), {
+        first_name: this.firstname,
+        last_name: this.lastname,
+        phone_number: this.phonenumber,
+        email: this.email,
+        password: this.password,
+        university_id: this.m_uni.id // university_id:this.university_id
+
+      }).then(function (res) {
+        var data = res.data;
+        _this.overlay = false;
+
+        if (data.error && data.msg) {
+          _this.errors = data.msg;
+        } else {
+          _this.snackbarColor = "success";
+          _this.snackbarText = data.msg;
+          _this.snackbar = true;
+
+          _this.$router.push({
+            name: "Users"
+          });
+        }
+      })["catch"](function (err) {
+        //   this.unknownError();
+        console.log(err);
+      });
+    },
+    fetchuni: function fetchuni(val) {
+      var _this2 = this;
+
+      axios.get("/api/universities/search/" + val).then(function (res) {
+        _this2.universities = res.data.data;
+        _this2.isuniLoading = false;
+      })["catch"](function (err) {
+        _this2.unknownError();
+
+        console.log(err);
+      });
+    },
+    unknownError: function unknownError() {
+      this.overlay = false;
+      this.snackbarText = "Oops!! There was some error. Please try again later or report ";
+      this.snackbar = true;
+      this.snackbarColor = "red";
+    },
+    fetchUser: function fetchUser(id) {
+      var _this3 = this;
+
+      axios.get("/api/user/" + id).then(function (res) {
+        var data = res.data;
+        _this3.firstname = data.first_name;
+        _this3.lastname = data.last_name;
+        _this3.phonenumber = data.phone_number;
+        _this3.email = data.email;
+        _this3.emailDisabled = true;
+        _this3.m_uni = {
+          name: data.university.name,
+          id: data.university.id
+        }, _this3.universities = [_this3.m_uni];
+        _this3.m_city = data.university.city.name;
+        _this3.m_state = data.university.city.state.name;
+        _this3.overlay = false;
+        console.log(res.data);
+      })["catch"](function (err) {
+        _this3.unknownError();
+
+        console.log(err);
+      });
     }
   },
   components: {
@@ -8493,7 +8922,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.action-btn:hover{\n    text-decoration: none;\n}\n", ""]);
+exports.push([module.i, "\n.action-btn:hover {\n  text-decoration: none;\n}\n.error-text\n  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {\n  color: red !important;\n}\n", ""]);
 
 // exports
 
@@ -45515,7 +45944,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "PageHeader",
-        { attrs: { title: "universities" } },
+        { attrs: { title: "Universities/Colleges" } },
         [
           _c(
             "v-btn",
@@ -46099,6 +46528,313 @@ var render = function() {
           )
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        [
+          _vm.loader
+            ? _c("v-skeleton-loader", { attrs: { type: "table" } })
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.loader
+            ? _c("v-simple-table", {
+                scopedSlots: _vm._u(
+                  [
+                    {
+                      key: "default",
+                      fn: function() {
+                        return [
+                          _c("thead", [
+                            _c("tr", [
+                              _c("th", { staticClass: "text-left" }, [
+                                _vm._v("Name")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "text-left" }, [
+                                _vm._v("University")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "text-left" }, [
+                                _vm._v("Email")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "text-left" })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.posts, function(item, i) {
+                              return _c("tr", { key: i }, [
+                                _c("td", [_vm._v(_vm._s(item.first_name))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      item.university
+                                        ? item.university.name
+                                        : ""
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.email))]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c(
+                                      "v-row",
+                                      { staticClass: "d-none d-sm-block" },
+                                      [
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              fab: "",
+                                              dark: "",
+                                              "x-small": "",
+                                              color: "teal accent-4"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.edituser(item)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                attrs: { dark: "", small: "" }
+                                              },
+                                              [_vm._v("mdi-pencil")]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              fab: "",
+                                              dark: "",
+                                              "x-small": "",
+                                              color: "pink"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.deleteItem(item)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              {
+                                                attrs: { dark: "", small: "" }
+                                              },
+                                              [_vm._v("mdi-trash-can")]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-row",
+                                      { staticClass: "d-sm-none" },
+                                      [
+                                        _c(
+                                          "v-menu",
+                                          {
+                                            scopedSlots: _vm._u(
+                                              [
+                                                {
+                                                  key: "activator",
+                                                  fn: function(ref) {
+                                                    var on = ref.on
+                                                    return [
+                                                      _c(
+                                                        "v-btn",
+                                                        _vm._g(
+                                                          {
+                                                            attrs: {
+                                                              dark: "",
+                                                              icon: ""
+                                                            }
+                                                          },
+                                                          on
+                                                        ),
+                                                        [
+                                                          _c(
+                                                            "v-icon",
+                                                            {
+                                                              attrs: {
+                                                                light: ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "mdi-dots-vertical"
+                                                              )
+                                                            ]
+                                                          )
+                                                        ],
+                                                        1
+                                                      )
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              null,
+                                              true
+                                            )
+                                          },
+                                          [
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list",
+                                              [
+                                                _c(
+                                                  "v-list-item",
+                                                  {
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.edituser(
+                                                          item
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("v-list-item-title", [
+                                                      _vm._v("Edit")
+                                                    ])
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-list-item",
+                                                  {
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.deleteItem(
+                                                          item
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("v-list-item-title", [
+                                                      _vm._v("Delete")
+                                                    ])
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            }),
+                            0
+                          )
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ],
+                  null,
+                  false,
+                  1305832527
+                )
+              })
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.currentPage && _vm.TotalPages
+        ? _c(
+            "div",
+            { staticClass: "text-center" },
+            [
+              _c("v-pagination", {
+                attrs: {
+                  length: _vm.TotalPages,
+                  "total-visible": _vm.totalVisible
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: {
+            color: _vm.snackbarColor,
+            timeout: 5000,
+            "multi-line": _vm.multiLine
+          },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    " + _vm._s(_vm.snackbarText) + "\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { dark: "", text: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("Close")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-overlay",
+        { attrs: { value: _vm.overlay } },
+        [
+          _c("v-progress-circular", {
+            attrs: { indeterminate: "", color: "teal" }
+          })
+        ],
+        1
       )
     ],
     1
@@ -46235,7 +46971,8 @@ var render = function() {
                             attrs: {
                               rules: _vm.emailRules,
                               label: "E-mail",
-                              required: ""
+                              required: "",
+                              disabled: _vm.emailDisabled
                             },
                             model: {
                               value: _vm.email,
@@ -46279,20 +47016,33 @@ var render = function() {
                     [
                       _c(
                         "v-col",
-                        { attrs: { cols: "12", md: "4" } },
+                        { attrs: { cols: "12", md: "6" } },
                         [
-                          _c("v-select", {
+                          _c("v-autocomplete", {
                             attrs: {
-                              items: _vm.items,
                               label: "University",
-                              required: ""
+                              items: _vm.universities,
+                              "item-text": "name",
+                              "item-value": "id",
+                              "return-object": "",
+                              loading: _vm.isuniLoading,
+                              rules: _vm.uniRules,
+                              "search-input": _vm.searchUni
+                            },
+                            on: {
+                              "update:searchInput": function($event) {
+                                _vm.searchUni = $event
+                              },
+                              "update:search-input": function($event) {
+                                _vm.searchUni = $event
+                              }
                             },
                             model: {
-                              value: _vm.select,
+                              value: _vm.m_uni,
                               callback: function($$v) {
-                                _vm.select = $$v
+                                _vm.m_uni = $$v
                               },
-                              expression: "select"
+                              expression: "m_uni"
                             }
                           })
                         ],
@@ -46301,29 +47051,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-col",
-                        { attrs: { cols: "12", md: "4" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.items,
-                              label: "College",
-                              required: ""
-                            },
-                            model: {
-                              value: _vm.select,
-                              callback: function($$v) {
-                                _vm.select = $$v
-                              },
-                              expression: "select"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { attrs: { cols: "12", md: "4" } },
+                        { attrs: { cols: "12", md: "6" } },
                         [
                           _c("v-select", {
                             attrs: {
@@ -46355,16 +47083,16 @@ var render = function() {
                         [
                           _c("v-text-field", {
                             attrs: {
-                              rules: _vm.emailRules,
+                              rules: _vm.nameRules,
                               label: "City",
-                              required: ""
+                              disabled: ""
                             },
                             model: {
-                              value: _vm.email,
+                              value: _vm.m_city,
                               callback: function($$v) {
-                                _vm.email = $$v
+                                _vm.m_city = $$v
                               },
-                              expression: "email"
+                              expression: "m_city"
                             }
                           })
                         ],
@@ -46375,18 +47103,18 @@ var render = function() {
                         "v-col",
                         { attrs: { cols: "12", md: "6" } },
                         [
-                          _c("v-select", {
+                          _c("v-text-field", {
                             attrs: {
-                              items: _vm.items,
+                              rules: _vm.nameRules,
                               label: "State",
-                              required: ""
+                              disabled: ""
                             },
                             model: {
-                              value: _vm.select,
+                              value: _vm.m_state,
                               callback: function($$v) {
-                                _vm.select = $$v
+                                _vm.m_state = $$v
                               },
-                              expression: "select"
+                              expression: "m_state"
                             }
                           })
                         ],
@@ -46395,6 +47123,42 @@ var render = function() {
                     ],
                     1
                   ),
+                  _vm._v(" "),
+                  _vm.errors.length
+                    ? _c(
+                        "v-list",
+                        { staticClass: "error-text", attrs: { dense: "" } },
+                        [
+                          _c("v-subheader", [
+                            _vm._v("Please look at these errors:")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item-group",
+                            _vm._l(_vm.errors, function(item, i) {
+                              return _c(
+                                "v-list-item",
+                                { key: i },
+                                [
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", {
+                                        domProps: { innerHTML: _vm._s(item) }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            }),
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c(
                     "v-row",
@@ -46424,6 +47188,51 @@ var render = function() {
             ],
             1
           )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: {
+            color: _vm.snackbarColor,
+            timeout: 5000,
+            "multi-line": _vm.multiLine
+          },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    " + _vm._s(_vm.snackbarText) + "\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { dark: "", text: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("Close")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-overlay",
+        { attrs: { value: _vm.overlay } },
+        [
+          _c("v-progress-circular", {
+            attrs: { indeterminate: "", color: "teal" }
+          })
         ],
         1
       )
@@ -104364,6 +105173,10 @@ var routes = [{
   component: _pages_users_create_user_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
   name: "Create User"
 }, {
+  path: "/users/edit/:id",
+  component: _pages_users_create_user_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+  name: "Edit User"
+}, {
   path: "/states",
   component: _pages_settings_States_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
   name: "States"
@@ -105484,17 +106297,18 @@ var menus = [{
   link: ""
 }, {
   id: "6",
-  title: "Universities",
+  title: "Universities/Colleges",
   type: "link",
   link: "/universities",
   icon: "school"
-}, {
-  id: "7",
-  title: "Colleges",
-  type: "link",
-  link: "/colleges",
-  icon: "school"
-}, {
+}, // {
+//     id: "7",
+//     title: "Colleges",
+//     type: "link",
+//     link: "/colleges",
+//     icon: "school"
+// },
+{
   id: "8",
   title: "Cities",
   type: "link",

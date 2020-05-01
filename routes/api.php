@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
- Route::get('/cities/search/{q}', 'Api\CityController@search');
+Route::get('/cities/search/{q}', 'Api\CityController@search');
+Route::get('/universities/search/{q}', 'Api\UniversityController@search');
 
 Route::middleware(['auth:api'])->group(function () {
     // cities
@@ -36,5 +37,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/university', 'Api\UniversityController@create');
     Route::post('/university/{id}', 'Api\UniversityController@update');
     Route::post('/university/delete/{id}', 'Api\UniversityController@delete');
+
+    // users
+    Route::post('/user/sign-up', 'Api\UserController@signUp');
+    Route::get('/users', 'Api\UserController@users');
+    Route::get('/user/{id}', 'Api\UserController@user');
+    Route::post('/user/update/{id}', 'Api\UserController@update');
+    Route::post('/user/delete/{id}', 'Api\UserController@delete');
 
 });

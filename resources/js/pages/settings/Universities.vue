@@ -1,7 +1,7 @@
 <template>
   <div>
     <BreadCrumb />
-    <PageHeader title="universities">
+    <PageHeader title="Universities/Colleges">
       <v-btn class="ma-2 action-btn" color="teal accent-4" dark @click="addNew">
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
       </v-btn>

@@ -49,6 +49,7 @@ const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
     { path: "/users", component: Users, name: "Users" },
     { path: "/users/create", component: CreateUser, name: "Create User" },
+    { path: "/users/edit/:id", component: CreateUser, name: "Edit User" },
     { path: "/states", component: States, name: "States" },
     { path: "/cities", component: Cities, name: "Cities" },
     { path: "/universities", component: Universities, name: "Universities" },

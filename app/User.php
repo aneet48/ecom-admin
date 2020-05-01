@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,7 +15,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','is_admin','api_token'
+        'name', 'email', 'password', 'is_admin', 'api_token', 'first_name',
+        'last_name',
+        'phone_number',
+        'branch_id',
+        'university_id',
     ];
 
     /**
@@ -36,4 +39,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+      public function university()
+    {
+        return $this->belongsTo('App\University', 'university_id');
+    }
 }

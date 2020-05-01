@@ -34,7 +34,7 @@ class CityController extends Controller
         $validator = Validator::make($request->all(), [
             // 'code' => 'required|string|max:10|unique:cities,code,' . $id,
             // 'name' => 'required|string|unique:cities,name,' . $id,
-            'name' => 'required|string|max:10|unique:states,name,' . $id,
+            'name' => 'required|string|unique:states,name,' . $id,
             'state_id' => 'required',
         ]);
 
@@ -57,7 +57,7 @@ class CityController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:states|max:10,',
+            'name' => 'required|string|unique:states',
             'state_id' => 'required',
 
         ]);

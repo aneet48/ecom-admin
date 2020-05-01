@@ -33,18 +33,18 @@ const menus = [
     },
     {
         id: "6",
-        title: "Universities",
+        title: "Universities/Colleges",
         type: "link",
         link: "/universities",
         icon: "school"
     },
-    {
-        id: "7",
-        title: "Colleges",
-        type: "link",
-        link: "/colleges",
-        icon: "school"
-    },
+    // {
+    //     id: "7",
+    //     title: "Colleges",
+    //     type: "link",
+    //     link: "/colleges",
+    //     icon: "school"
+    // },
     {
         id: "8",
         title: "Cities",
