@@ -24,8 +24,9 @@
               <td>{{ item.name }}</td>
               <td>{{ item.city.name }}</td>
               <td>
-                <div class="green-dot" v-if="item.active"></div>
-                <div class="gray-dot" v-if="!item.active"></div>
+               <div v-if="item.active"><v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip></div>
+                <div v-if="!item.active"><v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip></div>
+
               </td>
               <td class="text-right">
                 <v-row class="d-none d-sm-block">

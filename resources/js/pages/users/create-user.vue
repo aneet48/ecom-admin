@@ -21,7 +21,13 @@
 
           <v-row>
             <v-col cols="12" md="6">
-              <v-text-field v-model="email" :rules="emailRules" label="E-mail" required :disabled="emailDisabled"></v-text-field>
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="E-mail"
+                required
+                :disabled="emailDisabled"
+              ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
               <v-text-field v-model="phonenumber" :rules="nameRules" label="Phone Number" required></v-text-field>
@@ -46,7 +52,7 @@
               <v-select v-model="select" :items="items" label="College" required></v-select>
             </v-col>-->
             <v-col cols="12" md="6">
-              <v-select v-model="select" :items="items" label="Branch" required></v-select>
+              <v-text-field v-model="m_branch" :rules="nameRules" label="Branch"></v-text-field>
             </v-col>
           </v-row>
 
@@ -85,7 +91,6 @@
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </v-overlay>
-
   </div>
 </template>
 
@@ -95,7 +100,7 @@ import PageHeader from "../../components/PageHeader";
 
 export default {
   data: () => ({
-      emailDisabled:false,
+    emailDisabled: false,
     valid: false,
     firstname: "",
     lastname: "",
@@ -129,21 +134,21 @@ export default {
     m_city: "",
     m_state: "",
     errors: [],
-    form_type:'',
-    user_id:'',
+    form_type: "",
+    user_id: "",
+    m_branch: ""
   }),
 
-  mounted(){
-      this.form_type = this.$router.currentRoute.name == 'Edit User' ? 'edit':'create'
-      if(this.form_type == 'edit'){
-         let id = this.$router.currentRoute.params.id
-         this.user_id = id
-         this.fetchUser(id)
-
-      }else{
-          this.overlay = false
-      }
-      console.log(this.form_type)
+  mounted() {
+    this.form_type =
+      this.$router.currentRoute.name == "Edit User" ? "edit" : "create";
+    if (this.form_type == "edit") {
+      let id = this.$router.currentRoute.params.id;
+      this.user_id = id;
+      this.fetchUser(id);
+    } else {
+      this.overlay = false;
+    }
   },
 
   watch: {
@@ -160,8 +165,6 @@ export default {
       this.timeout = setTimeout(function() {
         self.isuniLoading = true;
         self.fetchuni(val);
-
-        console.log("searching:", val);
       }, 1000);
     }
   },
@@ -170,7 +173,7 @@ export default {
       let isValid = this.$refs.form.validate();
       if (!isValid) return;
       this.overlay = true;
-      let url = this.form_type == 'edit' ? `update/${this.user_id}`:'sign-up'
+      let url = this.form_type == "edit" ? `update/${this.user_id}` : "sign-up";
       axios
         .post(`api/user/${url}`, {
           first_name: this.firstname,
@@ -178,7 +181,8 @@ export default {
           phone_number: this.phonenumber,
           email: this.email,
           password: this.password,
-          university_id: this.m_uni.id
+          university_id: this.m_uni.id,
+          branch: this.m_branch
           // university_id:this.university_id
         })
         .then(res => {
@@ -196,7 +200,7 @@ export default {
           }
         })
         .catch(err => {
-          //   this.unknownError();
+          this.unknownError();
           console.log(err);
         });
     },
@@ -219,22 +223,22 @@ export default {
       this.snackbar = true;
       this.snackbarColor = "red";
     },
-    fetchUser(id){
-         axios
-        .get("/api/user/" +id)
+    fetchUser(id) {
+      axios
+        .get("/api/user/" + id)
         .then(res => {
-            let data = res.data
-            this.firstname = data.first_name
-            this.lastname = data.last_name
-            this.phonenumber = data.phone_number
-            this.email = data.email
-            this.emailDisabled = true
-            this.m_uni= { name: data.university.name, id: data.university.id },
-            this.universities=[this.m_uni]
-            this.m_city=data.university.city.name
-            this.m_state=data.university.city.state.name
-            this.overlay = false
-         console.log(res.data)
+          let data = res.data;
+          this.firstname = data.first_name;
+          this.lastname = data.last_name;
+          this.phonenumber = data.phone_number;
+          this.email = data.email;
+          this.emailDisabled = true;
+          (this.m_uni = { name: data.university.name, id: data.university.id }),
+            (this.universities = [this.m_uni]);
+          this.m_city = data.university.city.name;
+          this.m_state = data.university.city.state.name;
+          this.m_branch = data.branch;
+          this.overlay = false;
         })
         .catch(err => {
           this.unknownError();

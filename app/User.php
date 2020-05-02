@@ -20,6 +20,7 @@ class User extends Authenticatable
         'phone_number',
         'branch_id',
         'university_id',
+        'branch'
     ];
 
     /**

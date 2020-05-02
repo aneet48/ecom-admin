@@ -3110,6 +3110,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3282,6 +3285,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_BreadCrumb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/BreadCrumb */ "./resources/js/components/BreadCrumb.vue");
 /* harmony import */ var _components_PageHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/PageHeader */ "./resources/js/components/PageHeader.vue");
+//
 //
 //
 //
@@ -4046,6 +4050,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4089,22 +4098,21 @@ __webpack_require__.r(__webpack_exports__);
       m_city: "",
       m_state: "",
       errors: [],
-      form_type: '',
-      user_id: ''
+      form_type: "",
+      user_id: "",
+      m_branch: ""
     };
   },
   mounted: function mounted() {
-    this.form_type = this.$router.currentRoute.name == 'Edit User' ? 'edit' : 'create';
+    this.form_type = this.$router.currentRoute.name == "Edit User" ? "edit" : "create";
 
-    if (this.form_type == 'edit') {
+    if (this.form_type == "edit") {
       var id = this.$router.currentRoute.params.id;
       this.user_id = id;
       this.fetchUser(id);
     } else {
       this.overlay = false;
     }
-
-    console.log(this.form_type);
   },
   watch: {
     m_uni: function m_uni(val) {
@@ -4119,7 +4127,6 @@ __webpack_require__.r(__webpack_exports__);
       this.timeout = setTimeout(function () {
         self.isuniLoading = true;
         self.fetchuni(val);
-        console.log("searching:", val);
       }, 1000);
     }
   },
@@ -4130,14 +4137,15 @@ __webpack_require__.r(__webpack_exports__);
       var isValid = this.$refs.form.validate();
       if (!isValid) return;
       this.overlay = true;
-      var url = this.form_type == 'edit' ? "update/".concat(this.user_id) : 'sign-up';
+      var url = this.form_type == "edit" ? "update/".concat(this.user_id) : "sign-up";
       axios.post("api/user/".concat(url), {
         first_name: this.firstname,
         last_name: this.lastname,
         phone_number: this.phonenumber,
         email: this.email,
         password: this.password,
-        university_id: this.m_uni.id // university_id:this.university_id
+        university_id: this.m_uni.id,
+        branch: this.m_branch // university_id:this.university_id
 
       }).then(function (res) {
         var data = res.data;
@@ -4155,7 +4163,8 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       })["catch"](function (err) {
-        //   this.unknownError();
+        _this.unknownError();
+
         console.log(err);
       });
     },
@@ -4193,8 +4202,8 @@ __webpack_require__.r(__webpack_exports__);
         }, _this3.universities = [_this3.m_uni];
         _this3.m_city = data.university.city.name;
         _this3.m_state = data.university.city.state.name;
+        _this3.m_branch = data.branch;
         _this3.overlay = false;
-        console.log(res.data);
       })["catch"](function (err) {
         _this3.unknownError();
 
@@ -8962,7 +8971,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.action-btn:hover {\n  text-decoration: none;\n}\n.error-text\n  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {\n  color: red !important;\n}\n", ""]);
+exports.push([module.i, "\n.action-btn:hover {\r\n  text-decoration: none;\n}\n.error-text\r\n  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {\r\n  color: red !important;\n}\r\n", ""]);
 
 // exports
 
@@ -44123,7 +44132,7 @@ var render = function() {
         { staticClass: "logo-bar" },
         [
           _c("v-list-item-content", [
-            _c("span", { staticClass: "logo-title" }, [_vm._v("LOGO")])
+            _c("span", { staticClass: "logo-title" }, [_vm._v("Admin Panel")])
           ])
         ],
         1
@@ -45901,11 +45910,37 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("td", [
                                   item.active
-                                    ? _c("div", { staticClass: "green-dot" })
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              staticClass: "ma-2 chip",
+                                              attrs: { color: "teal accent-4" }
+                                            },
+                                            [_vm._v("Active")]
+                                          )
+                                        ],
+                                        1
+                                      )
                                     : _vm._e(),
                                   _vm._v(" "),
                                   !item.active
-                                    ? _c("div", { staticClass: "gray-dot" })
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              staticClass: "ma-2 chip",
+                                              attrs: { color: "grey accent-4" }
+                                            },
+                                            [_vm._v("Inactive")]
+                                          )
+                                        ],
+                                        1
+                                      )
                                     : _vm._e()
                                 ]),
                                 _vm._v(" "),
@@ -46089,7 +46124,7 @@ var render = function() {
                   ],
                   null,
                   false,
-                  3431310167
+                  3934487251
                 )
               })
             : _vm._e()
@@ -46431,11 +46466,37 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("td", [
                                   item.active
-                                    ? _c("div", { staticClass: "green-dot" })
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              staticClass: "ma-2 chip",
+                                              attrs: { color: "teal accent-4" }
+                                            },
+                                            [_vm._v("Active")]
+                                          )
+                                        ],
+                                        1
+                                      )
                                     : _vm._e(),
                                   _vm._v(" "),
                                   !item.active
-                                    ? _c("div", { staticClass: "gray-dot" })
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              staticClass: "ma-2 chip",
+                                              attrs: { color: "grey accent-4" }
+                                            },
+                                            [_vm._v("Inactive")]
+                                          )
+                                        ],
+                                        1
+                                      )
                                     : _vm._e()
                                 ]),
                                 _vm._v(" "),
@@ -46619,7 +46680,7 @@ var render = function() {
                   ],
                   null,
                   false,
-                  3401805341
+                  128969241
                 )
               })
             : _vm._e()
@@ -47476,18 +47537,14 @@ var render = function() {
                         "v-col",
                         { attrs: { cols: "12", md: "6" } },
                         [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.items,
-                              label: "Branch",
-                              required: ""
-                            },
+                          _c("v-text-field", {
+                            attrs: { rules: _vm.nameRules, label: "Branch" },
                             model: {
-                              value: _vm.select,
+                              value: _vm.m_branch,
                               callback: function($$v) {
-                                _vm.select = $$v
+                                _vm.m_branch = $$v
                               },
-                              expression: "select"
+                              expression: "m_branch"
                             }
                           })
                         ],

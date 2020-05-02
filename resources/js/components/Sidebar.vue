@@ -2,7 +2,7 @@
     <v-list class="p-0 m-0 sidebar-nav">
         <v-list-item class="logo-bar">
             <v-list-item-content>
-                <span class="logo-title">LOGO</span>
+                <span class="logo-title">Admin Panel</span>
             </v-list-item-content>
         </v-list-item>
         <div v-for="item in menus" :key="item.id">
