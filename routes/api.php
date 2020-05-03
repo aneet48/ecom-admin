@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/cities/search/{q}', 'Api\CityController@search');
-Route::get('/universities/search/{q}', 'Api\UniversityController@search');
-
 Route::middleware(['auth:api'])->group(function () {
     // cities
     Route::get('/cities/{show_all?}', 'Api\CityController@cities');
@@ -23,6 +20,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/city', 'Api\CityController@create');
     Route::post('/city/{id}', 'Api\CityController@update');
     Route::post('/city/delete/{id}', 'Api\CityController@delete');
+    Route::get('/cities/search/{q}', 'Api\CityController@search');
 
     // states
     Route::get('/states/{show_all?}', 'Api\StateController@states');
@@ -37,6 +35,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/university', 'Api\UniversityController@create');
     Route::post('/university/{id}', 'Api\UniversityController@update');
     Route::post('/university/delete/{id}', 'Api\UniversityController@delete');
+    Route::get('/universities/search/{q}', 'Api\UniversityController@search');
 
     // users
     Route::post('/user/sign-up', 'Api\UserController@signUp');
@@ -44,5 +43,13 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/user/{id}', 'Api\UserController@user');
     Route::post('/user/update/{id}', 'Api\UserController@update');
     Route::post('/user/delete/{id}', 'Api\UserController@delete');
+
+    // products
+    Route::get('/products/{show_all?}', 'Api\ProductController@products');
+    Route::get('/product/{id}', 'Api\ProductController@product');
+    Route::post('/product', 'Api\ProductController@create');
+    Route::post('/product/{id}', 'Api\ProductController@update');
+    Route::post('/product/delete/{id}', 'Api\ProductController@delete');
+    Route::get('/products/search/{q}', 'Api\ProductController@search');
 
 });
