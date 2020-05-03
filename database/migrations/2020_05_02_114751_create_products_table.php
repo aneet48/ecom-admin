@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->longText('description');
             $table->string('price');
             $table->bigInteger('seller_id');
+            $table->bigInteger('category_id');
             $table->bigInteger('reciever_id')->nullable();
             $table->boolean('active')->default(0)->nullable();
             $table->string('type');

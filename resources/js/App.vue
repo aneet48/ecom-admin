@@ -1,6 +1,7 @@
 <template>
   <v-app id="dashboard">
-    <v-navigation-drawer v-model="drawer" app class="drawer">
+   <div v-if="this.$router.currentRoute.name != 'Login Redirect'">
+        <v-navigation-drawer v-model="drawer" app class="drawer">
       <Sidebar />
     </v-navigation-drawer>
 
@@ -14,6 +15,7 @@
         </div>
       </div>
     </v-app-bar>
+   </div>
 
     <v-content class="dashboard-content-wrapper">
       <router-view />

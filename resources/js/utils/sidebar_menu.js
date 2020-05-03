@@ -67,9 +67,16 @@ const menus = [
     },
     {
         id: "21",
-        title: "Products List",
+        title: "Products",
         type: "link",
         link: "/products-list",
+        icon: "account-group"
+    },
+    {
+        id: "22",
+        title: "Categories",
+        type: "link",
+        link: "/products-categories",
         icon: "account-group"
     },
 ];

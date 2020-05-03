@@ -24,7 +24,7 @@ class LoginController extends Controller
             $user->api_token = hash('sha256', $token);
             $user->save();
 
-            return redirect()->intended('dashboard');
+            return redirect('/#/login-redirect');
         }
 
         return redirect()->back();

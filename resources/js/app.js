@@ -44,7 +44,8 @@ import States from "./pages/settings/States.vue";
 import Products from "./pages/Products/ProductsList.vue";
 import Cities from "./pages/settings/Cities.vue";
 import Universities from "./pages/settings/Universities.vue";
-
+import Wait from "./pages/Wait.vue";
+import ProductCategories from "./pages/Products/Categories.vue";
 const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
     { path: "/users", component: Users, name: "Users" },
@@ -54,6 +55,8 @@ const routes = [
     { path: "/cities", component: Cities, name: "Cities" },
     { path: "/universities", component: Universities, name: "Universities" },
     { path: "/products-list", component: Products, name: "Products" },
+    { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
+    { path: "/login-redirect", component: Wait, name: "Login Redirect" }
 ];
 
 const router = new VueRouter({
@@ -66,6 +69,7 @@ const app = new Vue({
     router,
     store,
     created() {
+        if(this.$router.currentRoute.name != 'Login Redirect'){
         const userInfo = localStorage.getItem("user");
         const userData = JSON.parse(userInfo);
 
@@ -81,5 +85,6 @@ const app = new Vue({
         } else {
             this.$store.commit("setUserData", userData);
         }
+    }
     }
 });

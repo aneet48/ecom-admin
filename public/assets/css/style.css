@@ -1,5 +1,6 @@
 body {
-    background-color: #f8f8f8;
+    /* background-color: #f8f8f8; */
+    background: url('/images/3.jpg');
     font-family: Nunito, sans-serif;
 }
 
