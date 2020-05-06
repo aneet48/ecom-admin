@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::middleware(['auth:api'])->group(function () {
+// Route::middleware(['auth:api'])->group(function () {
     // cities
     Route::get('/cities/{show_all?}', 'Api\CityController@cities');
     Route::get('/city/{id}', 'Api\CityController@city');
@@ -53,11 +53,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/products/search/{q}', 'Api\ProductController@search');
 
     // product-categories
-    Route::get('/product-categories/{show_all?}', 'Api\ProductCategoryController@list');
+    Route::get('/product-categories/{show_all?}/{cat_id?}', 'Api\ProductCategoryController@list');
     Route::get('/product-category/{id}', 'Api\ProductCategoryController@productCategory');
     Route::post('/product-category', 'Api\ProductCategoryController@create');
     Route::post('/product-category/{id}', 'Api\ProductCategoryController@update');
     Route::post('/product-category/delete/{id}', 'Api\ProductCategoryController@delete');
-    Route::get('/product-categories/search/{q}', 'Api\ProductCategoryController@search');
+    Route::get('/product-categories-search/{q}', 'Api\ProductCategoryController@search');
 
-});
+// });

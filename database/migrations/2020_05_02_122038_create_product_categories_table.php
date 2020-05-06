@@ -17,7 +17,7 @@ class CreateProductCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('active')->default(0)->nullable();
-            $table->bigInteger('parent_id')->nullable()->default(0);
+            $table->bigInteger('parent_id')->default(0)->nullable();
             // $table->unsignedBigInteger('product_id');
             $table->timestamps();
         });

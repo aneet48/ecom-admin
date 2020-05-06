@@ -6,6 +6,16 @@
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
       </v-btn>
     </PageHeader>
+    <div class="text-right" v-if="parent_data">
+      <v-btn
+        class="ma-2 action-btn"
+        color="teal accent-4"
+        dark
+        :to="`/products-categories/${parent_data.parent_id}`"
+      >
+        <v-icon class="app-bar-icon">mdi-chevron_left</v-icon>Back
+      </v-btn>
+    </div>
     <v-container>
       <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader>
 
@@ -15,12 +25,14 @@
             <tr>
               <th class="text-left">Name</th>
               <th class="text-left">Status</th>
+              <th class="text-left">Sub Categories</th>
               <th class="text-left"></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item , i) in posts" :key="i">
               <td>{{ item.name }}</td>
+
               <td>
                 <div v-if="item.active">
                   <v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip>
@@ -28,6 +40,14 @@
                 <div v-if="!item.active">
                   <v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip>
                 </div>
+              </td>
+              <td>
+                <v-chip
+                  :to="`/products-categories/${item.id}`"
+                  class="ma-2 chip"
+                  color="orange "
+                  v-if="item.children.length"
+                >Sub Categories</v-chip>
               </td>
               <td class="text-right">
                 <v-row class="d-none d-sm-block">
@@ -159,12 +179,10 @@ export default {
       parent: [],
       isparentLoading: false,
       search: "",
-      clubs: [
-        { id: 1, name: "chelsea", test: "1" },
-        { id: 2, name: "mu", test: "1" },
-        { id: 3, name: "arsenal", test: "1" }
-      ],
+
       m_parent: { id: null, name: null },
+      parent_id: 0,
+      parent_data: '',
       searchParent: ""
     };
   },
@@ -175,9 +193,12 @@ export default {
   mounted() {
     this.loader = true;
     this.fetchCategories();
-    // this.fetchParent();
   },
   watch: {
+    "$route.params.id": function(id) {
+      this.overlay = true;
+      this.fetchCategories();
+    },
     searchParent: function(val) {
       clearTimeout(this.timeout);
 
@@ -199,8 +220,9 @@ export default {
   },
   methods: {
     fetchParent(val) {
-      axios
-        .get("/api/product-categories/search/" + val)
+        if(val){
+        axios
+        .get("/api/product-categories-search/" + val)
         .then(res => {
           this.parent = res.data.data;
           this.isparentLoading = false;
@@ -209,6 +231,8 @@ export default {
           this.unknownError();
           console.log(err);
         });
+        }
+
     },
     addNew() {
       this.modal_title = "Add New Category";
@@ -223,9 +247,10 @@ export default {
 
       let state_id = item.state_id;
       let parent = item.parent;
-      if(parent){
-      this.m_parent = { id: parent.id, name: parent.name };
-this.parent =[ this.m_parent]
+      if (parent) {
+        this.m_parent = { id: parent.id, name: parent.name };
+        this.parent = [this.m_parent];
+        this.searchParent = parent.name
       }
       this.m_name = item.name;
       this.m_active = item.active;
@@ -246,7 +271,7 @@ this.parent =[ this.m_parent]
         if (result.value && item) {
           this.overlay = true;
           axios
-            .post(`api/category/delete/${item.id}`)
+            .post(`api/product-category/delete/${item.id}`)
             .then(res => {
               let data = res.data;
               if (data.error && data.msg) {
@@ -269,7 +294,6 @@ this.parent =[ this.m_parent]
       this.errors = [];
       let is_valid = this.$refs.form.validate();
       if (!is_valid) return;
-
       let api_url =
         this.m_type == "edit"
           ? `api/product-category/${this.editItem.id}`
@@ -280,7 +304,7 @@ this.parent =[ this.m_parent]
         data: {
           name: this.m_name,
           active: this.m_active,
-          parent_id: this.m_parent.id
+          parent_id: this.m_parent ? this.m_parent.id : ""
         }
       })
         .then(res => {
@@ -324,13 +348,20 @@ this.parent =[ this.m_parent]
     },
 
     fetchCategories() {
+      let cat_id = this.$route.params.id;
+      cat_id = cat_id ? cat_id : 0;
+      this.parent_id = cat_id;
+      this.overlay = true;
       axios
-        .get("/api/product-categories/true?page=" + this.currentPage)
+        .get(`/api/product-categories/true/${cat_id}?page=${this.currentPage}`)
+        // .get("/api/product-categories/true/cat_id?page=" + this.currentPage)
         .then(res => {
           this.overlay = false;
           this.loader = false;
-          this.posts = res.data.data;
-          this.TotalPages = res.data.last_page;
+          this.posts = res.data.categories.data;
+          this.parent_data = res.data.main_cat
+          console.log(res.data.categories.data)
+          this.TotalPages = res.data.categories.last_page;
         })
         .catch(err => {
           this.unknownError();

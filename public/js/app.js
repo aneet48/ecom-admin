@@ -2290,6 +2290,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2322,23 +2342,12 @@ __webpack_require__.r(__webpack_exports__);
       parent: [],
       isparentLoading: false,
       search: "",
-      clubs: [{
-        id: 1,
-        name: "chelsea",
-        test: "1"
-      }, {
-        id: 2,
-        name: "mu",
-        test: "1"
-      }, {
-        id: 3,
-        name: "arsenal",
-        test: "1"
-      }],
       m_parent: {
         id: null,
         name: null
       },
+      parent_id: 0,
+      parent_data: '',
       searchParent: ""
     };
   },
@@ -2348,9 +2357,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.loader = true;
-    this.fetchCategories(); // this.fetchParent();
+    this.fetchCategories();
   },
   watch: {
+    "$route.params.id": function $routeParamsId(id) {
+      this.overlay = true;
+      this.fetchCategories();
+    },
     searchParent: function searchParent(val) {
       clearTimeout(this.timeout);
       var self = this;
@@ -2372,14 +2385,16 @@ __webpack_require__.r(__webpack_exports__);
     fetchParent: function fetchParent(val) {
       var _this = this;
 
-      axios.get("/api/product-categories/search/" + val).then(function (res) {
-        _this.parent = res.data.data;
-        _this.isparentLoading = false;
-      })["catch"](function (err) {
-        _this.unknownError();
+      if (val) {
+        axios.get("/api/product-categories-search/" + val).then(function (res) {
+          _this.parent = res.data.data;
+          _this.isparentLoading = false;
+        })["catch"](function (err) {
+          _this.unknownError();
 
-        console.log(err);
-      });
+          console.log(err);
+        });
+      }
     },
     addNew: function addNew() {
       this.modal_title = "Add New Category";
@@ -2399,6 +2414,7 @@ __webpack_require__.r(__webpack_exports__);
           name: parent.name
         };
         this.parent = [this.m_parent];
+        this.searchParent = parent.name;
       }
 
       this.m_name = item.name;
@@ -2420,7 +2436,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value && item) {
           _this2.overlay = true;
-          axios.post("api/category/delete/".concat(item.id)).then(function (res) {
+          axios.post("api/product-category/delete/".concat(item.id)).then(function (res) {
             var data = res.data;
 
             if (data.error && data.msg) {
@@ -2453,7 +2469,7 @@ __webpack_require__.r(__webpack_exports__);
         data: {
           name: this.m_name,
           active: this.m_active,
-          parent_id: this.m_parent.id
+          parent_id: this.m_parent ? this.m_parent.id : ""
         }
       }).then(function (res) {
         var data = res.data;
@@ -2494,11 +2510,18 @@ __webpack_require__.r(__webpack_exports__);
     fetchCategories: function fetchCategories() {
       var _this4 = this;
 
-      axios.get("/api/product-categories/true?page=" + this.currentPage).then(function (res) {
+      var cat_id = this.$route.params.id;
+      cat_id = cat_id ? cat_id : 0;
+      this.parent_id = cat_id;
+      this.overlay = true;
+      axios.get("/api/product-categories/true/".concat(cat_id, "?page=").concat(this.currentPage)) // .get("/api/product-categories/true/cat_id?page=" + this.currentPage)
+      .then(function (res) {
         _this4.overlay = false;
         _this4.loader = false;
-        _this4.posts = res.data.data;
-        _this4.TotalPages = res.data.last_page;
+        _this4.posts = res.data.categories.data;
+        _this4.parent_data = res.data.main_cat;
+        console.log(res.data.categories.data);
+        _this4.TotalPages = res.data.categories.last_page;
       })["catch"](function (err) {
         _this4.unknownError();
 
@@ -44716,6 +44739,34 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _vm.parent_data
+        ? _c(
+            "div",
+            { staticClass: "text-right" },
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ma-2 action-btn",
+                  attrs: {
+                    color: "teal accent-4",
+                    dark: "",
+                    to: "/products-categories/" + _vm.parent_data.parent_id
+                  }
+                },
+                [
+                  _c("v-icon", { staticClass: "app-bar-icon" }, [
+                    _vm._v("mdi-chevron_left")
+                  ]),
+                  _vm._v("Back\n    ")
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "v-container",
         [
@@ -44739,6 +44790,10 @@ var render = function() {
                               _vm._v(" "),
                               _c("th", { staticClass: "text-left" }, [
                                 _vm._v("Status")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "text-left" }, [
+                                _vm._v("Sub Categories")
                               ]),
                               _vm._v(" "),
                               _c("th", { staticClass: "text-left" })
@@ -44786,6 +44841,28 @@ var render = function() {
                                       )
                                     : _vm._e()
                                 ]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  [
+                                    item.children.length
+                                      ? _c(
+                                          "v-chip",
+                                          {
+                                            staticClass: "ma-2 chip",
+                                            attrs: {
+                                              to:
+                                                "/products-categories/" +
+                                                item.id,
+                                              color: "orange "
+                                            }
+                                          },
+                                          [_vm._v("Sub Categories")]
+                                        )
+                                      : _vm._e()
+                                  ],
+                                  1
+                                ),
                                 _vm._v(" "),
                                 _c(
                                   "td",
@@ -44967,7 +45044,7 @@ var render = function() {
                   ],
                   null,
                   false,
-                  2741924735
+                  3028313826
                 )
               })
             : _vm._e()
@@ -106760,8 +106837,9 @@ var routes = [{
   path: "/products-list",
   component: _pages_Products_ProductsList_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
   name: "Products"
-}, {
-  path: "/products-categories",
+}, // { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
+{
+  path: "/products-categories/:id?",
   component: _pages_Products_Categories_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
   name: "Products Categories"
 }, {

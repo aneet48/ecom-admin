@@ -55,7 +55,8 @@ const routes = [
     { path: "/cities", component: Cities, name: "Cities" },
     { path: "/universities", component: Universities, name: "Universities" },
     { path: "/products-list", component: Products, name: "Products" },
-    { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
+    // { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
+    { path: "/products-categories/:id?", component: ProductCategories, name: "Products Categories" },
     { path: "/login-redirect", component: Wait, name: "Login Redirect" }
 ];
 

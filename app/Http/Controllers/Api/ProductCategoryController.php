@@ -3,22 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-
 use App\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductCategoryController extends Controller
 {
-    public function list($show_all = false)
-    {
+    function list($show_all = false, $cat_id = 0) {
         if (!$show_all) {
-            $cities = ProductCategory::with('children','parent')->where('active', 1)->orderBy('name')->paginate(15);
+            $categories = ProductCategory::with('children', 'parent')
+                ->where(['active' => 1, 'parent_id' => $cat_id])
+                ->orderBy('name')->paginate(15);
         } else {
-            $cities = ProductCategory::with('children','parent')->orderBy('name')->paginate(15);
-
+            $categories = ProductCategory::with('children', 'parent')->where('parent_id', $cat_id)->orderBy('name')->paginate(15);
         }
-        return response()->json($cities);
+        $main_cat = ProductCategory::with('parent')->find($cat_id);
+        $body=[
+            'categories'=>$categories,
+            'main_cat'=>$main_cat
+        ];
+        return response()->json($body);
     }
 
     public function productCategory($id)
@@ -40,7 +44,7 @@ class ProductCategoryController extends Controller
         }
 
         $category = ProductCategory::where('id', $id)->update([
-            'parent_id' => $request->get('parent_id'),
+            'parent_id' => $request->get('parent_id') ? $request->get('parent_id') : 0,
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
@@ -61,7 +65,7 @@ class ProductCategoryController extends Controller
         }
 
         $category = ProductCategory::create([
-            'parent_id' => $request->get('parent_id'),
+            'parent_id' => $request->get('parent_id') ? $request->get('parent_id') : 0,
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
