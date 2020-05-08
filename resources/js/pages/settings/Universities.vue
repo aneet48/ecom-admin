@@ -24,9 +24,12 @@
               <td>{{ item.name }}</td>
               <td>{{ item.city.name }}</td>
               <td>
-               <div v-if="item.active"><v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip></div>
-                <div v-if="!item.active"><v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip></div>
-
+                <div v-if="item.active">
+                  <v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip>
+                </div>
+                <div v-if="!item.active">
+                  <v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip>
+                </div>
               </td>
               <td class="text-right">
                 <v-row class="d-none d-sm-block">
@@ -184,8 +187,8 @@ export default {
 
       var self = this;
       this.timeout = setTimeout(function() {
-       self.iscitiesLoading = true;
-    self.fetchcities(val);
+        self.iscitiesLoading = true;
+        self.fetchcities(val);
 
         console.log("searching:", val);
       }, 1000);
@@ -211,8 +214,8 @@ export default {
       this.editItem = item;
       console.log(item.city_id);
       let city = item.city;
-    //   let city = this.cities.find(item => item.id == city_id);
-    this.cities=[{ id: city.id, name: city.name }]
+      //   let city = this.cities.find(item => item.id == city_id);
+      this.cities = [{ id: city.id, name: city.name }];
       this.m_city = { id: city.id, name: city.name };
       this.m_name = item.name;
       this.m_active = item.active;
@@ -326,7 +329,7 @@ export default {
     },
     fetchcities(val) {
       axios
-        .get("/api/cities/search/"+val)
+        .get("/api/cities/search/" + val)
         .then(res => {
           this.cities = res.data.data;
           this.iscitiesLoading = false;

@@ -11,8 +11,14 @@ class Product extends Model
         'description',
         'price',
         'seller_id',
+        'category_id',
         'reciever_id',
         'active',
         'type',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo('App\ProductCategory', 'category_id');
+    }
 }
