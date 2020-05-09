@@ -200,6 +200,9 @@
               </td>
               <td class="text-right">
                 <div class="d-none d-sm-block">
+                  <v-btn fab dark x-small color="blue" @click="editImages(item)">
+                    <v-icon dark small>mdi-image</v-icon>
+                  </v-btn>
                   <v-btn fab dark x-small color="teal accent-4" @click="editProduct(item)">
                     <v-icon dark small>mdi-pencil</v-icon>
                   </v-btn>
@@ -245,16 +248,52 @@
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </v-overlay>
+    <v-dialog v-model="pmModal" width="800" :modalToggle="modalToggle">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Product Images</v-card-title>
+
+        <v-card-text>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-row>
+              <v-col cols="8" sm="12" md="8">
+                <v-file-input
+                  :rules="imageRules"
+                  accept="image/*"
+                  placeholder="Add Image"
+                  prepend-icon="mdi-image"
+                  label="Image"
+                  v-model="p_image"
+                  ref="file"
+                ></v-file-input>
+              </v-col>
+              <v-col cols="4" sm="12" md="4">
+                <v-btn dark color="pink " @click="saveImage">Save</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="pmModal=!pmModal">I accept</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import BreadCrumb from "../../components/BreadCrumb";
 import PageHeader from "../../components/PageHeader";
+import ProductImages from "./partials/ProductImages";
 
 export default {
   data() {
     return {
+      pmModal: false,
+      p_images: [],
+      p_image: [],
+      p_item: "",
       select: [],
       posts: [],
       loader: true,
@@ -289,12 +328,19 @@ export default {
       p_status: "",
       p_category_id: "",
       iscatLoading: false,
-      searchCat: ""
+      searchCat: "",
+      imageRules: [
+        value =>
+          !value ||
+          value.size < 2000000 ||
+          "Avatar size should be less than 2 MB!"
+      ]
     };
   },
   components: {
     BreadCrumb,
-    PageHeader
+    PageHeader,
+    ProductImages
   },
   mounted() {
     this.loader = true;
@@ -322,6 +368,9 @@ export default {
     }
   },
   methods: {
+    modalToggle() {
+      this.pmModal = !this.pmModal;
+    },
     fetchcat(val) {
       if (val) {
         axios
@@ -340,6 +389,51 @@ export default {
       this.modal_title = "Add New Product";
       this.m_type = "add";
       this.dialog = true;
+    },
+
+    saveImage() {
+      console.log(this.p_image);
+      let formData = new FormData();
+      let file = this.p_image;
+
+      // files
+      formData.append("image", file, file.name);
+      formData.append("product", this.p_item.id);
+
+      axios({
+        method: "post",
+        url: "/api/product-images",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+        .then(res => {
+          let data = res.data;
+          if (data.error && data.msg) {
+            this.errors = data.msg;
+          } else {
+              this.p_image=[]
+            console.log(data);
+            // this.overlay = true;
+            // this.snackbarColor = "success";
+
+            // this.snackbarText = data.msg;
+            // this.snackbar = true;
+            // this.closeDialog();
+            // this.fetchProducts();
+          }
+        })
+        .catch(err => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
+
+    editImages(item) {
+      console.log(item);
+      this.pmModal = true;
+      this.p_item = item;
     },
 
     editProduct(item) {
@@ -399,8 +493,8 @@ export default {
         this.m_type == "edit"
           ? `api/product/${this.editItem.id}`
           : "api/product";
-          console.log(this.m_type)
-          console.log(api_url)
+      console.log(this.m_type);
+      console.log(api_url);
       const userInfo = localStorage.getItem("user");
       const userData = JSON.parse(userInfo);
       axios({

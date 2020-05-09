@@ -60,4 +60,8 @@ use Illuminate\Support\Facades\Route;
     Route::post('/product-category/delete/{id}', 'Api\ProductCategoryController@delete');
     Route::get('/product-categories-search/{q}', 'Api\ProductCategoryController@search');
 
+    // product Images
+    Route::post('/product-images', 'Api\ProductImageController@create');
+
+
 // });

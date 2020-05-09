@@ -13,9 +13,9 @@ class ProductController extends Controller
     public function products($show_all = false)
     {
         if (!$show_all) {
-            $products = Product::with('category')->where('active', 1)->orderBy('id', 'DESC')->paginate(20);
+            $products = Product::with('category','images')->where('active', 1)->orderBy('id', 'DESC')->paginate(20);
         } else {
-            $products = Product::with('category')->orderBy('id', 'DESC')->paginate(20);
+            $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
 
         }
         return response()->json($products);
