@@ -10,14 +10,32 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
 
-    public function products($show_all = false)
+    public function products(Request $request, $show_all = false)
     {
+        // if (!$show_all) {
+        //     $products = Product::with('category','images')->where('active', 1)->orderBy('id', 'DESC')->paginate(20);
+        // } else {
+        //     $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
+
+        // }
+        $query = Product::with('category', 'images');
         if (!$show_all) {
-            $products = Product::with('category','images')->where('active', 1)->orderBy('id', 'DESC')->paginate(20);
-        } else {
-            $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
+            $query = $query->where('active', 1);
+        }
+
+        if ($request->get('s')) {
+            $s = $request->get('s');
+            $query = $query->where(function ($query) use ($s) {
+                $query->where('title', 'LIKE', '%' . $s . '%')
+                    ->orwhere('description', 'LIKE', '%' . $s . '%')
+                    ->orwhere('price', 'LIKE', '%' . $s . '%')
+                    ->orwhere('type', 'LIKE', '%' . $s . '%');
+            });
 
         }
+
+        $products = $query->orderBy('id', 'DESC')->paginate(20);
+
         return response()->json($products);
     }
 

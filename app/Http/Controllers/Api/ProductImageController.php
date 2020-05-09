@@ -24,7 +24,7 @@ class ProductImageController extends Controller
 
         if ($request->file('image')) {
             $imagePath = $request->file('image');
-            $imageName =time(). $imagePath->getClientOriginalName();
+            $imageName = time() . $imagePath->getClientOriginalName();
 
             $path = $request->file('image')->storeAs('products', $imageName, 'public');
             // dd($path);
@@ -37,11 +37,30 @@ class ProductImageController extends Controller
 
         $msg = $image ? 'product updated successfully' : "product not Found";
         $error = $image ? false : true;
-        $data=[
-            'url'=>url('/storage/products/'.$imageName)
+        $data = [
+            'url' => url('/storage/products/' . $imageName),
         ];
 
-        return generate_response($error, $msg,$data);
+        return generate_response($error, $msg, $data);
+
+    }
+
+    public function delete($id)
+    {
+
+        $product = ProductImage::where('id', $id)->delete();
+        $msg = $product ? 'product image deleted successfully' : "product image not Found";
+        $error = $product ? false : true;
+
+        return generate_response($error, $msg);
+    }
+
+
+    public function productImages($product_id)
+    {
+        $images = ProductImage::where('product_id',$product_id)->get();
+        return response()->json($images);
+
 
     }
 }

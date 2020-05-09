@@ -69,15 +69,9 @@
           </v-dialog>-->
           <!-- <v-btn class="filterBtn" depressed color="primary" @click="filterdialog = !filterdialog"> <v-icon class="filterIcon" dark small>shuffle</v-icon> Filter</v-btn> -->
         </v-col>
-        <!-- <v-col cols="12" :lg="3" :md="4" :sm="4">
-          <v-text-field
-            class="page-searchbar"
-            hide-details
-            placeholder="Type your search here.."
-            append-icon="search"
-            single-line
-          ></v-text-field>
-        </v-col>-->
+        <v-col cols="12" :lg="3" :md="4" :sm="4">
+          <SearchBar @handleSearch="handleSearch" />
+        </v-col>
       </v-row>
     </v-container>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -248,7 +242,7 @@
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </v-overlay>
-    <v-dialog v-model="pmModal" width="800" :modalToggle="modalToggle">
+    <v-dialog v-model="pmModal" width="800" :modalToggle="modalToggle" persistent>
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Product Images</v-card-title>
 
@@ -270,12 +264,26 @@
                 <v-btn dark color="pink " @click="saveImage">Save</v-btn>
               </v-col>
             </v-row>
+
+            <v-row v-if="p_item && p_item.images.length">
+              <v-col
+                cols="4"
+                sm="6"
+                md="4"
+                text-center
+                v-for="(item , i) in p_item.images"
+                :key="i"
+              >
+                <v-img :src="item.link" height="150px"></v-img>
+                <v-btn color="red" dark small @click="deleteImage(item)" width="100%">Delete</v-btn>
+              </v-col>
+            </v-row>
           </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="pmModal=!pmModal">I accept</v-btn>
+          <v-btn color="primary" @click="pmModal=!pmModal">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -285,6 +293,7 @@
 <script>
 import BreadCrumb from "../../components/BreadCrumb";
 import PageHeader from "../../components/PageHeader";
+// import SearchBar from "../../components/SearchBar";
 import ProductImages from "./partials/ProductImages";
 
 export default {
@@ -333,14 +342,16 @@ export default {
         value =>
           !value ||
           value.size < 2000000 ||
-          "Avatar size should be less than 2 MB!"
-      ]
+          "Image size should be less than 2 MB!"
+      ],
+      timeout: ""
     };
   },
   components: {
     BreadCrumb,
     PageHeader,
     ProductImages
+    // SearchBar
   },
   mounted() {
     this.loader = true;
@@ -368,6 +379,49 @@ export default {
     }
   },
   methods: {
+    handleSearch(val) {
+      this.overlay = true;
+      axios
+        .get("/api/products/true?s=" + val)
+        .then(res => {
+          this.overlay = false;
+          this.posts = res.data.data;
+          this.TotalPages = res.data.last_page;
+        })
+        .catch(err => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
+    deleteImage(item) {
+      console.log(item);
+      this.overlay = true;
+      axios
+        .post("/api/product-images/delete/" + item.id)
+        .then(res => {
+          //   this.overlay = false;
+
+          this.fetchImages();
+        })
+        .catch(err => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
+    fetchImages() {
+      if (!this.p_item.id) return;
+      axios
+        .get("/api/product-images/" + this.p_item.id)
+        .then(res => {
+          this.overlay = false;
+          this.p_item.images = res.data;
+          //   this.iscatLoading = false;
+        })
+        .catch(err => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
     modalToggle() {
       this.pmModal = !this.pmModal;
     },
@@ -413,7 +467,8 @@ export default {
           if (data.error && data.msg) {
             this.errors = data.msg;
           } else {
-              this.p_image=[]
+            this.p_image = [];
+            this.fetchImages();
             console.log(data);
             // this.overlay = true;
             // this.snackbarColor = "success";

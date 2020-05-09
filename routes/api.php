@@ -62,6 +62,8 @@ use Illuminate\Support\Facades\Route;
 
     // product Images
     Route::post('/product-images', 'Api\ProductImageController@create');
+    Route::post('/product-images/delete/{id}', 'Api\ProductImageController@delete');
+    Route::get('/product-images/{product_id}', 'Api\ProductImageController@productImages');
 
 
 // });

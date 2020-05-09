@@ -54,7 +54,7 @@ class UserController extends Controller
             'branch' => 'required',
             'university_id' => 'required',
             // 'city_id' => 'required',
-            // 'email' => 'required|unique:users,'.$id,
+            'email' => 'required|unique:users,email,'.$id,
 
         ]);
         if ($validator->fails()) {
@@ -68,7 +68,7 @@ class UserController extends Controller
             "phone_number" => $request->get('phone_number'),
             "branch" => $request->get('branch'),
             "university_id" => $request->get('university_id'),
-            // "email" => $request->get('email'),
+            "email" => $request->get('email'),
             // "password" => Hash::make($password),
         ]);
         $body = [
