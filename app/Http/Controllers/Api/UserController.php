@@ -7,26 +7,61 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return generate_response(true, $validator->errors()->all());
+        }
+
+        $user = User::where('email', $request->get('email'))->first();
+
+        if ($user && !Hash::check($request->get('password'), $user->password)) {
+            return generate_response(true, ['Credentials do not match']);
+        }
+        $token = Str::random(60);
+        $user->api_token = hash('sha256', $token);
+        $user->save();
+
+        $body = [
+            'user' => $user,
+        ];
+        $msg = $user ? 'User  Found' : ["User Not found"];
+        $error = $user ? false : true;
+
+        return generate_response($error, $msg, $body);
+    }
     public function signUp(Request $request)
     {
+        $messages = [
+            'required' => 'The :attribute is required',
+            'university_id.required' => 'The university is required',
+            'string' => 'The :attribute must be text format',
+
+        ];
+
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'phone_number' => 'required|string',
             'branch' => 'required',
             'university_id' => 'required',
-            // 'city_id' => 'required',
             'email' => 'required|unique:users',
 
-        ]);
+        ], $messages);
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
         }
+        $token = Str::random(60);
 
-        $password = '123456';
+        $password = $request->get('password') ?: str_random(8);
         $user = User::create([
             "first_name" => $request->get('first_name'),
             "last_name" => $request->get('last_name'),
@@ -35,6 +70,7 @@ class UserController extends Controller
             "university_id" => $request->get('university_id'),
             "email" => $request->get('email'),
             "password" => Hash::make($password),
+            'api_token' => hash('sha256', $token),
         ]);
         $body = [
             'user' => $user,
@@ -42,10 +78,9 @@ class UserController extends Controller
         $msg = "User is created successfully";
 
         return generate_response(false, $msg, $body);
-
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
@@ -54,7 +89,7 @@ class UserController extends Controller
             'branch' => 'required',
             'university_id' => 'required',
             // 'city_id' => 'required',
-            'email' => 'required|unique:users,email,'.$id,
+            'email' => 'required|unique:users,email,' . $id,
 
         ]);
         if ($validator->fails()) {
@@ -62,7 +97,7 @@ class UserController extends Controller
         }
 
         $password = '123456';
-        $user = User::where('id',$id)->update([
+        $user = User::where('id', $id)->update([
             "first_name" => $request->get('first_name'),
             "last_name" => $request->get('last_name'),
             "phone_number" => $request->get('phone_number'),
@@ -77,22 +112,21 @@ class UserController extends Controller
         $msg = "User is created successfully";
 
         return generate_response(false, $msg, $body);
-
     }
 
     public function users()
     {
-        $users = User::with('university')->where('is_admin',0)->paginate(20);
+        $users = User::with('university')->where('is_admin', 0)->paginate(20);
         return response()->json($users);
     }
 
     public function user($id)
     {
-        $user = User::with('university','university.city','university.city.state')->whereId($id)->first();
+        $user = User::with('university', 'university.city', 'university.city.state')->whereId($id)->first();
         return response()->json($user);
     }
 
-     public function delete($id)
+    public function delete($id)
     {
 
         $city = User::where('id', $id)->delete();
@@ -104,7 +138,7 @@ class UserController extends Controller
 
     public function search($q)
     {
-        $result = User::where('name','like','%'.$q.'%')->paginate(30);
+        $result = User::where('name', 'like', '%' . $q . '%')->paginate(30);
         return response()->json($result);
     }
 }

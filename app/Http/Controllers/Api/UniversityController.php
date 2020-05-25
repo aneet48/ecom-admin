@@ -92,4 +92,13 @@ class UniversityController extends Controller
         $result = University::with('city','city.state')->where('name', 'like', '%' . $q . '%')->paginate(30);
         return response()->json($result);
     }
+
+    public function searchGlobal($q)
+    {
+        $result = University::with('city','city.state')
+        ->where('name', 'like', '%' . $q . '%')
+        ->where('active','!=' ,0)
+        ->take(30)->get();
+        return response()->json($result);
+    }
 }
