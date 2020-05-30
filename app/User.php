@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Crypt;
 
 class User extends Authenticatable
 {
@@ -30,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token',
     ];
 
     /**
@@ -42,9 +43,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
-      public function university()
+    public function university()
     {
         return $this->belongsTo('App\University', 'university_id');
     }
+
+    // public function getIdAttribute($value)
+    // {
+    //     return Crypt::encrypt($value);;
+    // }
 }

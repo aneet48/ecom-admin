@@ -137,6 +137,33 @@
                     :search-input.sync="searchCat"
                   ></v-autocomplete>
                 </v-col>
+                <v-col cols="12" md="12">
+                  <v-autocomplete
+                    label="University"
+                    :items="universities"
+                    item-text="name"
+                    item-value="id"
+                    return-object
+                    v-model="m_uni"
+                    :loading="isuniLoading"
+                    :rules="requiredRules"
+                    :search-input.sync="searchUni"
+                  ></v-autocomplete>
+                </v-col>
+
+                <v-col cols="12" md="12">
+                  <v-autocomplete
+                    label="Seller"
+                    :items="sellers"
+                    item-text="email"
+                    item-value="id"
+                    return-object
+                    v-model="p_seller"
+                    :loading="issellerLoading"
+                    :rules="requiredRules"
+                    :search-input.sync="searchSeller"
+                  ></v-autocomplete>
+                </v-col>
 
                 <v-col cols="12" sm="12" md="12">
                   <v-checkbox v-model="p_status" label="Active"></v-checkbox>
@@ -329,6 +356,7 @@ export default {
       search: "",
       categories: [],
       p_categories: null,
+      m_uni: null,
       //   p_categories: { id: null, name: null },
       p_title: "",
       p_desc: "",
@@ -344,7 +372,14 @@ export default {
           value.size < 2000000 ||
           "Image size should be less than 2 MB!"
       ],
-      timeout: ""
+      timeout: "",
+      universities: [],
+      isuniLoading: false,
+      searchUni: "",
+      sellers: [],
+      p_seller: null,
+      issellerLoading: false,
+      searchSeller: ""
     };
   },
   components: {
@@ -359,6 +394,24 @@ export default {
     this.fetchStates();
   },
   watch: {
+    searchSeller: function(val) {
+      clearTimeout(this.timeout);
+
+      var self = this;
+      this.timeout = setTimeout(function() {
+        self.issellerLoading = true;
+        self.fetchseller(val);
+      }, 1000);
+    },
+    searchUni: function(val) {
+      clearTimeout(this.timeout);
+
+      var self = this;
+      this.timeout = setTimeout(function() {
+        self.isuniLoading = true;
+        self.fetchuni(val);
+      }, 1000);
+    },
     searchCat: function(val) {
       clearTimeout(this.timeout);
 
@@ -387,6 +440,30 @@ export default {
           this.overlay = false;
           this.posts = res.data.data;
           this.TotalPages = res.data.last_page;
+        })
+        .catch(err => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
+    fetchuni(val) {
+      axios
+        .get("/api/universities/search/" + val)
+        .then(res => {
+          this.universities = res.data.data;
+          this.isuniLoading = false;
+        })
+        .catch(err => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
+    fetchseller(val) {
+      axios
+        .get("/api/user/search/" + val)
+        .then(res => {
+          this.sellers = res.data.data;
+          this.issellerLoading = false;
         })
         .catch(err => {
           this.unknownError();
@@ -499,6 +576,10 @@ export default {
       this.m_type = "edit";
       this.p_categories = { id: category.id, name: category.name };
       this.categories = [this.p_categories];
+      this.m_uni = { id: item.university.id, name: item.university.name };
+      this.universities = [this.m_uni];
+      this.p_seller = { id: item.seller.id, email: item.seller.email };
+      this.sellers = [this.p_seller];
       this.p_title = item.title;
       this.p_desc = item.description;
       this.p_type = item.type;
@@ -542,6 +623,7 @@ export default {
     saveDialog() {
       this.errors = [];
       let is_valid = this.$refs.form.validate();
+      console.log(is_valid);
       if (!is_valid) return;
 
       let api_url =
@@ -560,9 +642,11 @@ export default {
           description: this.p_desc,
           price: this.p_price,
           category_id: this.p_categories.id,
+          university_id: this.m_uni.id,
+          seller_id: this.p_seller.id,
           type: this.p_type,
           active: this.p_status,
-          seller_id: userData.id
+        //   seller_id: userData.id
         }
       })
         .then(res => {

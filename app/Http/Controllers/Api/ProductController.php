@@ -18,12 +18,17 @@ class ProductController extends Controller
         //     $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
 
         // }
-        $query = Product::with('category', 'images');
+        $query = Product::with('category', 'seller', 'images', 'university');
         if (!$show_all) {
             $query = $query->where('active', 1);
         }
 
-        if ($request->get('s')) {
+        if ($request->has('type')) {
+            $type = $request->get('type');
+            $query = $query->where('type', $type);
+        }
+
+        if ($request->has('s')) {
             $s = $request->get('s');
             $query = $query->where(function ($query) use ($s) {
                 $query->where('title', 'LIKE', '%' . $s . '%')
@@ -33,15 +38,16 @@ class ProductController extends Controller
             });
 
         }
+        $paginate = $request->has('paginate') ? $request->get('paginate') : 20;
 
-        $products = $query->orderBy('id', 'DESC')->paginate(20);
+        $products = $query->orderBy('id', 'DESC')->paginate($paginate);
 
         return response()->json($products);
     }
 
     public function product($id)
     {
-        $product = Product::find($id);
+        $product = Product::with('category', 'seller', 'images', 'university')->find($id);
         return response()->json($product);
 
     }
@@ -55,6 +61,7 @@ class ProductController extends Controller
             'price' => 'required',
             'seller_id' => 'required',
             'category_id' => 'required',
+            'university_id' => 'required',
             'type' => 'required',
         ]);
 
@@ -68,6 +75,7 @@ class ProductController extends Controller
             'price' => $request->get('price'),
             'seller_id' => $request->get('seller_id'),
             'category_id' => $request->get('category_id'),
+            'university_id' => $request->get('university_id'),
             'type' => $request->get('type'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
@@ -87,6 +95,7 @@ class ProductController extends Controller
             'seller_id' => 'required',
             'category_id' => 'required',
             'type' => 'required',
+            'university_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -99,6 +108,7 @@ class ProductController extends Controller
             'price' => $request->get('price'),
             'seller_id' => $request->get('seller_id'),
             'category_id' => $request->get('category_id'),
+            'university_id' => $request->get('university_id'),
             'type' => $request->get('type'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);

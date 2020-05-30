@@ -2425,6 +2425,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2462,7 +2464,7 @@ __webpack_require__.r(__webpack_exports__);
         name: null
       },
       parent_id: 0,
-      parent_data: '',
+      parent_data: "",
       searchParent: ""
     };
   },
@@ -2958,6 +2960,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
  // import SearchBar from "../../components/SearchBar";
 
@@ -2997,6 +3026,7 @@ __webpack_require__.r(__webpack_exports__);
       search: "",
       categories: [],
       p_categories: null,
+      m_uni: null,
       //   p_categories: { id: null, name: null },
       p_title: "",
       p_desc: "",
@@ -3009,7 +3039,14 @@ __webpack_require__.r(__webpack_exports__);
       imageRules: [function (value) {
         return !value || value.size < 2000000 || "Image size should be less than 2 MB!";
       }],
-      timeout: ""
+      timeout: "",
+      universities: [],
+      isuniLoading: false,
+      searchUni: "",
+      sellers: [],
+      p_seller: null,
+      issellerLoading: false,
+      searchSeller: ""
     };
   },
   components: {
@@ -3024,6 +3061,22 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchStates();
   },
   watch: {
+    searchSeller: function searchSeller(val) {
+      clearTimeout(this.timeout);
+      var self = this;
+      this.timeout = setTimeout(function () {
+        self.issellerLoading = true;
+        self.fetchseller(val);
+      }, 1000);
+    },
+    searchUni: function searchUni(val) {
+      clearTimeout(this.timeout);
+      var self = this;
+      this.timeout = setTimeout(function () {
+        self.isuniLoading = true;
+        self.fetchuni(val);
+      }, 1000);
+    },
     searchCat: function searchCat(val) {
       clearTimeout(this.timeout);
       var self = this;
@@ -3056,29 +3109,53 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
-    deleteImage: function deleteImage(item) {
+    fetchuni: function fetchuni(val) {
       var _this2 = this;
 
-      console.log(item);
-      this.overlay = true;
-      axios.post("/api/product-images/delete/" + item.id).then(function (res) {
-        //   this.overlay = false;
-        _this2.fetchImages();
+      axios.get("/api/universities/search/" + val).then(function (res) {
+        _this2.universities = res.data.data;
+        _this2.isuniLoading = false;
       })["catch"](function (err) {
         _this2.unknownError();
 
         console.log(err);
       });
     },
-    fetchImages: function fetchImages() {
+    fetchseller: function fetchseller(val) {
       var _this3 = this;
+
+      axios.get("/api/user/search/" + val).then(function (res) {
+        _this3.sellers = res.data.data;
+        _this3.issellerLoading = false;
+      })["catch"](function (err) {
+        _this3.unknownError();
+
+        console.log(err);
+      });
+    },
+    deleteImage: function deleteImage(item) {
+      var _this4 = this;
+
+      console.log(item);
+      this.overlay = true;
+      axios.post("/api/product-images/delete/" + item.id).then(function (res) {
+        //   this.overlay = false;
+        _this4.fetchImages();
+      })["catch"](function (err) {
+        _this4.unknownError();
+
+        console.log(err);
+      });
+    },
+    fetchImages: function fetchImages() {
+      var _this5 = this;
 
       if (!this.p_item.id) return;
       axios.get("/api/product-images/" + this.p_item.id).then(function (res) {
-        _this3.overlay = false;
-        _this3.p_item.images = res.data; //   this.iscatLoading = false;
+        _this5.overlay = false;
+        _this5.p_item.images = res.data; //   this.iscatLoading = false;
       })["catch"](function (err) {
-        _this3.unknownError();
+        _this5.unknownError();
 
         console.log(err);
       });
@@ -3087,14 +3164,14 @@ __webpack_require__.r(__webpack_exports__);
       this.pmModal = !this.pmModal;
     },
     fetchcat: function fetchcat(val) {
-      var _this4 = this;
+      var _this6 = this;
 
       if (val) {
         axios.get("/api/product-categories-search/" + val).then(function (res) {
-          _this4.categories = res.data.data;
-          _this4.iscatLoading = false;
+          _this6.categories = res.data.data;
+          _this6.iscatLoading = false;
         })["catch"](function (err) {
-          _this4.unknownError();
+          _this6.unknownError();
 
           console.log(err);
         });
@@ -3106,7 +3183,7 @@ __webpack_require__.r(__webpack_exports__);
       this.dialog = true;
     },
     saveImage: function saveImage() {
-      var _this5 = this;
+      var _this7 = this;
 
       console.log(this.p_image);
       var formData = new FormData();
@@ -3125,11 +3202,11 @@ __webpack_require__.r(__webpack_exports__);
         var data = res.data;
 
         if (data.error && data.msg) {
-          _this5.errors = data.msg;
+          _this7.errors = data.msg;
         } else {
-          _this5.p_image = [];
+          _this7.p_image = [];
 
-          _this5.fetchImages();
+          _this7.fetchImages();
 
           console.log(data); // this.overlay = true;
           // this.snackbarColor = "success";
@@ -3139,7 +3216,7 @@ __webpack_require__.r(__webpack_exports__);
           // this.fetchProducts();
         }
       })["catch"](function (err) {
-        _this5.unknownError();
+        _this7.unknownError();
 
         console.log(err);
       });
@@ -3160,6 +3237,16 @@ __webpack_require__.r(__webpack_exports__);
         name: category.name
       };
       this.categories = [this.p_categories];
+      this.m_uni = {
+        id: item.university.id,
+        name: item.university.name
+      };
+      this.universities = [this.m_uni];
+      this.p_seller = {
+        id: item.seller.id,
+        email: item.seller.email
+      };
+      this.sellers = [this.p_seller];
       this.p_title = item.title;
       this.p_desc = item.description;
       this.p_type = item.type;
@@ -3168,7 +3255,7 @@ __webpack_require__.r(__webpack_exports__);
       this.dialog = true;
     },
     deleteItem: function deleteItem(item) {
-      var _this6 = this;
+      var _this8 = this;
 
       this.$swal({
         title: "Are you sure?",
@@ -3180,21 +3267,21 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.value && item) {
-          _this6.overlay = true;
+          _this8.overlay = true;
           axios.post("api/product/delete/".concat(item.id)).then(function (res) {
             var data = res.data;
 
             if (data.error && data.msg) {
-              _this6.errors = data.msg;
+              _this8.errors = data.msg;
             } else {
-              _this6.$swal("Deleted!", data.msg, "success");
+              _this8.$swal("Deleted!", data.msg, "success");
 
-              _this6.overlay = true;
+              _this8.overlay = true;
 
-              _this6.fetchProducts();
+              _this8.fetchProducts();
             }
           })["catch"](function (err) {
-            _this6.unknownError();
+            _this8.unknownError();
 
             console.log(err);
           });
@@ -3202,10 +3289,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     saveDialog: function saveDialog() {
-      var _this7 = this;
+      var _this9 = this;
 
       this.errors = [];
       var is_valid = this.$refs.form.validate();
+      console.log(is_valid);
       if (!is_valid) return;
       var api_url = this.m_type == "edit" ? "api/product/".concat(this.editItem.id) : "api/product";
       console.log(this.m_type);
@@ -3220,27 +3308,29 @@ __webpack_require__.r(__webpack_exports__);
           description: this.p_desc,
           price: this.p_price,
           category_id: this.p_categories.id,
+          university_id: this.m_uni.id,
+          seller_id: this.p_seller.id,
           type: this.p_type,
-          active: this.p_status,
-          seller_id: userData.id
+          active: this.p_status //   seller_id: userData.id
+
         }
       }).then(function (res) {
         var data = res.data;
 
         if (data.error && data.msg) {
-          _this7.errors = data.msg;
+          _this9.errors = data.msg;
         } else {
-          _this7.overlay = true;
-          _this7.snackbarColor = "success";
-          _this7.snackbarText = data.msg;
-          _this7.snackbar = true;
+          _this9.overlay = true;
+          _this9.snackbarColor = "success";
+          _this9.snackbarText = data.msg;
+          _this9.snackbar = true;
 
-          _this7.closeDialog();
+          _this9.closeDialog();
 
-          _this7.fetchProducts();
+          _this9.fetchProducts();
         }
       })["catch"](function (err) {
-        _this7.unknownError();
+        _this9.unknownError();
 
         console.log(err);
       });
@@ -3261,27 +3351,27 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.form.resetValidation();
     },
     fetchProducts: function fetchProducts() {
-      var _this8 = this;
+      var _this10 = this;
 
       axios.get("/api/products/true?page=" + this.currentPage).then(function (res) {
-        _this8.overlay = false;
-        _this8.loader = false;
-        _this8.posts = res.data.data;
-        _this8.TotalPages = res.data.last_page;
+        _this10.overlay = false;
+        _this10.loader = false;
+        _this10.posts = res.data.data;
+        _this10.TotalPages = res.data.last_page;
       })["catch"](function (err) {
-        _this8.unknownError();
+        _this10.unknownError();
 
         console.log(err);
       });
     },
     fetchStates: function fetchStates() {
-      var _this9 = this;
+      var _this11 = this;
 
       axios.get("/api/states/true").then(function (res) {
-        _this9.states = res.data;
-        _this9.isStatesLoading = false;
+        _this11.states = res.data;
+        _this11.isStatesLoading = false;
       })["catch"](function (err) {
-        _this9.unknownError();
+        _this11.unknownError();
 
         console.log(err);
       });
@@ -45171,175 +45261,196 @@ var render = function() {
                                   1
                                 ),
                                 _vm._v(" "),
-                                _c(
-                                  "td",
-                                  { staticClass: "text-right" },
-                                  [
-                                    _c(
-                                      "v-row",
-                                      { staticClass: "d-none d-sm-block" },
-                                      [
-                                        _c(
-                                          "v-btn",
-                                          {
-                                            attrs: {
-                                              fab: "",
-                                              dark: "",
-                                              "x-small": "",
-                                              color: "teal accent-4"
+                                _c("td", { staticClass: "text-right" }, [
+                                  !item.fixed
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "v-row",
+                                            {
+                                              staticClass: "d-none d-sm-block"
                                             },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.editCategory(item)
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c(
-                                              "v-icon",
-                                              {
-                                                attrs: { dark: "", small: "" }
-                                              },
-                                              [_vm._v("mdi-pencil")]
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-btn",
-                                          {
-                                            attrs: {
-                                              fab: "",
-                                              dark: "",
-                                              "x-small": "",
-                                              color: "pink"
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.deleteItem(item)
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c(
-                                              "v-icon",
-                                              {
-                                                attrs: { dark: "", small: "" }
-                                              },
-                                              [_vm._v("mdi-trash-can")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-row",
-                                      { staticClass: "d-sm-none" },
-                                      [
-                                        _c(
-                                          "v-menu",
-                                          {
-                                            scopedSlots: _vm._u(
-                                              [
+                                            [
+                                              _c(
+                                                "v-btn",
                                                 {
-                                                  key: "activator",
-                                                  fn: function(ref) {
-                                                    var on = ref.on
-                                                    return [
+                                                  attrs: {
+                                                    fab: "",
+                                                    dark: "",
+                                                    "x-small": "",
+                                                    color: "teal accent-4"
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.editCategory(
+                                                        item
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-icon",
+                                                    {
+                                                      attrs: {
+                                                        dark: "",
+                                                        small: ""
+                                                      }
+                                                    },
+                                                    [_vm._v("mdi-pencil")]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  attrs: {
+                                                    fab: "",
+                                                    dark: "",
+                                                    "x-small": "",
+                                                    color: "pink"
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.deleteItem(
+                                                        item
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-icon",
+                                                    {
+                                                      attrs: {
+                                                        dark: "",
+                                                        small: ""
+                                                      }
+                                                    },
+                                                    [_vm._v("mdi-trash-can")]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-row",
+                                            { staticClass: "d-sm-none" },
+                                            [
+                                              _c(
+                                                "v-menu",
+                                                {
+                                                  scopedSlots: _vm._u(
+                                                    [
+                                                      {
+                                                        key: "activator",
+                                                        fn: function(ref) {
+                                                          var on = ref.on
+                                                          return [
+                                                            _c(
+                                                              "v-btn",
+                                                              _vm._g(
+                                                                {
+                                                                  attrs: {
+                                                                    dark: "",
+                                                                    icon: ""
+                                                                  }
+                                                                },
+                                                                on
+                                                              ),
+                                                              [
+                                                                _c(
+                                                                  "v-icon",
+                                                                  {
+                                                                    attrs: {
+                                                                      light: ""
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "mdi-dots-vertical"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          ]
+                                                        }
+                                                      }
+                                                    ],
+                                                    null,
+                                                    true
+                                                  )
+                                                },
+                                                [
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-list",
+                                                    [
                                                       _c(
-                                                        "v-btn",
-                                                        _vm._g(
-                                                          {
-                                                            attrs: {
-                                                              dark: "",
-                                                              icon: ""
+                                                        "v-list-item",
+                                                        {
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.editCategory(
+                                                                item
+                                                              )
                                                             }
-                                                          },
-                                                          on
-                                                        ),
+                                                          }
+                                                        },
                                                         [
                                                           _c(
-                                                            "v-icon",
-                                                            {
-                                                              attrs: {
-                                                                light: ""
-                                                              }
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "mdi-dots-vertical"
+                                                            "v-list-item-title",
+                                                            [_vm._v("Edit")]
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-list-item",
+                                                        {
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.deleteItem(
+                                                                item
                                                               )
-                                                            ]
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-list-item-title",
+                                                            [_vm._v("Delete")]
                                                           )
                                                         ],
                                                         1
                                                       )
-                                                    ]
-                                                  }
-                                                }
-                                              ],
-                                              null,
-                                              true
-                                            )
-                                          },
-                                          [
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-list",
-                                              [
-                                                _c(
-                                                  "v-list-item",
-                                                  {
-                                                    on: {
-                                                      click: function($event) {
-                                                        return _vm.editCategory(
-                                                          item
-                                                        )
-                                                      }
-                                                    }
-                                                  },
-                                                  [
-                                                    _c("v-list-item-title", [
-                                                      _vm._v("Edit")
-                                                    ])
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-list-item",
-                                                  {
-                                                    on: {
-                                                      click: function($event) {
-                                                        return _vm.deleteItem(
-                                                          item
-                                                        )
-                                                      }
-                                                    }
-                                                  },
-                                                  [
-                                                    _c("v-list-item-title", [
-                                                      _vm._v("Delete")
-                                                    ])
-                                                  ],
-                                                  1
-                                                )
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e()
+                                ])
                               ])
                             }),
                             0
@@ -45351,7 +45462,7 @@ var render = function() {
                   ],
                   null,
                   false,
-                  3028313826
+                  4281885149
                 )
               })
             : _vm._e()
@@ -45874,6 +45985,76 @@ var render = function() {
                                         _vm.p_categories = $$v
                                       },
                                       expression: "p_categories"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", md: "12" } },
+                                [
+                                  _c("v-autocomplete", {
+                                    attrs: {
+                                      label: "University",
+                                      items: _vm.universities,
+                                      "item-text": "name",
+                                      "item-value": "id",
+                                      "return-object": "",
+                                      loading: _vm.isuniLoading,
+                                      rules: _vm.requiredRules,
+                                      "search-input": _vm.searchUni
+                                    },
+                                    on: {
+                                      "update:searchInput": function($event) {
+                                        _vm.searchUni = $event
+                                      },
+                                      "update:search-input": function($event) {
+                                        _vm.searchUni = $event
+                                      }
+                                    },
+                                    model: {
+                                      value: _vm.m_uni,
+                                      callback: function($$v) {
+                                        _vm.m_uni = $$v
+                                      },
+                                      expression: "m_uni"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", md: "12" } },
+                                [
+                                  _c("v-autocomplete", {
+                                    attrs: {
+                                      label: "Seller",
+                                      items: _vm.sellers,
+                                      "item-text": "email",
+                                      "item-value": "id",
+                                      "return-object": "",
+                                      loading: _vm.issellerLoading,
+                                      rules: _vm.requiredRules,
+                                      "search-input": _vm.searchSeller
+                                    },
+                                    on: {
+                                      "update:searchInput": function($event) {
+                                        _vm.searchSeller = $event
+                                      },
+                                      "update:search-input": function($event) {
+                                        _vm.searchSeller = $event
+                                      }
+                                    },
+                                    model: {
+                                      value: _vm.p_seller,
+                                      callback: function($$v) {
+                                        _vm.p_seller = $$v
+                                      },
+                                      expression: "p_seller"
                                     }
                                   })
                                 ],

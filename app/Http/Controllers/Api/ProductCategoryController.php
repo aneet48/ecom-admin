@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Str;
 
 class ProductCategoryController extends Controller
 {
@@ -18,9 +19,9 @@ class ProductCategoryController extends Controller
             $categories = ProductCategory::with('children', 'parent')->where('parent_id', $cat_id)->orderBy('name')->paginate(15);
         }
         $main_cat = ProductCategory::with('parent')->find($cat_id);
-        $body=[
-            'categories'=>$categories,
-            'main_cat'=>$main_cat
+        $body = [
+            'categories' => $categories,
+            'main_cat' => $main_cat,
         ];
         return response()->json($body);
     }
@@ -42,11 +43,13 @@ class ProductCategoryController extends Controller
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
         }
+        $slug = Str::slug($request->get('name'));
 
         $category = ProductCategory::where('id', $id)->update([
             'parent_id' => $request->get('parent_id') ? $request->get('parent_id') : 0,
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
+            'slug' => $slug,
         ]);
         $msg = $category ? 'Category updated successfully' : "Category not Found";
         $error = $category ? false : true;
@@ -63,11 +66,13 @@ class ProductCategoryController extends Controller
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
         }
+        $slug = Str::slug($request->get('name'));
 
         $category = ProductCategory::create([
             'parent_id' => $request->get('parent_id') ? $request->get('parent_id') : 0,
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
+            'slug' => $slug,
         ]);
         $msg = $category ? 'Category created successfully' : "Category not Found";
         $error = $category ? false : true;

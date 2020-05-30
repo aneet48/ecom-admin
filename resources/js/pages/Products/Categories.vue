@@ -50,33 +50,35 @@
                 >Sub Categories</v-chip>
               </td>
               <td class="text-right">
-                <v-row class="d-none d-sm-block">
-                  <v-btn fab dark x-small color="teal accent-4" @click="editCategory(item)">
-                    <v-icon dark small>mdi-pencil</v-icon>
-                  </v-btn>
-                  <v-btn fab dark x-small color="pink" @click="deleteItem(item)">
-                    <v-icon dark small>mdi-trash-can</v-icon>
-                  </v-btn>
-                </v-row>
+                <div v-if="!item.fixed">
+                  <v-row class="d-none d-sm-block">
+                    <v-btn fab dark x-small color="teal accent-4" @click="editCategory(item)">
+                      <v-icon dark small>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn fab dark x-small color="pink" @click="deleteItem(item)">
+                      <v-icon dark small>mdi-trash-can</v-icon>
+                    </v-btn>
+                  </v-row>
 
-                <v-row class="d-sm-none">
-                  <v-menu>
-                    <template v-slot:activator="{ on }">
-                      <v-btn dark icon v-on="on">
-                        <v-icon light>mdi-dots-vertical</v-icon>
-                      </v-btn>
-                    </template>
+                  <v-row class="d-sm-none">
+                    <v-menu>
+                      <template v-slot:activator="{ on }">
+                        <v-btn dark icon v-on="on">
+                          <v-icon light>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                      </template>
 
-                    <v-list>
-                      <v-list-item @click="editCategory(item)">
-                        <v-list-item-title>Edit</v-list-item-title>
-                      </v-list-item>
-                      <v-list-item @click="deleteItem(item)">
-                        <v-list-item-title>Delete</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
-                </v-row>
+                      <v-list>
+                        <v-list-item @click="editCategory(item)">
+                          <v-list-item-title>Edit</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="deleteItem(item)">
+                          <v-list-item-title>Delete</v-list-item-title>
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </v-row>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -182,7 +184,7 @@ export default {
 
       m_parent: { id: null, name: null },
       parent_id: 0,
-      parent_data: '',
+      parent_data: "",
       searchParent: ""
     };
   },
@@ -220,19 +222,18 @@ export default {
   },
   methods: {
     fetchParent(val) {
-        if(val){
+      if (val) {
         axios
-        .get("/api/product-categories-search/" + val)
-        .then(res => {
-          this.parent = res.data.data;
-          this.isparentLoading = false;
-        })
-        .catch(err => {
-          this.unknownError();
-          console.log(err);
-        });
-        }
-
+          .get("/api/product-categories-search/" + val)
+          .then(res => {
+            this.parent = res.data.data;
+            this.isparentLoading = false;
+          })
+          .catch(err => {
+            this.unknownError();
+            console.log(err);
+          });
+      }
     },
     addNew() {
       this.modal_title = "Add New Category";
@@ -250,7 +251,7 @@ export default {
       if (parent) {
         this.m_parent = { id: parent.id, name: parent.name };
         this.parent = [this.m_parent];
-        this.searchParent = parent.name
+        this.searchParent = parent.name;
       }
       this.m_name = item.name;
       this.m_active = item.active;
@@ -359,8 +360,8 @@ export default {
           this.overlay = false;
           this.loader = false;
           this.posts = res.data.categories.data;
-          this.parent_data = res.data.main_cat
-          console.log(res.data.categories.data)
+          this.parent_data = res.data.main_cat;
+          console.log(res.data.categories.data);
           this.TotalPages = res.data.categories.last_page;
         })
         .catch(err => {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -61,7 +62,7 @@ class UserController extends Controller
         }
         $token = Str::random(60);
 
-        $password = $request->get('password') ?: str_random(8);
+        $password = $request->get('password') ?: Str::random(8);
         $user = User::create([
             "first_name" => $request->get('first_name'),
             "last_name" => $request->get('last_name'),
@@ -76,6 +77,17 @@ class UserController extends Controller
             'user' => $user,
         ];
         $msg = "User is created successfully";
+
+        Mail::send([], [], function ($message) use( $request, $password) {
+            $message->to($request->get('email'))
+                ->subject('Sign up complete')
+            // here comes what you want
+            // ->setBody('Hi, welcome user!') // assuming text/plain
+            // or:
+                ->setBody('<h1>Hi, welcome ' . $request->get('first_name') . '!</h1><p>An account has been created for you.</p>
+                <p>Password:' . $password . '</p>
+                ', 'text/html'); // for HTML rich messages
+        });
 
         return generate_response(false, $msg, $body);
     }
@@ -96,7 +108,6 @@ class UserController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $password = '123456';
         $user = User::where('id', $id)->update([
             "first_name" => $request->get('first_name'),
             "last_name" => $request->get('last_name'),
@@ -104,7 +115,6 @@ class UserController extends Controller
             "branch" => $request->get('branch'),
             "university_id" => $request->get('university_id'),
             "email" => $request->get('email'),
-            // "password" => Hash::make($password),
         ]);
         $body = [
             'user' => $user,
@@ -138,7 +148,13 @@ class UserController extends Controller
 
     public function search($q)
     {
-        $result = User::where('name', 'like', '%' . $q . '%')->paginate(30);
+        $result = User::where('is_admin', 0)
+            ->where(function ($query) use ($q) {
+                $query->where('first_name', 'like', '%' . $q . '%')
+                    ->orWhere('last_name', 'like', '%' . $q . '%')
+                    ->orWhere('email', 'like', '%' . $q . '%');
+            })
+            ->paginate(30);
         return response()->json($result);
     }
 }

@@ -16,15 +16,11 @@ class CreateProductCategoriesTable extends Migration
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->boolean('active')->default(0)->nullable();
             $table->bigInteger('parent_id')->default(0)->nullable();
-            // $table->unsignedBigInteger('product_id');
             $table->timestamps();
         });
-
-        // Schema::table('product_categories', function ($table) {
-        //     $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-        // });
 
     }
 

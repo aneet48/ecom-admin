@@ -73,6 +73,7 @@ Route::get('/users', 'Api\UserController@users');
 Route::get('/user/{id}', 'Api\UserController@user');
 Route::post('/user/update/{id}', 'Api\UserController@update');
 Route::post('/user/delete/{id}', 'Api\UserController@delete');
+Route::get('/user/search/{q}', 'Api\UserController@search');
 
 // products
 Route::get('/products/{show_all?}', 'Api\ProductController@products');
