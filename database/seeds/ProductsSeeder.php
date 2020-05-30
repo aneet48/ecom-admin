@@ -16,7 +16,7 @@ class ProductsSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        $type = ['buy', 'sell'];
+        $type = ['Buy', 'Rental'];
 
         for ($i = 0; $i < 50; $i++) {
             $university = University::all()->random(1)->first();
