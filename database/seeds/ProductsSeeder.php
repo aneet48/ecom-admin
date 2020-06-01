@@ -5,6 +5,7 @@ use App\ProductImage;
 use App\University;
 use App\User;
 use Illuminate\Database\Seeder;
+use Intervention\Image\Facades\Image as Image;
 
 class ProductsSeeder extends Seeder
 {
@@ -17,8 +18,12 @@ class ProductsSeeder extends Seeder
     {
         $faker = Faker\Factory::create();
         $type = ['Buy', 'Rental'];
+        $img_ids = [
+            0, 1, 10, 100, 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1008, 1009, 1010, 101, 1011, 1012, 1013, 1014, 1015, 1016, 1018,
+            1020, 1021, 1022, 1023, 1024, 1025,
+        ];
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $university = University::all()->random(1)->first();
             $seller = User::all()->random(1)->first();
             $category = ProductCategory::all()->random(1)->first();
@@ -33,10 +38,15 @@ class ProductsSeeder extends Seeder
                 'type' => $type[array_rand($type)],
             ]);
 
-            for ($i = 0; $i < 3; $i++) {
-                $image = $faker->image('public/storage/products', 640, 480, null, false);
+            for ($j = 0; $j < 2; $j++) {
+                $path = 'https://i.picsum.photos/id/' . $img_ids[array_rand($img_ids)] . '/600/400.jpg';
+                $filename = 'pimg_' . time() . rand(10, 999) . '.jpg';
+
+                Image::make($path)->save(public_path('storage/products/' . $filename));
+
+                // $image = $faker->image('public/storage/products', 640, 480, null, false);
                 ProductImage::create([
-                    'name' => $image,
+                    'name' => $filename,
                     'product_id' => $product->id,
                 ]);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,6 +27,13 @@ class ProductController extends Controller
         if ($request->has('type')) {
             $type = $request->get('type');
             $query = $query->where('type', $type);
+        }
+        if ($request->has('category')) {
+            $category = ProductCategory::whereSlug($request->get('category'))->first();
+            if ($category) {
+                $query = $query->where('category_id', $category->id);
+
+            }
         }
 
         if ($request->has('s')) {
