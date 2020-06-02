@@ -19,7 +19,7 @@ class ProductController extends Controller
         //     $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
 
         // }
-        $query = Product::with('category', 'seller', 'images', 'university');
+        $query = Product::with('category', 'seller','seller.university', 'images', 'university');
         if (!$show_all) {
             $query = $query->where('active', 1);
         }
