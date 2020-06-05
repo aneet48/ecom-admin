@@ -3138,7 +3138,7 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log(item);
       this.overlay = true;
-      axios.post("/api/product-images/delete/" + item.id).then(function (res) {
+      axios.post("/api/product-media/delete/" + item.id).then(function (res) {
         //   this.overlay = false;
         _this4.fetchImages();
       })["catch"](function (err) {
@@ -3151,7 +3151,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this5 = this;
 
       if (!this.p_item.id) return;
-      axios.get("/api/product-images/" + this.p_item.id).then(function (res) {
+      axios.get("/api/product-media/" + this.p_item.id).then(function (res) {
         _this5.overlay = false;
         _this5.p_item.images = res.data; //   this.iscatLoading = false;
       })["catch"](function (err) {
@@ -3193,7 +3193,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("product", this.p_item.id);
       axios({
         method: "post",
-        url: "/api/product-images",
+        url: "/api/product-media",
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data"
@@ -46573,8 +46573,8 @@ var render = function() {
                                 ref: "file",
                                 attrs: {
                                   rules: _vm.imageRules,
-                                  accept: "image/*",
-                                  placeholder: "Add Image",
+                                  accept: "image/*,video/*",
+                                  placeholder: "Add Image/Video",
                                   "prepend-icon": "mdi-image",
                                   label: "Image"
                                 },

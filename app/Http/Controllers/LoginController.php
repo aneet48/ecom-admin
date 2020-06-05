@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Str;
@@ -40,6 +41,9 @@ class LoginController extends Controller
     public function authUser()
     {
         $user = Auth::user();
+        $user = User::find($user->id);
+        $user->makeVisible(['api_token']);
+
         return response()->json($user);
     }
 

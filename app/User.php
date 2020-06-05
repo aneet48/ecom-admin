@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Crypt;
 
 class User extends Authenticatable
 {
@@ -43,9 +42,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $append=['name'];
+
     public function university()
     {
         return $this->belongsTo('App\University', 'university_id');
+    }
+
+    public function unHide()
+    {
+        $this->hidden = [];
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     // public function getIdAttribute($value)

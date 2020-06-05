@@ -279,8 +279,8 @@
               <v-col cols="8" sm="12" md="8">
                 <v-file-input
                   :rules="imageRules"
-                  accept="image/*"
-                  placeholder="Add Image"
+                  accept="image/*,video/*"
+                  placeholder="Add Image/Video"
                   prepend-icon="mdi-image"
                   label="Image"
                   v-model="p_image"
@@ -474,7 +474,7 @@ export default {
       console.log(item);
       this.overlay = true;
       axios
-        .post("/api/product-images/delete/" + item.id)
+        .post("/api/product-media/delete/" + item.id)
         .then(res => {
           //   this.overlay = false;
 
@@ -488,7 +488,7 @@ export default {
     fetchImages() {
       if (!this.p_item.id) return;
       axios
-        .get("/api/product-images/" + this.p_item.id)
+        .get("/api/product-media/" + this.p_item.id)
         .then(res => {
           this.overlay = false;
           this.p_item.images = res.data;
@@ -533,7 +533,7 @@ export default {
 
       axios({
         method: "post",
-        url: "/api/product-images",
+        url: "/api/product-media",
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data"

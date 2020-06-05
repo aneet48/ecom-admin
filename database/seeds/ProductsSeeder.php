@@ -1,7 +1,7 @@
 <?php
 
 use App\ProductCategory;
-use App\ProductImage;
+use App\ProductMedia;
 use App\University;
 use App\User;
 use Illuminate\Database\Seeder;
@@ -45,8 +45,9 @@ class ProductsSeeder extends Seeder
                 Image::make($path)->save(public_path('storage/products/' . $filename));
 
                 // $image = $faker->image('public/storage/products', 640, 480, null, false);
-                ProductImage::create([
+                ProductMedia::create([
                     'name' => $filename,
+                    'type'=>'image',
                     'product_id' => $product->id,
                 ]);
 

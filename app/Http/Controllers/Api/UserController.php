@@ -22,14 +22,18 @@ class UserController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $user = User::where('email', $request->get('email'))->first();
+        $user = User::with('university')->where('email', $request->get('email'))->first();
 
         if ($user && !Hash::check($request->get('password'), $user->password)) {
             return generate_response(true, ['Credentials do not match']);
         }
-        $token = Str::random(60);
-        $user->api_token = hash('sha256', $token);
-        $user->save();
+        if ($user) {
+            $user->makeVisible(['api_token']);
+            $token = Str::random(60);
+            $user->api_token = hash('sha256', $token);
+            $user->save();
+
+        }
 
         $body = [
             'user' => $user,
@@ -73,12 +77,14 @@ class UserController extends Controller
             "password" => Hash::make($password),
             'api_token' => hash('sha256', $token),
         ]);
+        $user->makeVisible(['api_token']);
+
         $body = [
             'user' => $user,
         ];
         $msg = "User is created successfully";
 
-        Mail::send([], [], function ($message) use( $request, $password) {
+        Mail::send([], [], function ($message) use ($request, $password) {
             $message->to($request->get('email'))
                 ->subject('Sign up complete')
             // here comes what you want

@@ -92,8 +92,8 @@ Route::post('/product-category/delete/{id}', 'Api\ProductCategoryController@dele
 Route::get('/product-categories-search/{q}', 'Api\ProductCategoryController@search');
 
 // product Images
-Route::post('/product-images', 'Api\ProductImageController@create');
-Route::post('/product-images/delete/{id}', 'Api\ProductImageController@delete');
-Route::get('/product-images/{product_id}', 'Api\ProductImageController@productImages');
+Route::post('/product-media', 'Api\ProductMediaController@create');
+Route::post('/product-media/delete/{id}', 'Api\ProductMediaController@delete');
+Route::get('/product-media/{product_id}', 'Api\ProductMediaController@productMedias');
 
 // });

@@ -19,7 +19,7 @@ class ProductController extends Controller
         //     $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
 
         // }
-        $query = Product::with('category', 'seller','seller.university', 'images', 'university');
+        $query = Product::with('category', 'seller', 'seller.university', 'images', 'university');
         if (!$show_all) {
             $query = $query->where('active', 1);
         }
@@ -28,12 +28,19 @@ class ProductController extends Controller
             $type = $request->get('type');
             $query = $query->where('type', $type);
         }
+
         if ($request->has('category')) {
             $category = ProductCategory::whereSlug($request->get('category'))->first();
             if ($category) {
                 $query = $query->where('category_id', $category->id);
 
             }
+        }
+
+        if ($request->has('seller_id')) {
+
+            $query = $query->where('seller_id',$request->get('seller_id'));
+
         }
 
         if ($request->has('s')) {

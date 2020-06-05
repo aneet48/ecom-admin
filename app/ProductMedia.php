@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductImage extends Model
+class ProductMedia extends Model
 {
-    protected $fillable = ['name', 'product_id'];
+    protected $fillable = ['name', 'product_id', 'type', 'thumbnail'];
     protected $appends = ['link'];
 
     public function getLinkAttribute()
