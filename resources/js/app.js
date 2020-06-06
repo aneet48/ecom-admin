@@ -11,10 +11,12 @@ import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 import VueSweetalert2 from "vue-sweetalert2";
 import store from "./store";
+import VueVideoPlayer from "vue-video-player";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
+Vue.use(VueVideoPlayer);
 
 // axios.defaults.baseURL = "http://woodbox.test/api";
 

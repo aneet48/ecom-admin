@@ -23,7 +23,7 @@ class ProductsSeeder extends Seeder
             1020, 1021, 1022, 1023, 1024, 1025,
         ];
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $university = University::all()->random(1)->first();
             $seller = User::all()->random(1)->first();
             $category = ProductCategory::all()->random(1)->first();
@@ -47,7 +47,8 @@ class ProductsSeeder extends Seeder
                 // $image = $faker->image('public/storage/products', 640, 480, null, false);
                 ProductMedia::create([
                     'name' => $filename,
-                    'type'=>'image',
+                    'type' => 'image',
+                    'thumbnail' => $filename,
                     'product_id' => $product->id,
                 ]);
 

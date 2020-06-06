@@ -31,13 +31,20 @@ class ProductMediaController extends Controller
         $thumbnail = $filename;
         if (strstr($mime, "video/")) {
             $thumbnail = rand(1000, 10000) . '_' . time() . '.png';
-            FFMpeg::fromDisk('videos')
-                ->open(public_path() . '/storage/products/' . $filename)
-                ->getFrameFromSeconds(10)
+            // dd(base_path());
+            FFMpeg::fromDisk('products')
+                ->open($filename)
+                ->getFrameFromSeconds(1)
                 ->export()
-                ->toDisk('thumnails')
-                ->save( $thumbnail);
-                dd( $thumbnail);
+                ->toDisk('products')
+                ->save($thumbnail);
+            // FFMpeg::fromDisk('public')
+            //     ->open('/products/' . $filename)
+            //     ->getFrameFromSeconds(5)
+            //     ->export()
+            //     ->toDisk('public')
+            //     ->save('/products/' .$thumbnail);
+            // dd($thumbnail);
 
             $type = 'video';
             // this code for video
