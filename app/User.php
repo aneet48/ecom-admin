@@ -22,6 +22,7 @@ class User extends Authenticatable
         'university_id',
         'branch',
         'password',
+        'profile_img',
     ];
 
     /**
@@ -42,7 +43,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $append=['name'];
+    protected $append = ['name'];
 
     public function university()
     {

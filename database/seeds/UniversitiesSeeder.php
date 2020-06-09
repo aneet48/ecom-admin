@@ -3,7 +3,7 @@
 use App\City;
 use App\University;
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Str;
 class UniversitiesSeeder extends Seeder
 {
     /**
@@ -20,10 +20,13 @@ class UniversitiesSeeder extends Seeder
                 if (!$city) {
                     dd($key, $list);
                 }
+                $slug = Str::slug($list['FIELD2']);
+
 
                 University::updateOrCreate(['name' => $list['FIELD2']], [
                     'city_id' => $city->id,
                     'active' => true,
+                    'slug'=> $slug
                 ]);
 
             }
@@ -2690,6 +2693,34 @@ class UniversitiesSeeder extends Seeder
                 'FIELD6' => '',
                 'FIELD7' => '',
             ),
+            296 => array(
+                'State universities of India' => '286',
+                'FIELD2' => 'NIT Jalandhar',
+                'FIELD3' => '',
+                'FIELD4' => 'Jalandhar',
+                'FIELD5' => 'Yes',
+                'FIELD6' => '2001',
+                'FIELD7' => 'Technology',
+            ),
+            297 => array(
+                'State universities of India' => '286',
+                'FIELD2' => 'NIT Delhi',
+                'FIELD3' => '',
+                'FIELD4' => 'Delhi',
+                'FIELD5' => 'Yes',
+                'FIELD6' => '2001',
+                'FIELD7' => 'Technology',
+            ),
+            298 => array(
+                'State universities of India' => '286',
+                'FIELD2' => 'NIT Kurukshetra',
+                'FIELD3' => '',
+                'FIELD4' => 'Kurukshetra',
+                'FIELD5' => 'Yes',
+                'FIELD6' => '2001',
+                'FIELD7' => 'Technology',
+            ),
+
         );
 
     }

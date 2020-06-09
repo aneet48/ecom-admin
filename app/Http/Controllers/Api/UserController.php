@@ -171,4 +171,11 @@ class UserController extends Controller
             ->paginate(30);
         return response()->json($result);
     }
+
+    public function profileImgUpdate(Request $request)
+    {
+        return "hello";
+        echo "hello";
+    //    dd($id,$request->all());
+    }
 }
