@@ -138,7 +138,7 @@ class UserController extends Controller
 
     public function user($id)
     {
-        $user = User::with('university', 'university.city', 'university.city.state')->whereId($id)->first();
+        $user = User::with('university', 'university.city', 'university.city.state')->whereId($id)->where('is_admin', 0)->first();
         return response()->json($user);
     }
 

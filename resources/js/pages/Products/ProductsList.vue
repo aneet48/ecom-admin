@@ -279,7 +279,7 @@
               <v-col cols="8" sm="12" md="8">
                 <v-file-input
                   :rules="imageRules"
-                  accept="image/*,video/*"
+                  accept="image/*, video/*"
                   placeholder="Add Image/Video"
                   prepend-icon="mdi-image"
                   label="Image"
@@ -301,7 +301,11 @@
                 v-for="(item , i) in p_item.images"
                 :key="i"
               >
-                <v-img :src="item.link" height="150px"></v-img>
+                <v-img :src="item.thumbnail_link" height="150px" v-if="item.type=='image'"></v-img>
+
+                <video height="150px" width="100%" controls v-if="item.type=='video'">
+                  <source :src="item.link"  />
+                </video>
                 <v-btn color="red" dark small @click="deleteImage(item)" width="100%">Delete</v-btn>
               </v-col>
             </v-row>
@@ -645,8 +649,8 @@ export default {
           university_id: this.m_uni.id,
           seller_id: this.p_seller.id,
           type: this.p_type,
-          active: this.p_status,
-        //   seller_id: userData.id
+          active: this.p_status
+          //   seller_id: userData.id
         }
       })
         .then(res => {
