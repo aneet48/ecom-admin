@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UniversityController extends Controller
 {
@@ -43,6 +44,8 @@ class UniversityController extends Controller
             'city_id' => $request->get('city_id'),
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
+            'slug' => Str::slug($request->get('name')),
+
         ]);
         $msg = $university ? 'University updated successfully' : "University not Found";
         $error = $university ? false : true;
@@ -67,6 +70,7 @@ class UniversityController extends Controller
             'city_id' => $request->get('city_id'),
             'name' => $request->get('name'),
             'active' => $request->has('active') ? $request->get('active') : false,
+             'slug' => Str::slug($request->get('name')),
         ]);
         $msg = $university ? 'University created successfully' : "University not Found";
         $error = $university ? false : true;
@@ -89,16 +93,16 @@ class UniversityController extends Controller
 
     public function search($q)
     {
-        $result = University::with('city','city.state')->where('name', 'like', '%' . $q . '%')->paginate(30);
+        $result = University::with('city', 'city.state')->where('name', 'like', '%' . $q . '%')->paginate(30);
         return response()->json($result);
     }
 
     public function searchGlobal($q)
     {
-        $result = University::with('city','city.state')
-        ->where('name', 'like', '%' . $q . '%')
-        ->where('active','!=' ,0)
-        ->take(30)->get();
+        $result = University::with('city', 'city.state')
+            ->where('name', 'like', '%' . $q . '%')
+            ->where('active', '!=', 0)
+            ->take(30)->get();
         return response()->json($result);
     }
 }

@@ -47,6 +47,7 @@ class ProductsSeeder extends Seeder
                 // $image = $faker->image('public/storage/products', 640, 480, null, false);
                 ProductMedia::create([
                     'name' => $filename,
+                    'thumbnail' => $filename,
                     'type'=>'image',
                     'product_id' => $product->id,
                 ]);
