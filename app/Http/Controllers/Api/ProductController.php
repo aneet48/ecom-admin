@@ -62,7 +62,7 @@ class ProductController extends Controller
 
     public function product($id)
     {
-        $product = Product::with('category', 'seller', 'images', 'university')->find($id);
+        $product = Product::with('category', 'seller', 'seller.university','images', 'university')->find($id);
         return response()->json($product);
 
     }

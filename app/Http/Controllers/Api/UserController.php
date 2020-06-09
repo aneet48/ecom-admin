@@ -100,16 +100,20 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $messages = [
+            'university_id.required' => 'The university is required',
+        ];
+
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'phone_number' => 'required|string',
-            'branch' => 'required',
+            'branch' => 'required|string',
             'university_id' => 'required',
             // 'city_id' => 'required',
             'email' => 'required|unique:users,email,' . $id,
 
-        ]);
+        ], $messages);
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
         }
@@ -122,10 +126,14 @@ class UserController extends Controller
             "university_id" => $request->get('university_id'),
             "email" => $request->get('email'),
         ]);
+        $user = User::with('university')->find($id);
+
+        $user->makeVisible(['api_token']);
+
         $body = [
             'user' => $user,
         ];
-        $msg = "User is created successfully";
+        $msg = "User is updated successfully";
 
         return generate_response(false, $msg, $body);
     }
