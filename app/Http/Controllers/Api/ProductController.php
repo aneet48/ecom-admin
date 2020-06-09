@@ -38,9 +38,15 @@ class ProductController extends Controller
         }
 
         if ($request->has('seller_id')) {
+            $query = $query->where('seller_id', $request->get('seller_id'));
+        }
 
-            $query = $query->where('seller_id',$request->get('seller_id'));
-
+        if ($request->has('college')) {
+            $college = $request->get('college');
+            $query = $query->whereHas('university', function ($query) use ( $college) {
+                $query->where('name', 'LIKE', '%' .  $college . '%');
+                $query->orwhere('slug', 'LIKE', '%' .  $college . '%');
+            });
         }
 
         if ($request->has('s')) {
@@ -49,7 +55,19 @@ class ProductController extends Controller
                 $query->where('title', 'LIKE', '%' . $s . '%')
                     ->orwhere('description', 'LIKE', '%' . $s . '%')
                     ->orwhere('price', 'LIKE', '%' . $s . '%')
-                    ->orwhere('type', 'LIKE', '%' . $s . '%');
+                    ->orwhere('type', 'LIKE', '%' . $s . '%')
+                    ->orwhereHas('seller', function ($query) use ($s) {
+                        $query->where('first_name', 'LIKE', '%' . $s . '%');
+                        $query->orwhere('last_name', 'LIKE', '%' . $s . '%');
+                        $query->orwhere('email', 'LIKE', '%' . $s . '%');
+                        $query->orwhere('branch', 'LIKE', '%' . $s . '%');
+                    })
+                    ->orwhereHas('university', function ($query) use ($s) {
+                        $query->where('name', 'LIKE', '%' . $s . '%');
+                    })
+                    ->orwhereHas('category', function ($query) use ($s) {
+                        $query->where('name', 'LIKE', '%' . $s . '%');
+                    });
             });
 
         }
@@ -62,7 +80,7 @@ class ProductController extends Controller
 
     public function product($id)
     {
-        $product = Product::with('category', 'seller', 'seller.university','images', 'university')->find($id);
+        $product = Product::with('category', 'seller', 'seller.university', 'images', 'university')->find($id);
         return response()->json($product);
 
     }

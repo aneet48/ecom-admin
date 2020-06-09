@@ -28,7 +28,7 @@ class ProductCategoryController extends Controller
 
     public function productCategory($id)
     {
-        $category = ProductCategory::find($id);
+        $category = ProductCategory::with('children', 'parent')->find($id);
         return response()->json($category);
 
     }
@@ -95,7 +95,10 @@ class ProductCategoryController extends Controller
 
     public function search($q)
     {
-        $result = ProductCategory::where('name', 'like', '%' . $q . '%')->paginate(30);
+        $result = ProductCategory::with('children', 'parent')
+            ->where('name', 'like', '%' . $q . '%')
+            ->orwhere('slug', 'like', '%' . $q . '%')
+            ->paginate(30);
         return response()->json($result);
     }
 }

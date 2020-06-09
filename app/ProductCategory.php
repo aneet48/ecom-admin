@@ -16,12 +16,12 @@ class ProductCategory extends Model
 
     public function parent()
     {
-        return $this->belongsTo('App\ProductCategory', 'parent_id');
+        return $this->belongsTo('App\ProductCategory', 'parent_id')->with('parent');
     }
 
     public function children()
     {
-        return $this->hasMany('App\ProductCategory', 'parent_id');
+        return $this->hasMany('App\ProductCategory', 'parent_id')->with('children');
     }
 
     public function getFixedAttribute()

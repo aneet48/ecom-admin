@@ -23,7 +23,7 @@ class CityController extends Controller
 
     public function city($id)
     {
-        $city = City::find($id);
+        $city = City::with('state')->find($id);
         return response()->json($city);
 
     }
@@ -92,7 +92,7 @@ class CityController extends Controller
 
     public function search($q)
     {
-        $result = City::where('name','like','%'.$q.'%')->paginate(30);
+        $result = City::with('state')->where('name','like','%'.$q.'%')->paginate(30);
         return response()->json($result);
     }
 }
