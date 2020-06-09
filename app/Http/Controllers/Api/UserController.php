@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -174,8 +175,47 @@ class UserController extends Controller
 
     public function profileImgUpdate(Request $request)
     {
-        return "hello";
-        echo "hello";
-    //    dd($id,$request->all());
+        $validator = Validator::make($request->all(), [
+            'api_token' => 'required',
+            'img' => 'required',
+        ]);
+        $error = 'Oops!! there was some problem while updating. ';
+
+        if ($validator->fails()) {
+
+            return generate_response(true, $error);
+        }
+
+        $user = User::where('api_token', $request->get('api_token'))->first();
+        if (!$user) {
+            return generate_response(true, $error);
+        }
+
+        $image_64 = $request->get('img'); //your base64 encoded data
+
+        $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1]; // .jpg .png .pdf
+
+        $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
+
+        $image = str_replace($replace, '', $image_64);
+
+        $image = str_replace(' ', '+', $image);
+
+        $imageName = 'profile_img' . Str::random(5) . time() . '.' . $extension;
+        $data = Storage::disk('profile_img')->put($imageName, base64_decode($image));
+        if ($data) {
+            $user->profile_img = $imageName;
+            $user->save();
+            $user->makeVisible(['api_token']);
+
+            $body = [
+                'user' => $user,
+            ];
+
+            return generate_response(false, '', $body);
+        }
+
+        return generate_response(true, $error);
+
     }
 }

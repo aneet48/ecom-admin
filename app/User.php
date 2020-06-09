@@ -31,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'api_token','is_admin'
+        'password', 'remember_token', 'api_token', 'is_admin',
     ];
 
     /**
@@ -43,7 +43,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $append = ['name'];
+    protected $append = ['name','university'];
 
     public function university()
     {
@@ -58,6 +58,14 @@ class User extends Authenticatable
     public function getNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getProfileImgAttribute($value)
+    {
+        if ($value) {
+            return url('storage/profile_img/' . $value);
+        }
+        return $value;
     }
 
     // public function getIdAttribute($value)
