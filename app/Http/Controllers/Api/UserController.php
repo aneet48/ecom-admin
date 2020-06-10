@@ -85,16 +85,16 @@ class UserController extends Controller
         ];
         $msg = "User is created successfully";
 
-        Mail::send([], [], function ($message) use ($request, $password) {
-            $message->to($request->get('email'))
-                ->subject('Sign up complete')
-            // here comes what you want
-            // ->setBody('Hi, welcome user!') // assuming text/plain
-            // or:
-                ->setBody('<h1>Hi, welcome ' . $request->get('first_name') . '!</h1><p>An account has been created for you.</p>
-                <p>Password:' . $password . '</p>
-                ', 'text/html'); // for HTML rich messages
-        });
+        // Mail::send([], [], function ($message) use ($request, $password) {
+        //     $message->to($request->get('email'))
+        //         ->subject('Sign up complete')
+        //     // here comes what you want
+        //     // ->setBody('Hi, welcome user!') // assuming text/plain
+        //     // or:
+        //         ->setBody('<h1>Hi, welcome ' . $request->get('first_name') . '!</h1><p>An account has been created for you.</p>
+        //         <p>Password:' . $password . '</p>
+        //         ', 'text/html'); // for HTML rich messages
+        // });
 
         return generate_response(false, $msg, $body);
     }
