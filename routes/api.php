@@ -96,5 +96,6 @@ Route::get('/product-categories-search/{q}', 'Api\ProductCategoryController@sear
 Route::post('/product-media', 'Api\ProductMediaController@create');
 Route::post('/product-media/delete/{id}', 'Api\ProductMediaController@delete');
 Route::get('/product-media/{product_id}', 'Api\ProductMediaController@productMedias');
+Route::post('/product-media-base64', 'Api\ProductMediaController@productMediasBase64');
 
 // });
