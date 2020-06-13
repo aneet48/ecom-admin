@@ -47,7 +47,7 @@ class ProductsSeeder extends Seeder
             ]);
 
             for ($j = 0; $j < 2; $j++) {
-                $path = $imges(array_rand($imges));
+                $path = $imges[array_rand($imges)];
                 // $path = 'https://i.picsum.photos/id/' . $img_ids[array_rand($img_ids)] . '/600/400.jpg';
                 $filename = 'pimg_' . time() . rand(10, 999) . '.jpg';
 
