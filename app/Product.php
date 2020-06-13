@@ -18,6 +18,8 @@ class Product extends Model
         'university_id',
     ];
 
+    // protected $appends = ['images', 'category', 'university', 'seller'];
+
     public function category()
     {
         return $this->belongsTo('App\ProductCategory', 'category_id');

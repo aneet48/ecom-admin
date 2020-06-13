@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\ProductCategory;
+use App\ProductMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,9 +44,9 @@ class ProductController extends Controller
 
         if ($request->has('college')) {
             $college = $request->get('college');
-            $query = $query->whereHas('university', function ($query) use ( $college) {
-                $query->where('name', 'LIKE', '%' .  $college . '%');
-                $query->orwhere('slug', 'LIKE', '%' .  $college . '%');
+            $query = $query->whereHas('university', function ($query) use ($college) {
+                $query->where('name', 'LIKE', '%' . $college . '%');
+                $query->orwhere('slug', 'LIKE', '%' . $college . '%');
             });
         }
 
@@ -145,6 +146,13 @@ class ProductController extends Controller
             'type' => $request->get('type'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
+
+        if ($product && $request->has('files')) {
+            $files = $request->get('files');
+            foreach ($files as $key => $file) {
+                ProductMedia::saveBase64Media($file, $product->id);
+            }
+        }
         $msg = $product ? 'product created successfully' : "product not Found";
         $error = $product ? false : true;
         $body = [
