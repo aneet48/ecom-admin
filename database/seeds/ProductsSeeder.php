@@ -39,7 +39,8 @@ class ProductsSeeder extends Seeder
             ]);
 
             for ($j = 0; $j < 2; $j++) {
-                $path = 'https://i.picsum.photos/id/' . $img_ids[array_rand($img_ids)] . '/600/400.jpg';
+                // $path = 'https://i.picsum.photos/id/' . $img_ids[array_rand($img_ids)] . '/600/400.jpg';
+                $path = 'https: //source.unsplash.com/random';
                 $filename = 'pimg_' . time() . rand(10, 999) . '.jpg';
 
                 Image::make($path)->save(public_path('storage/products/' . $filename));
