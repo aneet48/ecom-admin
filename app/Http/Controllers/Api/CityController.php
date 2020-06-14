@@ -92,7 +92,7 @@ class CityController extends Controller
 
     public function search($q)
     {
-        $result = City::with('state')->where('name','like','%'.$q.'%')->paginate(30);
+        $result = City::with('state')->where('name','like','%'.$q.'%')->paginate(15);
         return response()->json($result);
     }
 }

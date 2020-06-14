@@ -98,7 +98,7 @@ class ProductCategoryController extends Controller
         $result = ProductCategory::with('children', 'parent')
             ->where('name', 'like', '%' . $q . '%')
             ->orwhere('slug', 'like', '%' . $q . '%')
-            ->paginate(30);
+            ->paginate(15);
         return response()->json($result);
     }
 }

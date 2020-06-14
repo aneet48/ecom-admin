@@ -75,7 +75,7 @@ class ProductController extends Controller
             });
 
         }
-        $paginate = $request->has('paginate') ? $request->get('paginate') : 20;
+        $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
 
         $products = $query->orderBy('id', 'DESC')->paginate($paginate);
 

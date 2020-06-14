@@ -143,7 +143,7 @@ class UserController extends Controller
 
     public function users()
     {
-        $users = User::with('university')->where('is_admin', 0)->paginate(20);
+        $users = User::with('university')->where('is_admin', 0)->paginate(15);
         return response()->json($users);
     }
 
@@ -171,7 +171,7 @@ class UserController extends Controller
                     ->orWhere('last_name', 'like', '%' . $q . '%')
                     ->orWhere('email', 'like', '%' . $q . '%');
             })
-            ->paginate(30);
+            ->paginate(15);
         return response()->json($result);
     }
 
