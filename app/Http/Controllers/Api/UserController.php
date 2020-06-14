@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -78,8 +77,11 @@ class UserController extends Controller
             "password" => Hash::make($password),
             'api_token' => hash('sha256', $token),
         ]);
-        $user->makeVisible(['api_token']);
 
+        if ($user) {
+            $user = User::with('university')->where('id', $user->id)->first();
+        }
+        $user->makeVisible(['api_token']);
         $body = [
             'user' => $user,
         ];
