@@ -65,7 +65,10 @@ class ProductController extends Controller
                     })
                     ->orwhereHas('university', function ($query) use ($s) {
                         $query->where('name', 'LIKE', '%' . $s . '%');
+                        $query->orwhere('slug', 'LIKE', '%' . $s . '%');
+
                     })
+
                     ->orwhereHas('category', function ($query) use ($s) {
                         $query->where('name', 'LIKE', '%' . $s . '%');
                     });
@@ -113,6 +116,14 @@ class ProductController extends Controller
             'type' => $request->get('type'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
+        if ($product && $request->has('files')) {
+            ProductMedia::where('product_id', $id)->delete();
+            $files = $request->get('files');
+            foreach ($files as $key => $file) {
+                ProductMedia::saveBase64Media($file, $id);
+            }
+        }
+
         $msg = $product ? 'product updated successfully' : "product not Found";
         $error = $product ? false : true;
 

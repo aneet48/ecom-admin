@@ -10,11 +10,19 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 class ProductMedia extends Model
 {
     protected $fillable = ['name', 'product_id', 'type', 'thumbnail'];
-    protected $appends = ['link', 'thumbnail_link'];
+    protected $appends = ['link', 'thumbnail_link','base64_data'];
 
     public function getLinkAttribute()
     {
         return url('storage/products/' . $this->name);
+    }
+    public function getBase64DataAttribute()
+    {
+        $path = public_path().'/storage/products/' . $this->name;
+        $mime = mime_content_type( $path);
+        $image = 'data:'. $mime.';base64,'.base64_encode(file_get_contents($path));
+
+        return  $image;
     }
 
     public function getThumbnailLinkAttribute()
