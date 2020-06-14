@@ -85,6 +85,19 @@ class ProductController extends Controller
     public function product($id)
     {
         $product = Product::with('category', 'seller', 'seller.university', 'images', 'university')->find($id);
+        $product->images->map(function ($item) {
+            $path = public_path() . '/storage/products/' . $item->name;
+            $mime = mime_content_type($path);
+            $image = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($path));
+            $item->base64_data = $image;
+            // return $image;
+
+            // if ($item->type_id == $itemSpecial) {
+            //     $item->discounted_price = ($item->discount * $item->price) / 100;
+            // }
+            return $item;
+        });
+
         return response()->json($product);
 
     }
