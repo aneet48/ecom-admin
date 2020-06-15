@@ -33,9 +33,9 @@ const menus = [
     },
     {
         id: "6",
-        title: "Universities/Colleges",
+        title: "Colleges",
         type: "link",
-        link: "/universities",
+        link: "/colleges",
         icon: "school"
     },
     // {

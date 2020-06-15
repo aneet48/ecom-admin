@@ -56,7 +56,7 @@ const routes = [
     { path: "/users/edit/:id", component: CreateUser, name: "Edit User" },
     { path: "/states", component: States, name: "States" },
     { path: "/cities", component: Cities, name: "Cities" },
-    { path: "/universities", component: Universities, name: "Universities" },
+    { path: "/colleges", component: Universities, name: "Colleges" },
     { path: "/products-list", component: Products, name: "Products" },
     // { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
     {

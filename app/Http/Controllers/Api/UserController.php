@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $messages = [
             'required' => 'The :attribute is required',
-            'university_id.required' => 'The university is required',
+            'university_id.required' => 'The college is required',
             'string' => 'The :attribute must be text format',
 
         ];
@@ -104,7 +104,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $messages = [
-            'university_id.required' => 'The university is required',
+            'university_id.required' => 'The college is required',
         ];
 
         $validator = Validator::make($request->all(), [
