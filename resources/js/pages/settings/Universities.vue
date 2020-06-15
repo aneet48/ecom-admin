@@ -1,7 +1,7 @@
 <template>
   <div>
     <BreadCrumb />
-    <PageHeader title="Universities/Colleges">
+    <PageHeader title="Colleges">
       <v-btn class="ma-2 action-btn" color="teal accent-4" dark @click="addNew">
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
       </v-btn>
@@ -142,7 +142,7 @@ export default {
       posts: [],
       loader: true,
       dialog: false,
-      modal_title: "Add New university",
+      modal_title: "Add New College",
       currentPage: 1,
       TotalPages: 0,
       totalVisible: 15,
@@ -203,14 +203,14 @@ export default {
   },
   methods: {
     addNew() {
-      this.modal_title = "Add New university";
+      this.modal_title = "Add New College";
       this.m_type = "add";
       this.dialog = true;
     },
 
     edituniversity(item) {
       //   this.iscitiesLoading = true;
-      this.modal_title = "Edit university";
+      this.modal_title = "Edit College";
       this.editItem = item;
       console.log(item.city_id);
       let city = item.city;

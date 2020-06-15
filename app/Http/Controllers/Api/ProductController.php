@@ -104,6 +104,9 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        $messages = [
+            'university_id.required' => 'The college is required',
+        ];
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
@@ -113,7 +116,7 @@ class ProductController extends Controller
             'category_id' => 'required',
             'university_id' => 'required',
             'type' => 'required',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
@@ -145,6 +148,9 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
+        $messages = [
+            'university_id.required' => 'The college is required',
+        ];
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
@@ -154,7 +160,7 @@ class ProductController extends Controller
             'category_id' => 'required',
             'type' => 'required',
             'university_id' => 'required',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());

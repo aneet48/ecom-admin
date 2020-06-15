@@ -33,9 +33,9 @@ const menus = [
     },
     {
         id: "6",
-        title: "Universities/Colleges",
+        title: "Colleges",
         type: "link",
-        link: "/universities",
+        link: "/colleges",
         icon: "school"
     },
     // {
@@ -78,6 +78,26 @@ const menus = [
         type: "link",
         link: "/products-categories",
         icon: "account-group"
+    },
+    {
+        id: "23",
+        title: "Events",
+        type: "subheader",
+        link: ""
+    },
+    {
+        id: "24",
+        title: "Events",
+        type: "link",
+        link: "/events-list",
+        icon: "calendar-multiple"
+    },
+    {
+        id: "25",
+        title: "Categories",
+        type: "link",
+        link: "/events-categories",
+        icon: "calendar-multiple"
     },
 ];
 

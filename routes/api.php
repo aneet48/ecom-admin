@@ -98,4 +98,25 @@ Route::post('/product-media/delete/{id}', 'Api\ProductMediaController@delete');
 Route::get('/product-media/{product_id}', 'Api\ProductMediaController@productMedias');
 Route::post('/product-media-base64', 'Api\ProductMediaController@productMediasBase64');
 
+// events
+Route::get('/events/{show_all?}', 'Api\EventController@events');
+Route::get('/event/{id}', 'Api\EventController@event');
+Route::post('/event', 'Api\EventController@create');
+Route::post('/event/{id}', 'Api\EventController@update');
+Route::post('/event/delete/{id}', 'Api\EventController@delete');
+Route::get('/events/search/{q}', 'Api\EventController@search');
+
+// event-categories
+Route::get('/event-categories/{show_all?}/{cat_id?}', 'Api\EventCategoryController@list');
+Route::get('/event-category/{id}', 'Api\EventCategoryController@eventCategory');
+Route::post('/event-category', 'Api\EventCategoryController@create');
+Route::post('/event-category/{id}', 'Api\EventCategoryController@update');
+Route::post('/event-category/delete/{id}', 'Api\EventCategoryController@delete');
+Route::get('/event-categories-search/{q}', 'Api\EventCategoryController@search');
+
+// event Images
+Route::post('/event-media', 'Api\EventMediaController@create');
+Route::post('/event-media/delete/{id}', 'Api\EventMediaController@delete');
+Route::get('/event-media/{event_id}', 'Api\EventMediaController@eventMedias');
+Route::post('/event-media-base64', 'Api\EventtMediaController@eventMediasBase64');
 // });

@@ -32,7 +32,7 @@ class UniversityController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:states,name,' . $id,
+            'name' => 'required|string|unique:universities,name,' . $id,
             'city_id' => 'required',
         ]);
 
@@ -47,7 +47,7 @@ class UniversityController extends Controller
             'slug' => Str::slug($request->get('name')),
 
         ]);
-        $msg = $university ? 'University updated successfully' : "University not Found";
+        $msg = $university ? 'College updated successfully' : "College not Found";
         $error = $university ? false : true;
 
         return generate_response($error, $msg);
@@ -57,7 +57,7 @@ class UniversityController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:states',
+            'name' => 'required|string|unique:universities,name',
             'city_id' => 'required',
 
         ]);
@@ -72,7 +72,7 @@ class UniversityController extends Controller
             'active' => $request->has('active') ? $request->get('active') : false,
              'slug' => Str::slug($request->get('name')),
         ]);
-        $msg = $university ? 'University created successfully' : "University not Found";
+        $msg = $university ? 'College created successfully' : "College not Found";
         $error = $university ? false : true;
         $body = [
             'university' => $university,
@@ -85,7 +85,7 @@ class UniversityController extends Controller
     {
 
         $university = University::where('id', $id)->delete();
-        $msg = $university ? 'University deleted successfully' : "University not Found";
+        $msg = $university ? 'College deleted successfully' : "College not Found";
         $error = $university ? false : true;
 
         return generate_response($error, $msg);

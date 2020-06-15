@@ -48,6 +48,8 @@ import Cities from "./pages/settings/Cities.vue";
 import Universities from "./pages/settings/Universities.vue";
 import Wait from "./pages/Wait.vue";
 import ProductCategories from "./pages/Products/Categories.vue";
+import Events from "./pages/Events/EventsList.vue";
+import EventCategories from "./pages/Events/Categories.vue";
 
 const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
@@ -56,13 +58,20 @@ const routes = [
     { path: "/users/edit/:id", component: CreateUser, name: "Edit User" },
     { path: "/states", component: States, name: "States" },
     { path: "/cities", component: Cities, name: "Cities" },
-    { path: "/universities", component: Universities, name: "Universities" },
+    { path: "/colleges", component: Universities, name: "Colleges" },
     { path: "/products-list", component: Products, name: "Products" },
     // { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
     {
         path: "/products-categories/:id?",
         component: ProductCategories,
         name: "Products Categories"
+    },
+    { path: "/events-list", component: Events, name: "Events" },
+    // { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
+    {
+        path: "/events-categories/:id?",
+        component: EventCategories,
+        name: "Events Categories"
     },
     { path: "/login-redirect", component: Wait, name: "Login Redirect" }
 ];

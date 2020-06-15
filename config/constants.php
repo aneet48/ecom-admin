@@ -8,4 +8,12 @@ return [
         'Sports & Gym',
         'Stationary',
     ],
+    "fixed_event_cats" => [
+        'Technical',
+        'Entrepreneurship',
+        'Culture',
+        'Sports Events',
+        'Education Events',
+        'Library',
+    ],
 ];

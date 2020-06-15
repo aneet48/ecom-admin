@@ -25,7 +25,7 @@
             <tr>
               <th class="text-left">Name</th>
               <th class="text-left">Status</th>
-              <th class="text-left">Sub Categories</th>
+              <!-- <th class="text-left">Sub Categories</th> -->
               <th class="text-left"></th>
             </tr>
           </thead>
@@ -41,14 +41,14 @@
                   <v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip>
                 </div>
               </td>
-              <td>
+              <!-- <td>
                 <v-chip
                   :to="`/products-categories/${item.id}`"
                   class="ma-2 chip"
                   color="orange "
                   v-if="item.children.length"
                 >Sub Categories</v-chip>
-              </td>
+              </td> -->
               <td class="text-right">
                 <div v-if="!item.fixed">
                   <v-row class="d-none d-sm-block">
@@ -98,7 +98,7 @@
                 <v-col cols="12">
                   <v-text-field label="Name*" required v-model="m_name" :rules="nameRules"></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <!-- <v-col cols="12">
                   <v-autocomplete
                     label="Parent Category"
                     :items="parent"
@@ -109,7 +109,7 @@
                     :loading="isparentLoading"
                     :search-input.sync="searchParent"
                   ></v-autocomplete>
-                </v-col>
+                </v-col> -->
                 <v-col cols="12">
                   <v-checkbox v-model="m_active" label="Activate"></v-checkbox>
                 </v-col>

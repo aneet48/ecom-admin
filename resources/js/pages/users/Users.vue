@@ -14,7 +14,7 @@
           <thead>
             <tr>
               <th class="text-left">Name</th>
-              <th class="text-left">University</th>
+              <th class="text-left">College</th>
               <th class="text-left">Email</th>
               <th class="text-left"></th>
             </tr>
