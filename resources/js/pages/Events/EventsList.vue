@@ -526,12 +526,12 @@ export default {
       this.e_title = item.title;
       this.e_desc = item.description;
       this.e_price = item.price;
-      this.e_date = item.date;
-      this.e_time = item.time;
+      this.e_date = item.event_date;
+      this.e_time = item.event_time;
       this.e_contact = item.contact_number;
       this.e_book_link = item.book_event_link;
       this.e_web_link = item.visit_website_link;
-      this.e_status = item.status;
+      this.e_status = item.active;
       this.dialog = true;
     },
 
