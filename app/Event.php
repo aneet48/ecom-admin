@@ -15,6 +15,7 @@ class Event extends Model
         'event_date',
         'event_time',
         'contact_number',
+        'social_profiles',
         'book_event_link',
         'visit_website_link',
         'active',

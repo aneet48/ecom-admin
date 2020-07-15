@@ -65,6 +65,14 @@
                     type="number"
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    label="Contact No."
+                    :rules="requiredRules"
+                    v-model="e_contact"
+                    type="number"
+                  ></v-text-field>
+                </v-col>
                               
                 <v-col cols="12" md="12">
                   <v-autocomplete
@@ -86,13 +94,22 @@
                 <v-col cols="12" sm="6" md="6">
                   <v-time-picker v-model="e_time"></v-time-picker>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                
+                <v-col cols="12" sm="12" md="12" v-for="(sp, index) in e_social_profiles" :key="index">
                   <v-text-field
-                    label="Contact No."
+                    label="Social Profile Text"
+                    required
+                    v-model="sp.text"
                     :rules="requiredRules"
-                    v-model="e_contact"
-                    type="number"
                   ></v-text-field>
+                  <v-text-field
+                    label="Social Profile Link"
+                    required
+                    v-model="sp.link"
+                    :rules="requiredRules"
+                  ></v-text-field>
+                  <v-btn @click="removeLine(index)" ><v-icon class="app-bar-icon">mdi-minus</v-icon></v-btn>
+                  <v-btn v-if="index + 1 === e_social_profiles.length" @click="addLine"><v-icon class="app-bar-icon">mdi-plus</v-icon></v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                   <v-text-field
@@ -278,7 +295,9 @@ export default {
   data() {
     return {
       pmModal: false,
+      blockRemoval: true,
       e_images: [],
+      e_social_profiles: [],
       e_image: [],
       e_item: "",
       select: [],
@@ -347,6 +366,7 @@ export default {
     this.loader = true;
     this.fetchEvents();
     this.fetchStates();
+    this.addLine();
   },
   watch: {
     searchSeller: function(val) {
@@ -383,6 +403,9 @@ export default {
         this.loader = true;
         this.fetchEvents();
       }
+    },
+    e_social_profiles () {
+      this.blockRemoval = this.e_social_profiles.length <= 1
     }
   },
   methods: {
@@ -532,6 +555,7 @@ export default {
       this.e_book_link = item.book_event_link;
       this.e_web_link = item.visit_website_link;
       this.e_status = item.active;
+      this.e_social_profiles = JSON.parse(JSON.stringify(item.social_profiles));
       this.dialog = true;
     },
 
@@ -595,6 +619,7 @@ export default {
           contact_number: this.e_contact,
           book_event_link: this.e_book_link,
           visit_website_link: this.e_web_link,
+          social_profiles: this.e_social_profiles,
           active: this.e_status
           //   seller_id: userData.id
         }
@@ -671,6 +696,21 @@ export default {
         "Oops!! There was some error. Please try again later or report ";
       this.snackbar = true;
       this.snackbarColor = "red";
+    },
+    addLine () {
+      let checkEmptyLines = this.e_social_profiles.filter(line => line.text === null)
+      if (checkEmptyLines.length >= 1 && this.e_social_profiles.length > 0) {
+        return
+      }
+      this.e_social_profiles.push({
+        text: null,
+        link: null,
+      })
+    },
+    removeLine (lineId) {
+      if (!this.blockRemoval) {
+        this.e_social_profiles.splice(lineId, 1)
+      }
     }
   }
 };

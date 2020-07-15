@@ -98,6 +98,7 @@ class EventController extends Controller
             'event_date' => 'required',
             'event_time' => 'required',
             'contact_number' => 'required',
+            'social_profiles'=> 'required',
             'book_event_link' => 'required',
             'visit_website_link' => 'required',
         ], $messages);
@@ -115,6 +116,7 @@ class EventController extends Controller
             'event_date' => $request->get('event_date'),
             'event_time' => $request->get('event_time'),
             'contact_number' => $request->get('contact_number'),
+            'social_profiles'=> json_encode($request->get('social_profiles')),
             'book_event_link' => $request->get('book_event_link'),
             'visit_website_link' => $request->get('visit_website_link'),
             'active' => $request->has('active') ? $request->get('active') : false,
@@ -140,16 +142,17 @@ class EventController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'category_id' => 'required',
+            'title'         => 'required|string',
+            'description'   => 'required|string',
+            'category_id'   => 'required',
             'university_id' => 'required',
-            'price' => 'required',
-            'event_date' => 'required',
-            'event_time' => 'required',
-            'contact_number' => 'required',
-            'book_event_link' => 'required',
+            'price'         => 'required',
+            'event_date'    => 'required',
+            'event_time'    => 'required',
+            'contact_number'=> 'required',
+            'book_event_link'=> 'required',
             'visit_website_link' => 'required',
+            'social_profiles'=> 'required',
         ], $messages);
 
         if ($validator->fails()) {
@@ -157,17 +160,18 @@ class EventController extends Controller
         }
 
         $event = Event::create([
-            'title' => $request->get('title'),
-            'description' => $request->get('description'),
-            'category_id' => $request->get('category_id'),
+            'title'         => $request->get('title'),
+            'description'   => $request->get('description'),
+            'category_id'   => $request->get('category_id'),
             'university_id' => $request->get('university_id'),
-            'price' => $request->get('price'),
-            'event_date' => $request->get('event_date'),
-            'event_time' => $request->get('event_time'),
-            'contact_number' => $request->get('contact_number'),
-            'book_event_link' => $request->get('book_event_link'),
+            'price'         => $request->get('price'),
+            'event_date'    => $request->get('event_date'),
+            'event_time'    => $request->get('event_time'),
+            'contact_number'=> $request->get('contact_number'),
+            'social_profiles'=> json_encode($request->get('social_profiles')),
+            'book_event_link'=> $request->get('book_event_link'),
             'visit_website_link' => $request->get('visit_website_link'),
-            'active' => $request->has('active') ? $request->get('active') : false,
+            'active'        => $request->has('active') ? $request->get('active') : false,
         ]);
 
         if ($event && $request->has('files')) {
