@@ -41,13 +41,12 @@ class EventsSeeder extends Seeder
             ['text'=> 'Youtube',
             'link'=> 'https://youtube.com'],
         ];
-        $social_profiles = json_encode($social_profiles);
         $y = rand(2020, 2035);
         $mon = rand(1, 12);
         $d = rand(1, 28);
-        $h = rand(1, 24);
-        $m = rand(1, 60);
-        $s = rand(1, 60);
+        $h = rand(0, 23);
+        $m = rand(0, 59);
+        $s = rand(0, 59);
         for ($i = 0; $i < 40; $i++) {
             $university = University::all()->random(1)->first();
             $category = EventCategory::all()->random(1)->first();

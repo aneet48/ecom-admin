@@ -168,7 +168,7 @@ class EventController extends Controller
             'event_date'    => $request->get('event_date'),
             'event_time'    => $request->get('event_time'),
             'contact_number'=> $request->get('contact_number'),
-            'social_profiles'=> json_encode($request->get('social_profiles')),
+            'social_profiles'=> $request->get('social_profiles'),
             'book_event_link'=> $request->get('book_event_link'),
             'visit_website_link' => $request->get('visit_website_link'),
             'active'        => $request->has('active') ? $request->get('active') : false,

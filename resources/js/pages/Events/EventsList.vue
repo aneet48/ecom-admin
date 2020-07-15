@@ -699,6 +699,7 @@ export default {
     },
     addLine () {
       let checkEmptyLines = this.e_social_profiles.filter(line => line.text === null)
+      if(this.e_social_profiles.length > 4) {return}
       if (checkEmptyLines.length >= 1 && this.e_social_profiles.length > 0) {
         return
       }
