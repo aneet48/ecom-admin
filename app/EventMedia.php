@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class EventMedia extends Model
 {

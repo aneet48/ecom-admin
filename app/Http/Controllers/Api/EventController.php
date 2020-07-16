@@ -18,11 +18,6 @@ class EventController extends Controller
             $query = $query->where('active', 1);
         }
 
-        // if ($request->has('type')) {
-        //     $type = $request->get('type');
-        //     $query = $query->where('type', $type);
-        // }
-
         if ($request->has('category')) {
             $category = EventCategory::whereSlug($request->get('category'))->first();
             if ($category) {
@@ -30,10 +25,6 @@ class EventController extends Controller
 
             }
         }
-
-        // if ($request->has('seller_id')) {
-        //     $query = $query->where('seller_id', $request->get('seller_id'));
-        // }
 
         if ($request->has('college')) {
             $college = $request->get('college');

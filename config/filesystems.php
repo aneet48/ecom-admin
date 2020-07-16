@@ -52,7 +52,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public/products'),
         ],
-
+        'events' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/events'),
+        ],
         'profile_img' => [
             'driver' => 'local',
             'root' => storage_path('app/public/profile_img'),
