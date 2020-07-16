@@ -34,12 +34,12 @@ class EventsSeeder extends Seeder
             'http://woodbox.herokuapp.com/products',
         ];
         $social_profiles = [
-            ['text'=> 'facebook',
+            ['text'=> 'Facebook',
             'link'=> 'https://facebook.com'],
             ['text'=> 'Twitter',
             'link'=> 'https://twitter.com'],
-            ['text'=> 'Youtube',
-            'link'=> 'https://youtube.com'],
+            ['text'=> 'Instagram',
+            'link'=> 'https://instagram.com'],
         ];
         $y = rand(2020, 2035);
         $mon = rand(1, 12);
