@@ -143,7 +143,6 @@ class EventController extends Controller
             'contact_number'=> 'required',
             'book_event_link'=> 'required',
             'visit_website_link' => 'required',
-            'social_profiles'=> 'required',
         ], $messages);
 
         if ($validator->fails()) {

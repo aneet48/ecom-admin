@@ -98,18 +98,12 @@
                 <v-col cols="12" sm="12" md="12" v-for="(sp, index) in e_social_profiles" :key="index">
                   <v-text-field
                     label="Social Profile Text"
-                    required
                     v-model="sp.text"
-                    :rules="requiredRules"
                   ></v-text-field>
                   <v-text-field
                     label="Social Profile Link"
-                    required
                     v-model="sp.link"
-                    :rules="requiredRules"
                   ></v-text-field>
-                  <v-btn @click="removeLine(index)" ><v-icon class="app-bar-icon">mdi-minus</v-icon></v-btn>
-                  <v-btn v-if="index + 1 === e_social_profiles.length" @click="addLine"><v-icon class="app-bar-icon">mdi-plus</v-icon></v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                   <v-text-field
@@ -404,9 +398,6 @@ export default {
         this.fetchEvents();
       }
     },
-    e_social_profiles () {
-      this.blockRemoval = this.e_social_profiles.length <= 1
-    }
   },
   methods: {
     handleSearch(val) {
@@ -535,7 +526,6 @@ export default {
     },
 
     editEvent(item) {
-      //   this.isStatesLoading = true;
       this.modal_title = "Edit Event";
       this.editItem = item;
       let category = item.category;
@@ -544,8 +534,6 @@ export default {
       this.categories = [this.e_categories];
       this.m_uni = { id: item.university.id, name: item.university.name };
       this.universities = [this.m_uni];
-      // this.p_seller = { id: item.seller.id, email: item.seller.email };
-      // this.sellers = [this.p_seller];
       this.e_title = item.title;
       this.e_desc = item.description;
       this.e_price = item.price;
@@ -621,7 +609,6 @@ export default {
           visit_website_link: this.e_web_link,
           social_profiles: this.e_social_profiles,
           active: this.e_status
-          //   seller_id: userData.id
         }
       })
         .then(res => {
@@ -698,21 +685,13 @@ export default {
       this.snackbarColor = "red";
     },
     addLine () {
-      let checkEmptyLines = this.e_social_profiles.filter(line => line.text === null)
-      if(this.e_social_profiles.length > 4) {return}
-      if (checkEmptyLines.length >= 1 && this.e_social_profiles.length > 0) {
-        return
-      }
+      for(var i =0; i < 5; i++) {
       this.e_social_profiles.push({
         text: null,
         link: null,
       })
-    },
-    removeLine (lineId) {
-      if (!this.blockRemoval) {
-        this.e_social_profiles.splice(lineId, 1)
       }
-    }
+    },
   }
 };
 </script>
