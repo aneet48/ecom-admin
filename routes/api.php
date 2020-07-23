@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 // users
 Route::post('/user/sign-up', 'Api\UserController@signUp');
 Route::post('/user/login', 'Api\UserController@login');
+Route::get('/test', 'Api\UserController@test');
 
 // universities
 

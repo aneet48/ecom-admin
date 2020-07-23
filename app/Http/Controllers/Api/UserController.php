@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -32,7 +34,6 @@ class UserController extends Controller
             $token = Str::random(60);
             $user->api_token = hash('sha256', $token);
             $user->save();
-
         }
 
         $body = [
@@ -218,6 +219,38 @@ class UserController extends Controller
         }
 
         return generate_response(true, $error);
+    }
 
+    public function test()
+    {
+        // $client = new \GuzzleHttp\Client();
+        $url = "https://api.connectycube.com/session";
+        $timestamp = Carbon::now()->timestamp;
+        $nonce = Str::random(16);
+        $arr = [
+            'application_id=' . env('CONNECTYCUBE_APP_ID'),
+            'auth_key=' . env('CONNECTYCUBE_APP_KEY'),
+            'nonce=' .  $nonce,
+            'timestamp=' . $timestamp
+        ];
+        $signature =  implode('&', $arr);
+
+        $response = Http::post($url, [
+            'application_id' => env('CONNECTYCUBE_APP_ID'),
+            'auth_key' => env('CONNECTYCUBE_APP_KEY'),
+            'timestamp' =>  $timestamp,
+            'nonce' => $nonce,
+            'signature' => hash_hmac('sha1', $signature, env('CONNECTYCUBE_APP_SECRET'))
+        ]);
+
+        // $myBody['name'] = "Demo";
+
+        // $request = $client->post($url,  ['body' => $myBody]);
+
+        // $response = $request->send();
+
+
+
+        dd($signature ,$response->json());
     }
 }
