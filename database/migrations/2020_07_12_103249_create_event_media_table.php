@@ -21,6 +21,10 @@ class CreateEventMediaTable extends Migration
             $table->unsignedBigInteger('event_id');
             $table->timestamps();
         });
+
+        Schema::table('event_media', function ($table) {
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
+        });
     }
 
     /**

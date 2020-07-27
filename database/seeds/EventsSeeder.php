@@ -47,7 +47,7 @@ class EventsSeeder extends Seeder
         $h = rand(0, 23);
         $m = rand(0, 59);
         $s = rand(0, 59);
-        for ($i = 0; $i < 40; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $university = University::all()->random(1)->first();
             $category = EventCategory::all()->random(1)->first();
             $event = App\Event::create([

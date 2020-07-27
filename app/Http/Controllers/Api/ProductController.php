@@ -34,7 +34,12 @@ class ProductController extends Controller
             $category = ProductCategory::whereSlug($request->get('category'))->first();
             if ($category) {
                 $query = $query->where('category_id', $category->id);
-
+            }
+        }
+        if ($request->has('cat_title')) {
+            $category = ProductCategory::whereName($request->get('cat_title'))->first();
+            if ($category) {
+                $query = $query->where('category_id', $category->id);
             }
         }
 

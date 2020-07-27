@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\ConnectyCube;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class UserController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $user = User::with('university')->where('email', $request->get('email'))->first();
+        $user = User::with('university', 'connectycube_user')->where('email', $request->get('email'))->first();
 
         if ($user && !Hash::check($request->get('password'), $user->password)) {
             return generate_response(true, ['Credentials do not match']);
@@ -80,13 +81,23 @@ class UserController extends Controller
         ]);
 
         if ($user) {
-            $user = User::with('university')->where('id', $user->id)->first();
+            $c_user = [
+                'email' => $user->email,
+                'password' => ConnectyCube::generatePassword(),
+                'external_user_id' => $user->id
+            ];
+
+            ConnectyCube::signUp($c_user);
+            $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
+
         }
         $user->makeVisible(['api_token']);
         $body = [
             'user' => $user,
         ];
         $msg = "User is created successfully";
+
+
 
         // Mail::send([], [], function ($message) use ($request, $password) {
         //     $message->to($request->get('email'))
@@ -101,6 +112,64 @@ class UserController extends Controller
 
         return generate_response(false, $msg, $body);
     }
+
+    public function simpleSignUp(Request $request)
+    {
+        $messages = [
+            'required' => 'The :attribute is required',
+            'string' => 'The :attribute must be text format',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|unique:users',
+            'password' => 'required|min:8',
+
+        ], $messages);
+        if ($validator->fails()) {
+            return generate_response(true, $validator->errors()->all());
+        }
+        $token = Str::random(60);
+
+        $user = User::create([
+            "email" => $request->get('email'),
+            "password" => $request->get('password'),
+            "google_id"=> $request->get('google_id'),
+            'api_token' => hash('sha256', $token),
+        ]);
+
+        if ($user) {
+
+            $c_user = [
+                'email' => $user->email,
+                'password' => ConnectyCube::generatePassword(),
+                'external_user_id' => $user->id
+            ];
+
+            ConnectyCube::signUp($c_user);
+            $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
+        }
+        $user->makeVisible(['api_token']);
+        $body = [
+            'user' => $user,
+        ];
+        $msg = "User is created successfully";
+
+
+
+        // Mail::send([], [], function ($message) use ($request, $password) {
+        //     $message->to($request->get('email'))
+        //         ->subject('Sign up complete')
+        //     // here comes what you want
+        //     // ->setBody('Hi, welcome user!') // assuming text/plain
+        //     // or:
+        //         ->setBody('<h1>Hi, welcome ' . $request->get('first_name') . '!</h1><p>An account has been created for you.</p>
+        //         <p>Password:' . $password . '</p>
+        //         ', 'text/html'); // for HTML rich messages
+        // });
+
+        return generate_response(false, $msg, $body);
+    }
+
 
     public function update(Request $request, $id)
     {
@@ -129,8 +198,9 @@ class UserController extends Controller
             "branch" => $request->get('branch'),
             "university_id" => $request->get('university_id'),
             "email" => $request->get('email'),
+            'is_complete'=>true
         ]);
-        $user = User::with('university')->find($id);
+        $user = User::with('university', 'connectycube_user')->find($id);
 
         $user->makeVisible(['api_token']);
 
@@ -150,7 +220,7 @@ class UserController extends Controller
 
     public function user($id)
     {
-        $user = User::with('university', 'university.city', 'university.city.state')->whereId($id)->where('is_admin', 0)->first();
+        $user = User::with('university', 'university.city', 'university.city.state', 'connectycube_user')->whereId($id)->where('is_admin', 0)->first();
         return response()->json($user);
     }
 
@@ -223,34 +293,43 @@ class UserController extends Controller
 
     public function test()
     {
+        ConnectyCube::getSessionToken();
         // $client = new \GuzzleHttp\Client();
-        $url = "https://api.connectycube.com/session";
-        $timestamp = Carbon::now()->timestamp;
-        $nonce = Str::random(16);
-        $arr = [
-            'application_id=' . env('CONNECTYCUBE_APP_ID'),
-            'auth_key=' . env('CONNECTYCUBE_APP_KEY'),
-            'nonce=' .  $nonce,
-            'timestamp=' . $timestamp
-        ];
-        $signature =  implode('&', $arr);
+        // $url = "https://api.connectycube.com/session";
+        // $timestamp = Carbon::now()->timestamp;
+        // $nonce = Str::random(16);
+        // $arr = [
+        //     'application_id=' . env('CONNECTYCUBE_APP_ID'),
+        //     'auth_key=' . env('CONNECTYCUBE_APP_KEY'),
+        //     'nonce=' .  $nonce,
+        //     'timestamp=' . $timestamp
+        // ];
+        // $signature =  implode('&', $arr);
 
-        $response = Http::post($url, [
-            'application_id' => env('CONNECTYCUBE_APP_ID'),
-            'auth_key' => env('CONNECTYCUBE_APP_KEY'),
-            'timestamp' =>  $timestamp,
-            'nonce' => $nonce,
-            'signature' => hash_hmac('sha1', $signature, env('CONNECTYCUBE_APP_SECRET'))
-        ]);
+        // $response = Http::post($url, [
+        //     'application_id' => env('CONNECTYCUBE_APP_ID'),
+        //     'auth_key' => env('CONNECTYCUBE_APP_KEY'),
+        //     'timestamp' =>  $timestamp,
+        //     'nonce' => $nonce,
+        //     'signature' => hash_hmac('sha1', $signature, env('CONNECTYCUBE_APP_SECRET'))
+        // ]);
+        // 86a3167672a5f10b478951f12dd4e9c478000ad1
 
-        // $myBody['name'] = "Demo";
-
-        // $request = $client->post($url,  ['body' => $myBody]);
-
-        // $response = $request->send();
+        // $url = "https://api.connectycube.com/users";
 
 
+        // $response = Http::withHeaders([
+        //     'CB-Token' => '86a3167672a5f10b478951f12dd4e9c478000ad1'
+        // ])->post($url, [
+        //     'user' => [
+        //         'email' => 'test@test.com',
+        //         'password' => '12345678',
+        //         'external_user_id' => 11
+        //     ]
+        //     ]);
 
-        dd($signature ,$response->json());
+
+
+        // dd($response->json());
     }
 }

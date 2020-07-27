@@ -43,11 +43,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $append = ['name','university'];
+    protected $append = ['name','university', 'connectycube_user'];
 
     public function university()
     {
         return $this->belongsTo('App\University', 'university_id');
+    }
+    public function connectycube_user()
+    {
+        return $this->hasOne('App\ConnectyCube', 'user_id');
     }
 
     public function unHide()
