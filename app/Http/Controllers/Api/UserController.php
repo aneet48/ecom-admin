@@ -129,10 +129,10 @@ class UserController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
         $token = Str::random(60);
-
+        $password = $request->get('password') ?: Str::random(8);
         $user = User::create([
             "email" => $request->get('email'),
-            "password" => $request->get('password'),
+            "password" =>   $password,
             "google_id"=> $request->get('google_id'),
             'api_token' => hash('sha256', $token),
         ]);
