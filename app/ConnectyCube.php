@@ -13,7 +13,8 @@ class ConnectyCube extends Model
     protected $fillable = [
         'email',
         'password',
-        'user_id'
+        'user_id',
+        'connectycube_id'
     ];
 
     public static function createSession()
@@ -74,6 +75,7 @@ class ConnectyCube extends Model
                 'email' => $user['email'],
                 'password' => $user['password'],
                 'user_id' => $user['external_user_id'],
+                'connectycube_id'=> $response['user']['id']
             ]);
         }
 

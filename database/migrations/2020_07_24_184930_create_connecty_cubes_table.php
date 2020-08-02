@@ -17,6 +17,7 @@ class CreateConnectyCubesTable extends Migration
             $table->id();
             $table->string('email');
             $table->string('password');
+            $table->string('connectycube_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

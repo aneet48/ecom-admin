@@ -178,7 +178,7 @@ class UserController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|unique:users',
+            'email' => 'required',
             // 'password' => 'required|min:8',
             'google_id' => 'required|min:8',
 
@@ -195,9 +195,8 @@ class UserController extends Controller
             // "password" =>   $password,
             'api_token' => hash('sha256', $token),
         ]);
-        dd($user);
-        if ($user) {
-
+        if ($user && !$user->connectycube_user) {
+            // $user = User::where('email', $request->get('email'))->first();
             $c_user = [
                 'email' => $user->email,
                 'password' => ConnectyCube::generatePassword(),
@@ -205,9 +204,9 @@ class UserController extends Controller
             ];
 
             ConnectyCube::signUp($c_user);
-            $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
+
         }
-        $user->makeVisible(['api_token']);
+        $user->with('university', 'connectycube_user')->makeVisible(['api_token']);
         $body = [
             'user' => $user,
         ];
