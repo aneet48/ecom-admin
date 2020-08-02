@@ -45,6 +45,7 @@ import CreateUser from "./pages/users/create-user.vue";
 import States from "./pages/settings/States.vue";
 import Products from "./pages/Products/ProductsList.vue";
 import Cities from "./pages/settings/Cities.vue";
+import EventsSettings from "./pages/settings/Events.vue";
 import Universities from "./pages/settings/Universities.vue";
 import Wait from "./pages/Wait.vue";
 import ProductCategories from "./pages/Products/Categories.vue";
@@ -73,7 +74,8 @@ const routes = [
         component: EventCategories,
         name: "Events Categories"
     },
-    { path: "/login-redirect", component: Wait, name: "Login Redirect" }
+    { path: "/login-redirect", component: Wait, name: "Login Redirect" },
+    { path: "/settings/events", component: EventsSettings, name: "EventsSettings" }
 ];
 
 Vue.component("SearchBar", () => import("./components/SearchBar"));

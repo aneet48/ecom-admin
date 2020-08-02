@@ -6,12 +6,26 @@ const menus = [
         link: ""
     },
     {
-        id: "2",
+        id: "229",
         title: "Dashboard",
         type: "link",
         link: "/",
         icon: "desktop-mac"
     },
+    {
+        id: "55",
+        title: "Settings",
+        type: "subheader",
+        link: ""
+    },
+    {
+        id: "2",
+        title: "Events",
+        type: "link",
+        link: "/settings/events",
+        icon: "settings"
+    },
+
     {
         id: "3",
         title: "users",
@@ -27,7 +41,7 @@ const menus = [
     },
     {
         id: "5",
-        title: "Settings",
+        title: "Locations",
         type: "subheader",
         link: ""
     },

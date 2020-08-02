@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 // users
 Route::post('/user/sign-up', 'Api\UserController@signUp');
 Route::post('/user/simple-sign-up', 'Api\UserController@simpleSignUp');
+Route::post('/user/google-sign-up', 'Api\UserController@googleSimpleSignUp');
 Route::post('/user/login', 'Api\UserController@login');
 Route::get('/test', 'Api\UserController@test');
 
@@ -121,4 +122,8 @@ Route::post('/event-media', 'Api\EventMediaController@create');
 Route::post('/event-media/delete/{id}', 'Api\EventMediaController@delete');
 Route::get('/event-media/{event_id}', 'Api\EventMediaController@eventMedias');
 Route::post('/event-media-base64', 'Api\EventtMediaController@eventMediasBase64');
+
+// settings
+Route::post('/setting/store', 'SettingController@store');
+Route::get('/setting/search/{meta_key}/{group}', 'SettingController@search');
 // });

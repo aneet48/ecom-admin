@@ -89,7 +89,6 @@ class UserController extends Controller
 
             ConnectyCube::signUp($c_user);
             $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
-
         }
         $user->makeVisible(['api_token']);
         $body = [
@@ -132,11 +131,71 @@ class UserController extends Controller
         $password = $request->get('password') ?: Str::random(8);
         $user = User::create([
             "email" => $request->get('email'),
-            "password" =>   $password,
-            "google_id"=> $request->get('google_id'),
+            "password" => Hash::make($password),
+            "google_id" => $request->get('google_id'),
             'api_token' => hash('sha256', $token),
         ]);
 
+        if ($user) {
+
+            $c_user = [
+                'email' => $user->email,
+                'password' => ConnectyCube::generatePassword(),
+                'external_user_id' => $user->id
+            ];
+          $resp =   ConnectyCube::signUp($c_user);
+
+            $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
+        }
+        $user->makeVisible(['api_token']);
+        $body = [
+            'user' => $user,
+            'resp'=> $resp
+        ];
+        $msg = "User is created successfully";
+
+
+
+        // Mail::send([], [], function ($message) use ($request, $password) {
+        //     $message->to($request->get('email'))
+        //         ->subject('Sign up complete')
+        //     // here comes what you want
+        //     // ->setBody('Hi, welcome user!') // assuming text/plain
+        //     // or:
+        //         ->setBody('<h1>Hi, welcome ' . $request->get('first_name') . '!</h1><p>An account has been created for you.</p>
+        //         <p>Password:' . $password . '</p>
+        //         ', 'text/html'); // for HTML rich messages
+        // });
+
+        return generate_response(false, $msg, $body);
+    }
+    public function googleSimpleSignUp(Request $request)
+    {
+        $messages = [
+            'required' => 'The :attribute is required',
+            'string' => 'The :attribute must be text format',
+            'google_id.required' => 'google login is required',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|unique:users',
+            // 'password' => 'required|min:8',
+            'google_id' => 'required|min:8',
+
+        ], $messages);
+        if ($validator->fails()) {
+            return generate_response(true, $validator->errors()->all());
+        }
+        $token = Str::random(60);
+        // $password = $request->get('password') ?: Str::random(8);
+        $user = User::updateOrCreate([
+            "email" => $request->get('email'),
+        ], [
+            "google_id" => $request->get('google_id'),
+            // "password" =>   $password,
+            'api_token' => hash('sha256', $token),
+        ]);
+        dd($user);
         if ($user) {
 
             $c_user = [
@@ -198,7 +257,7 @@ class UserController extends Controller
             "branch" => $request->get('branch'),
             "university_id" => $request->get('university_id'),
             "email" => $request->get('email'),
-            'is_complete'=>true
+            'is_complete' => true
         ]);
         $user = User::with('university', 'connectycube_user')->find($id);
 

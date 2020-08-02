@@ -22,6 +22,7 @@ class CreateEventsTable extends Migration
             $table->string('price');
             $table->date('event_date');
             $table->time('event_time');
+            $table->bigInteger('order_id')->nullable();
             $table->string('contact_number');
             $table->string('book_event_link');
             $table->string('visit_website_link');
