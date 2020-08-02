@@ -6,6 +6,7 @@ use App\ConnectyCube;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -143,14 +144,14 @@ class UserController extends Controller
                 'password' => ConnectyCube::generatePassword(),
                 'external_user_id' => $user->id
             ];
-          $resp =   ConnectyCube::signUp($c_user);
+            $resp =   ConnectyCube::signUp($c_user);
 
             $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
         }
         $user->makeVisible(['api_token']);
         $body = [
             'user' => $user,
-            'resp'=> $resp
+            'resp' => $resp
         ];
         $msg = "User is created successfully";
 
@@ -171,6 +172,9 @@ class UserController extends Controller
     }
     public function googleSimpleSignUp(Request $request)
     {
+        // try {
+        //code...
+
         $messages = [
             'required' => 'The :attribute is required',
             'string' => 'The :attribute must be text format',
@@ -195,18 +199,21 @@ class UserController extends Controller
             // "password" =>   $password,
             'api_token' => hash('sha256', $token),
         ]);
-        if ($user && !$user->connectycube_user) {
-            // $user = User::where('email', $request->get('email'))->first();
-            $c_user = [
-                'email' => $user->email,
-                'password' => ConnectyCube::generatePassword(),
-                'external_user_id' => $user->id
-            ];
+        if ($user) {
+            if (!$user->connectycube_user) {
+                $c_user = [
+                    'email' => $request->get('email'),
+                    'password' => ConnectyCube::generatePassword(),
+                    'external_user_id' => $user->id
+                ];
 
-            ConnectyCube::signUp($c_user);
+                ConnectyCube::signUp($c_user);
+            }
+            $user = User::with('university', 'connectycube_user')->where('email', $request->get('email'))->first();
 
+            $user->makeVisible(['api_token']);
         }
-        $user->with('university', 'connectycube_user')->makeVisible(['api_token']);
+
         $body = [
             'user' => $user,
         ];
@@ -226,6 +233,9 @@ class UserController extends Controller
         // });
 
         return generate_response(false, $msg, $body);
+        // } catch (Exception $e) {
+        //     return generate_response(true, [$e->getMessage()]);
+        // }
     }
 
 

@@ -20,7 +20,7 @@ class ProductController extends Controller
         //     $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
 
         // }
-        $query = Product::with('category', 'seller', 'seller.university', 'images', 'university');
+        $query = Product::with('category', 'seller', 'seller.connectycube_user','seller.university', 'images', 'university');
         if (!$show_all) {
             $query = $query->where('active', 1);
         }
@@ -89,7 +89,7 @@ class ProductController extends Controller
 
     public function product($id)
     {
-        $product = Product::with('category', 'seller', 'seller.university', 'images', 'university')->find($id);
+        $product = Product::with('category', 'seller', 'seller.connectycube_user','seller.university', 'images', 'university')->find($id);
         $product->images->map(function ($item) {
             $path = public_path() . '/storage/products/' . $item->name;
             $mime = mime_content_type($path);
