@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->string('reciept_id');
             $table->string('rzp_order_id')->nullable();
+            $table->string('rzp_transaction_id')->nullable();
             $table->string('status');
             $table->string('price');
             $table->string('user_id');

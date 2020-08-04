@@ -126,4 +126,8 @@ Route::post('/event-media-base64', 'Api\EventtMediaController@eventMediasBase64'
 // settings
 Route::post('/setting/store', 'SettingController@store');
 Route::get('/setting/search/{meta_key}/{group}', 'SettingController@search');
+
+// orders
+Route::post('/order', 'OrderController@create');
+
 // });

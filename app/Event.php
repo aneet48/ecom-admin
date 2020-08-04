@@ -19,6 +19,7 @@ class Event extends Model
         'book_event_link',
         'visit_website_link',
         'active',
+        'event_price'
     ];
 
     protected $casts = [

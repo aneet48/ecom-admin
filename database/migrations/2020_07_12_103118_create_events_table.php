@@ -26,6 +26,7 @@ class CreateEventsTable extends Migration
             $table->string('contact_number');
             $table->string('book_event_link');
             $table->string('visit_website_link');
+            $table->string('event_price');
             $table->json('social_profiles')->nullable();
             $table->boolean('active')->default(0)->nullable();
             $table->timestamps();

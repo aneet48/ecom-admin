@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('human_file_size')) {
+if (!function_exists('generate_response')) {
     /**
      * Returns a human readable file size
      *

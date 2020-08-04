@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\EventCategory;
 use App\EventMedia;
+use App\Setting;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
@@ -22,7 +23,6 @@ class EventController extends Controller
             $category = EventCategory::whereSlug($request->get('category'))->first();
             if ($category) {
                 $query = $query->where('category_id', $category->id);
-
             }
         }
 
@@ -43,13 +43,11 @@ class EventController extends Controller
                     ->orwhereHas('university', function ($query) use ($s) {
                         $query->where('name', 'LIKE', '%' . $s . '%');
                         $query->orwhere('slug', 'LIKE', '%' . $s . '%');
-
                     })
                     ->orwhereHas('category', function ($query) use ($s) {
                         $query->where('name', 'LIKE', '%' . $s . '%');
                     });
             });
-
         }
         $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
 
@@ -66,12 +64,11 @@ class EventController extends Controller
             $mime = mime_content_type($path);
             $image = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($path));
             $item->base64_data = $image;
-            
+
             return $item;
         });
 
         return response()->json($event);
-
     }
 
     public function update(Request $request, $id)
@@ -89,7 +86,7 @@ class EventController extends Controller
             'event_date' => 'required',
             'event_time' => 'required',
             'contact_number' => 'required',
-            'social_profiles'=> 'required',
+            'social_profiles' => 'required',
             'book_event_link' => 'required',
             'visit_website_link' => 'required',
         ], $messages);
@@ -107,11 +104,12 @@ class EventController extends Controller
             'event_date' => $request->get('event_date'),
             'event_time' => $request->get('event_time'),
             'contact_number' => $request->get('contact_number'),
-            'social_profiles'=> json_encode($request->get('social_profiles')),
+            'social_profiles' => json_encode($request->get('social_profiles')),
             'book_event_link' => $request->get('book_event_link'),
             'visit_website_link' => $request->get('visit_website_link'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
+        $event = Event::whereId($id)->first();
         if ($event && $request->has('files')) {
             EventMedia::where('event_id', $id)->delete();
             $files = $request->get('files');
@@ -122,8 +120,10 @@ class EventController extends Controller
 
         $msg = $event ? 'Event updated successfully' : "Event not Found";
         $error = $event ? false : true;
-
-        return generate_response($error, $msg);
+        $body = [
+            'event' => $event,
+        ];
+        return generate_response($error, $msg,  $body);
     }
 
     public function create(Request $request)
@@ -140,16 +140,21 @@ class EventController extends Controller
             'price'         => 'required',
             'event_date'    => 'required',
             'event_time'    => 'required',
-            'contact_number'=> 'required',
-            'book_event_link'=> 'required',
+            'contact_number' => 'required',
+            'book_event_link' => 'required',
             'visit_website_link' => 'required',
         ], $messages);
 
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
         }
+        $event_price = Setting::where([
+            'meta_key' => 'event_price',
+            'group' => 'events'
+        ])->first();
 
         $event = Event::create([
+            'event_price' => $event_price ? $event_price->meta_value : 0,
             'title'         => $request->get('title'),
             'description'   => $request->get('description'),
             'category_id'   => $request->get('category_id'),
@@ -157,9 +162,9 @@ class EventController extends Controller
             'price'         => $request->get('price'),
             'event_date'    => $request->get('event_date'),
             'event_time'    => $request->get('event_time'),
-            'contact_number'=> $request->get('contact_number'),
-            'social_profiles'=> $request->get('social_profiles'),
-            'book_event_link'=> $request->get('book_event_link'),
+            'contact_number' => $request->get('contact_number'),
+            'social_profiles' => $request->get('social_profiles'),
+            'book_event_link' => $request->get('book_event_link'),
             'visit_website_link' => $request->get('visit_website_link'),
             'active'        => $request->has('active') ? $request->get('active') : false,
         ]);

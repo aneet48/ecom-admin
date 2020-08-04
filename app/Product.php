@@ -16,6 +16,7 @@ class Product extends Model
         'active',
         'type',
         'university_id',
+        'time_period'
     ];
 
     // protected $appends = ['images', 'category', 'university', 'seller'];

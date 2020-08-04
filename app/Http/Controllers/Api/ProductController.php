@@ -135,6 +135,7 @@ class ProductController extends Controller
             'category_id' => $request->get('category_id'),
             'university_id' => $request->get('university_id'),
             'type' => $request->get('type'),
+            'time_period' => $request->get('time_period'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
         if ($product && $request->has('files')) {
@@ -179,6 +180,7 @@ class ProductController extends Controller
             'category_id' => $request->get('category_id'),
             'university_id' => $request->get('university_id'),
             'type' => $request->get('type'),
+            'time_period' => $request->get('time_period'),
             'active' => $request->has('active') ? $request->get('active') : false,
         ]);
 
