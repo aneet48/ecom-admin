@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\City;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\ProductCategory;
 use App\ProductMedia;
+use App\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,7 +22,7 @@ class ProductController extends Controller
         //     $products = Product::with('category','images')->orderBy('id', 'DESC')->paginate(20);
 
         // }
-        $query = Product::with('category', 'seller', 'seller.connectycube_user','seller.university', 'images', 'university');
+        $query = Product::with('category', 'seller', 'seller.connectycube_user', 'seller.university', 'images', 'university');
         if (!$show_all) {
             $query = $query->where('active', 1);
         }
@@ -34,6 +36,30 @@ class ProductController extends Controller
             $category = ProductCategory::whereSlug($request->get('category'))->first();
             if ($category) {
                 $query = $query->where('category_id', $category->id);
+            }
+        }
+        if ($request->has('m_cat') && $request->get('m_cat')) {
+            $category = ProductCategory::wherein('name', explode(',', $request->get('m_cat')))->pluck('id');
+            if ($category) {
+                $query = $query->wherein('category_id', $category);
+            }
+        }
+        if ($request->has('m_uni') && $request->get('m_uni')) {
+            $university = University::wherein('name', explode(',', $request->get('m_uni')))->pluck('id');
+            if ($university) {
+                $query = $query->where(function ($query) use ($university) {
+                    $query->orwherein('university_id', $university);
+                });
+            }
+        }
+        if ($request->has('m_city') && $request->get('m_city')) {
+            $city = City::wherein('name', explode(',', $request->get('m_city')))->pluck('id');
+            if ($city) {
+                // $query = $query->where(function ($query) use ($city) {
+                    $query = $query->orwhereHas('university', function ($query) use ($city) {
+                        $query->wherein('city_id', $city);
+                    });
+                // });
             }
         }
         if ($request->has('cat_title')) {
@@ -71,14 +97,12 @@ class ProductController extends Controller
                     ->orwhereHas('university', function ($query) use ($s) {
                         $query->where('name', 'LIKE', '%' . $s . '%');
                         $query->orwhere('slug', 'LIKE', '%' . $s . '%');
-
                     })
 
                     ->orwhereHas('category', function ($query) use ($s) {
                         $query->where('name', 'LIKE', '%' . $s . '%');
                     });
             });
-
         }
         $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
 
@@ -89,7 +113,7 @@ class ProductController extends Controller
 
     public function product($id)
     {
-        $product = Product::with('category', 'seller', 'seller.connectycube_user','seller.university', 'images', 'university')->find($id);
+        $product = Product::with('category', 'seller', 'seller.connectycube_user', 'seller.university', 'images', 'university')->find($id);
         $product->images->map(function ($item) {
             $path = public_path() . '/storage/products/' . $item->name;
             $mime = mime_content_type($path);
@@ -104,7 +128,6 @@ class ProductController extends Controller
         });
 
         return response()->json($product);
-
     }
 
     public function update(Request $request, $id)
