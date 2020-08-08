@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\City;
 use App\Event;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\EventCategory;
 use App\EventMedia;
+use App\Http\Controllers\Controller;
 use App\Setting;
+use App\University;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
@@ -23,6 +25,32 @@ class EventController extends Controller
             $category = EventCategory::whereSlug($request->get('category'))->first();
             if ($category) {
                 $query = $query->where('category_id', $category->id);
+            }
+        }
+
+        if ($request->has('m_cat') && $request->get('m_cat')) {
+            $category = EventCategory::wherein('name', explode(',', $request->get('m_cat')))->pluck('id');
+            if ($category) {
+                $query = $query->wherein('category_id', $category);
+            }
+        }
+
+        if ($request->has('m_uni') && $request->get('m_uni')) {
+            $university = University::wherein('name', explode(',', $request->get('m_uni')))->pluck('id');
+            if ($university) {
+                $query = $query->where(function ($query) use ($university) {
+                    $query->orwherein('university_id', $university);
+                });
+            }
+        }
+        if ($request->has('m_city') && $request->get('m_city')) {
+            $city = City::wherein('name', explode(',', $request->get('m_city')))->pluck('id');
+            if ($city) {
+                // $query = $query->where(function ($query) use ($city) {
+                $query = $query->whereHas('university', function ($query) use ($city) {
+                    $query->wherein('city_id', $city);
+                });
+                // });
             }
         }
 
@@ -123,7 +151,7 @@ class EventController extends Controller
         $body = [
             'event' => $event,
         ];
-        return generate_response($error, $msg,  $body);
+        return generate_response($error, $msg, $body);
     }
 
     public function create(Request $request)
@@ -133,13 +161,13 @@ class EventController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'title'         => 'required|string',
-            'description'   => 'required|string',
-            'category_id'   => 'required',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'category_id' => 'required',
             'university_id' => 'required',
-            'price'         => 'required',
-            'event_date'    => 'required',
-            'event_time'    => 'required',
+            'price' => 'required',
+            'event_date' => 'required',
+            'event_time' => 'required',
             'contact_number' => 'required',
             'book_event_link' => 'required',
             'visit_website_link' => 'required',
@@ -150,23 +178,23 @@ class EventController extends Controller
         }
         $event_price = Setting::where([
             'meta_key' => 'event_price',
-            'group' => 'events'
+            'group' => 'events',
         ])->first();
 
         $event = Event::create([
             'event_price' => $event_price ? $event_price->meta_value : 0,
-            'title'         => $request->get('title'),
-            'description'   => $request->get('description'),
-            'category_id'   => $request->get('category_id'),
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+            'category_id' => $request->get('category_id'),
             'university_id' => $request->get('university_id'),
-            'price'         => $request->get('price'),
-            'event_date'    => $request->get('event_date'),
-            'event_time'    => $request->get('event_time'),
+            'price' => $request->get('price'),
+            'event_date' => $request->get('event_date'),
+            'event_time' => $request->get('event_time'),
             'contact_number' => $request->get('contact_number'),
             'social_profiles' => $request->get('social_profiles'),
             'book_event_link' => $request->get('book_event_link'),
             'visit_website_link' => $request->get('visit_website_link'),
-            'active'        => $request->has('active') ? $request->get('active') : false,
+            'active' => $request->has('active') ? $request->get('active') : false,
         ]);
 
         if ($event && $request->has('files')) {
