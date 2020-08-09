@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "material-design-icons-iconfont": "^5.0.1",
+        "vue-csv-import": "^3.3.3",
+        "vue-json-csv": "^1.2.11",
         "vue-router": "^3.1.6",
         "vue-sweetalert2": "^3.0.3",
         "vue-video-player": "^5.0.2",

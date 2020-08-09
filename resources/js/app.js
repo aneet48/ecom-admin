@@ -33,7 +33,6 @@ Vue.use(VueVideoPlayer);
 
 // Vue.component("dashboard-component", require("./pages/Dashboard.vue").default);
 Vue.component("dashboard-component", require("./App.vue").default);
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -45,6 +44,8 @@ import CreateUser from "./pages/users/create-user.vue";
 import States from "./pages/settings/States.vue";
 import Products from "./pages/Products/ProductsList.vue";
 import Cities from "./pages/settings/Cities.vue";
+import Feedback from "./pages/settings/Feedback.vue";
+import Coupan from "./pages/settings/Coupans.vue";
 import EventsSettings from "./pages/settings/Events.vue";
 import Universities from "./pages/settings/Universities.vue";
 import Wait from "./pages/Wait.vue";
@@ -58,7 +59,7 @@ const routes = [
     { path: "/users/create", component: CreateUser, name: "Create User" },
     { path: "/users/edit/:id", component: CreateUser, name: "Edit User" },
     { path: "/states", component: States, name: "States" },
-    { path: "/cities", component: Cities, name: "Cities" },
+    { path: "/cities", component: Cities, name: "Cities" },    
     { path: "/colleges", component: Universities, name: "Colleges" },
     { path: "/products-list", component: Products, name: "Products" },
     // { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
@@ -75,7 +76,10 @@ const routes = [
         name: "Events Categories"
     },
     { path: "/login-redirect", component: Wait, name: "Login Redirect" },
-    { path: "/settings/events", component: EventsSettings, name: "EventsSettings" }
+    { path: "/settings/events", component: EventsSettings, name: "EventsSettings" },
+    { path: "/feedback", component: Feedback, name: "Feedback" },
+    { path: "/coupans", component: Coupan, name: "Coupan" },
+    
 ];
 
 Vue.component("SearchBar", () => import("./components/SearchBar"));

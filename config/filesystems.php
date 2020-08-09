@@ -67,6 +67,10 @@ return [
             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
+        'feedback' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/feedback'),
+        ],
 
         's3' => [
             'driver' => 's3',

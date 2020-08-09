@@ -18,6 +18,20 @@ const menus = [
         type: "subheader",
         link: ""
     },
+     {
+        id: "30",
+        title: "Feedback",
+        type: "link",
+        link: "/feedback",
+        icon: "map"
+    },
+    {
+        id: "31",
+        title: "Coupan Codes",
+        type: "link",
+        link: "/coupans",
+        icon: "map"
+    },
     {
         id: "2",
         title: "Events",
@@ -59,6 +73,7 @@ const menus = [
     //     link: "/colleges",
     //     icon: "school"
     // },
+   
     {
         id: "8",
         title: "Cities",
