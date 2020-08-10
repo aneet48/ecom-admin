@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
  */
+    Route::group(['middleware' => 'cors'], function () {
 
 // users
 Route::post('/user/sign-up', 'Api\UserController@signUp');
@@ -47,6 +48,7 @@ Route::get('/universities/global/search/{q}', 'Api\UniversityController@searchGl
  */
 
 // Route::middleware(['auth:api'])->group(function () {
+
 // cities
 Route::get('/cities/{show_all?}', 'Api\CityController@cities');
 Route::get('/city/{id}', 'Api\CityController@city');
@@ -131,3 +133,4 @@ Route::get('/setting/search/{meta_key}/{group}', 'SettingController@search');
 Route::post('/order', 'OrderController@create');
 
 // });
+});
