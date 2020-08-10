@@ -168,7 +168,7 @@ class EventController extends Controller
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
-            'seller_id' => 'required|string',
+            'seller_id' => 'required',
             'description' => 'required|string',
             'category_id' => 'required',
             'university_id' => 'required',
