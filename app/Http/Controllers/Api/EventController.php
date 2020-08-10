@@ -77,6 +77,11 @@ class EventController extends Controller
                     });
             });
         }
+
+        if ($request->has('seller_id')) {
+            $query = $query->where('seller_id', $request->get('seller_id'));
+        }
+
         $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
 
         $events = $query->orderBy('id', 'DESC')->paginate($paginate);
@@ -158,10 +163,12 @@ class EventController extends Controller
     {
         $messages = [
             'university_id.required' => 'The college is required',
+            'seller_id.required' => 'The seller is required',
         ];
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
+            'seller_id' => 'required|string',
             'description' => 'required|string',
             'category_id' => 'required',
             'university_id' => 'required',
@@ -186,6 +193,7 @@ class EventController extends Controller
             'title' => $request->get('title'),
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
+            'seller_id' => $request->get('seller_id'),
             'university_id' => $request->get('university_id'),
             'price' => $request->get('price'),
             'event_date' => $request->get('event_date'),

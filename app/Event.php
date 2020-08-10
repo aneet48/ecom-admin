@@ -19,11 +19,17 @@ class Event extends Model
         'book_event_link',
         'visit_website_link',
         'active',
-        'event_price'
+        'event_price',
+        'seller_id',
     ];
 
+    public function seller()
+    {
+        return $this->belongsTo('App\User', 'seller_id');
+    }
+
     protected $casts = [
-        'social_profiles' => 'array'
+        'social_profiles' => 'array',
     ];
 
     // protected $appends = ['images', 'category', 'university', 'seller'];

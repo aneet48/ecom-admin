@@ -34,12 +34,12 @@ class EventsSeeder extends Seeder
             'http://woodbox.herokuapp.com/products',
         ];
         $social_profiles = [
-            ['text'=> 'Facebook',
-            'link'=> 'https://facebook.com'],
-            ['text'=> 'Twitter',
-            'link'=> 'https://twitter.com'],
-            ['text'=> 'Instagram',
-            'link'=> 'https://instagram.com'],
+            ['text' => 'Facebook',
+                'link' => 'https://facebook.com'],
+            ['text' => 'Twitter',
+                'link' => 'https://twitter.com'],
+            ['text' => 'Instagram',
+                'link' => 'https://instagram.com'],
         ];
         $y = rand(2020, 2035);
         $mon = rand(1, 12);
@@ -50,12 +50,15 @@ class EventsSeeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             $university = University::all()->random(1)->first();
             $category = EventCategory::all()->random(1)->first();
+            $seller = User::all()->random(1)->first();
+
             $event = App\Event::create([
                 'title' => $faker->realText($maxNbChars = 50),
                 'description' => $faker->text,
+                'seller_id' => $seller->id,
                 'price' => $faker->numberBetween($min = 500, $max = 9000),
-                'event_date' => $y.'-'.$mon.'-'.$d,
-                'event_time' => $h.':'.$m.':'.$s,
+                'event_date' => $y . '-' . $mon . '-' . $d,
+                'event_time' => $h . ':' . $m . ':' . $s,
                 'contact_number' => $faker->numberBetween($min = 1000000000, $max = 9999999999),
                 'book_event_link' => $links[$faker->numberBetween($min = 0, $max = 5)],
                 'visit_website_link' => $links[$faker->numberBetween($min = 0, $max = 5)],
