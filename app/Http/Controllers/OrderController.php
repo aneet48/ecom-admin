@@ -26,7 +26,8 @@ class OrderController extends Controller
         if ($request->get('type') == 'event' && $order) {
             $event = Event::where('id', $request->get('event_id'))->update([
                 'order_id' => $order->id,
-                'active' => true
+                'active' => true,
+                'coupan_id'=> $request->get('promo_code_id')
             ]);
         }
         $msg = $order ? 'Order created successfully' : "Order not Found";
