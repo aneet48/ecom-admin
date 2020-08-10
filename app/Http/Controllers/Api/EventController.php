@@ -6,12 +6,13 @@ use App\City;
 use App\Event;
 use App\EventCategory;
 use App\EventMedia;
+use App\Coupan;
 use App\Http\Controllers\Controller;
 use App\Setting;
 use App\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Carbon\Carbon;
 class EventController extends Controller
 {
     public function events(Request $request, $show_all = false)
@@ -176,6 +177,23 @@ class EventController extends Controller
         if ($validator->fails()) {
             return generate_response(true, $validator->errors()->all());
         }
+
+        $promo_code = 0;
+        if($request->get('promo_code') && $request->get('promo_code')!=''){
+            $code  = $request->get('promo_code');
+            $exitCode  = Coupan::where(['code'=>$code])->whereDate('expiry_date', '>=', Carbon::now()->toDateString())->first();
+            if(empty($exitCode)){
+                return generate_response(true,['Promo code is not valid']);
+            }
+            //if coupan used limit is over
+            $count_users_that_used_coupan = Event::where(['coupan_id'=>$exitCode->id])->count();
+            if($count_users_that_used_coupan<$exitCode->users_can_use){
+            echo    $promo_code = $exitCode->id;
+            }else{
+                return generate_response(true,['Promo code is alreday used.']);
+            }
+        }
+
         $event_price = Setting::where([
             'meta_key' => 'event_price',
             'group' => 'events',
@@ -195,6 +213,7 @@ class EventController extends Controller
             'book_event_link' => $request->get('book_event_link'),
             'visit_website_link' => $request->get('visit_website_link'),
             'active' => $request->has('active') ? $request->get('active') : false,
+            'coupan_id'=> $promo_code
         ]);
 
         if ($event && $request->has('files')) {
