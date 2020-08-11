@@ -71,6 +71,8 @@ Route::post('/university', 'Api\UniversityController@create');
 Route::post('/university/{id}', 'Api\UniversityController@update');
 Route::post('/university/delete/{id}', 'Api\UniversityController@delete');
 Route::get('/universities/search/{q}', 'Api\UniversityController@search');
+Route::get('/all-universities', 'Api\UniversityController@alluniversities');
+Route::post('/universities/import', 'Api\UniversityController@import');
 
 // users
 
@@ -132,5 +134,17 @@ Route::get('/setting/search/{meta_key}/{group}', 'SettingController@search');
 // orders
 Route::post('/order', 'OrderController@create');
 
+//feedback
+Route::get('/all-feedback', 'Api\FeedbackController@all');
+Route::get('/feedback', 'Api\FeedbackController@index');
+Route::post('/feedback', 'Api\FeedbackController@create');
+Route::post('/feedback/{id}', 'Api\FeedbackController@update');
+Route::post('/feedback/delete/{id}', 'Api\FeedbackController@delete');
+
+//coupans
+Route::get('/coupans', 'Api\CoupanController@index');
+Route::post('/coupan', 'Api\CoupanController@create');
+Route::post('/coupan/{id}', 'Api\CoupanController@update');
+Route::post('/coupan/delete/{id}', 'Api\CoupanController@delete');
 // });
 });

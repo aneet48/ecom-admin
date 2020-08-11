@@ -5,6 +5,23 @@
       <v-btn class="ma-2 action-btn" color="teal accent-4" dark @click="addNew">
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
       </v-btn>
+      <v-btn class="ma-2 action-btn" color="teal accent-4" dark>
+         <input type="file" class="form-control" :class="{ ' is-invalid' : error.message }" id="input-file-import" name="file_import" ref="import_file"  @change="onFileChange">
+          <div v-if="error.message" class="invalid-feedback">
+            
+          </div>
+      </v-btn>
+      <v-btn class="ma-2 action-btn" color="teal accent-4" dark >
+        <JsonCSV
+            class="ma-2 action-btn" color="teal accent-4" dark 
+            :data   = "all_colleges">
+            Export
+            <v-icon dark>mdi-cloud-download</v-icon>
+          </JsonCSV>
+      </v-btn>
+
+
+
     </PageHeader>
     <v-container>
       <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader>
@@ -135,10 +152,13 @@
 <script>
 import BreadCrumb from "../../components/BreadCrumb";
 import PageHeader from "../../components/PageHeader";
-
+import JsonCSV from 'vue-json-csv'
 export default {
   data() {
     return {
+      error: {},
+          import_file: '',
+      all_colleges: [],
       posts: [],
       loader: true,
       dialog: false,
@@ -174,11 +194,14 @@ export default {
   },
   components: {
     BreadCrumb,
-    PageHeader
+    PageHeader,
+    JsonCSV
+    
   },
   mounted() {
     this.loader = true;
     this.fetchuniversities();
+    this.fetchAlluniversities();
     // this.fetchcities();
   },
   watch: {
@@ -202,6 +225,35 @@ export default {
     }
   },
   methods: {
+    onFileChange(e) {
+        this.loader = true;
+        this.import_file = e.target.files[0];
+        this.proceedAction();
+    },
+    proceedAction() {
+        let formData = new FormData();
+        formData.append('import_file', this.import_file);
+            axios.post('/api/universities/import', formData, {
+              headers: { 'content-type': 'multipart/form-data' }
+            })
+            .then(response => {
+               this.$swal("Imported!", response.msg, "success");
+                this.overlay = true;
+              this.loader = false;
+                if(response.status === 200) {
+                  // codes here after the file is upload successfully
+                  this.fetchAlluniversities();
+                  this.fetchuniversities();
+                }
+            })
+            .catch(error => {
+              this.loader =false;
+                // code here when an upload is not valid
+               this.unknownError();
+               console.log(error);
+            });
+      
+    },
     addNew() {
       this.modal_title = "Add New College";
       this.m_type = "add";
@@ -321,6 +373,17 @@ export default {
           this.loader = false;
           this.posts = res.data.data;
           this.TotalPages = res.data.last_page;
+        })
+        .catch(err => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
+    fetchAlluniversities(){
+       axios
+        .get("/api/all-universities")
+        .then(res => {         
+          this.all_colleges = res.data.data;
         })
         .catch(err => {
           this.unknownError();
