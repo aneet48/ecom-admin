@@ -109,6 +109,13 @@ const menus = [
         icon: "account-group"
     },
     {
+        id: "212",
+        title: "Requests",
+        type: "link",
+        link: "/product-requests",
+        icon: "account-group"
+    },
+    {
         id: "23",
         title: "Events",
         type: "subheader",

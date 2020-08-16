@@ -43,6 +43,7 @@ import Users from "./pages/users/Users.vue";
 import CreateUser from "./pages/users/create-user.vue";
 import States from "./pages/settings/States.vue";
 import Products from "./pages/Products/ProductsList.vue";
+import RequestList from "./pages/Products/RequestList.vue";
 import Cities from "./pages/settings/Cities.vue";
 import Feedback from "./pages/settings/Feedback.vue";
 import Coupan from "./pages/settings/Coupans.vue";
@@ -79,6 +80,8 @@ const routes = [
     { path: "/settings/events", component: EventsSettings, name: "EventsSettings" },
     { path: "/feedback", component: Feedback, name: "Feedback" },
     { path: "/coupans", component: Coupan, name: "Coupan" },
+    { path: "/product-requests", component: RequestList, name: "RequestList" },
+    
     
 ];
 
