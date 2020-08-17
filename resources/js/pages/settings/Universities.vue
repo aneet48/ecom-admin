@@ -228,7 +228,18 @@ export default {
     onFileChange(e) {
         this.loader = true;
         this.import_file = e.target.files[0];
-        this.proceedAction();
+           var extension = this.import_file.type
+           if(extension =='text/csv'){
+            this.proceedAction();    
+           }else{
+            this.overlay = false;
+            this.snackbarText =
+              "Oops!! Upload csv file only.";
+            this.snackbar = true;
+            this.snackbarColor = "red";
+            this.loader = false;
+           }
+        
     },
     proceedAction() {
         let formData = new FormData();
