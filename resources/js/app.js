@@ -80,7 +80,7 @@ const routes = [
     { path: "/settings/events", component: EventsSettings, name: "EventsSettings" },
     { path: "/feedback", component: Feedback, name: "Feedback" },
     { path: "/coupans", component: Coupan, name: "Coupan" },
-    { path: "/product-requests", component: RequestList, name: "RequestList" },
+    { path: "/product-requests", component: RequestList, name: "Product Requests List" },
     
     
 ];
