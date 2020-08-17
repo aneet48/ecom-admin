@@ -146,5 +146,24 @@ Route::get('/coupans', 'Api\CoupanController@index');
 Route::post('/coupan', 'Api\CoupanController@create');
 Route::post('/coupan/{id}', 'Api\CoupanController@update');
 Route::post('/coupan/delete/{id}', 'Api\CoupanController@delete');
+
+//favourite
+Route::post('/favourite', 'Api\FavouriteController@addAndRemove');
+Route::get('/user-favourite/{user_id}/{type}', 'Api\FavouriteController@userFavourites');
+Route::post('/favourite/delete/{id}', 'Api\FavouriteController@delete');
+
+//product-Request
+Route::post('/product-request', 'Api\ProductRequestController@create');
+Route::get('/product-request', 'Api\ProductRequestController@list');
+Route::get('/product-request/user/{user_id}', 'Api\ProductRequestController@userlist');
+Route::post('/product-request/{id}', 'Api\ProductRequestController@update');
+Route::post('/product-request/delete/{id}', 'Api\ProductRequestController@delete');
+Route::get('/product-request/{id}', 'Api\ProductRequestController@request');
+
+//forgot-password
+Route::post('/forgot-password', 'Api\UserController@forgotPassword');
+Route::post('/update-password', 'Api\UserController@updatePassword');
+Route::post('/reset-password', 'Api\UserController@resetPassword');
+
 // });
 });

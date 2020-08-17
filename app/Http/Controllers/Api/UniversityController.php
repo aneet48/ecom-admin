@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\University;
 use App\City;
+use App\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -137,9 +138,19 @@ class UniversityController extends Controller
                     $status = 0;
                 }
               
-                if(empty($exist)){                   
-                    $cityData = City::where(['name'=>$colleges[$i]['city']])->first();
-                    if(!empty($cityData)){                      
+                if(empty($exist)){        
+                           
+                    $stateData = State::where(['name'=>$colleges[$i]['state']])->first();
+                    if(!empty($stateData)){
+                        $cityData = City::where(['name'=>$colleges[$i]['city']])->first();
+                        if(empty($cityData)){                      
+                            $cityData = City::create([
+                                'state_id' => $stateData->id,
+                                'name' =>$colleges[$i]['city'],
+                                'active' => 1,
+                            ]);
+                        }
+
                         $university = University::create([
                             'city_id' => $cityData->id,
                             'name' =>$colleges[$i]['college_name'],

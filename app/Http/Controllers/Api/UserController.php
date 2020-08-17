@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\ConnectyCube;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Favourite;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Mail;
 
 class UserController extends Controller
 {
@@ -38,8 +40,14 @@ class UserController extends Controller
             $user->save();
         }
 
+        if($user){
+            $fav = $this->getUsersFavouriteData($user->id);
+        }
+
         $body = [
             'user' => $user,
+            'favEvents'=> @$fav ? $fav['events']: [],
+            'favProducts'=> @$fav ? $fav['products']: []
         ];
         $msg = $user ? 'User  Found' : ["User Not found"];
         $error = $user ? false : true;
@@ -92,9 +100,17 @@ class UserController extends Controller
             $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
         }
         $user->makeVisible(['api_token']);
+
+        if($user){
+            $fav = $this->getUsersFavouriteData($user->id);
+        }
+
         $body = [
             'user' => $user,
+            'favEvents'=> @$fav ? $fav['events']: [],
+            'favProducts'=> @$fav ? $fav['products']: []
         ];
+        
         $msg = "User is created successfully";
 
 
@@ -149,10 +165,19 @@ class UserController extends Controller
             $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
         }
         $user->makeVisible(['api_token']);
+
+
+        if($user){
+            $fav = $this->getUsersFavouriteData($user->id);
+        }
+
         $body = [
             'user' => $user,
-            'resp' => $resp
+            'resp' => $resp,
+            'favEvents'=> @$fav ? $fav['events']: [],
+            'favProducts'=> @$fav ? $fav['products']: []
         ];
+       
         $msg = "User is created successfully";
 
 
@@ -214,9 +239,18 @@ class UserController extends Controller
             $user->makeVisible(['api_token']);
         }
 
+
+        if($user){
+            $fav = $this->getUsersFavouriteData($user->id);
+        }
+
         $body = [
-            'user' => $user,
+            'user' => $user,            
+            'favEvents'=> @$fav ? $fav['events']: [],
+            'favProducts'=> @$fav ? $fav['products']: []
         ];
+
+                
         $msg = "User is created successfully";
 
 
@@ -399,5 +433,117 @@ class UserController extends Controller
 
 
         // dd($response->json());
+    }
+    public function getUsersFavouriteData($user_id){
+        $favEvents   = Favourite::where(['type'=>'event','user_id'=>$user_id])->select('type_id')->get();
+        $favProducts = Favourite::where(['type'=>'product','user_id'=>$user_id])->select('type_id')->get();
+        $events= [];
+        $products= [];
+        if(!empty($favEvents)){
+            foreach($favEvents as $evt){
+                $events[] = $evt['type_id'];
+            }
+        }
+
+        if(!empty($favProducts)){
+            foreach($favProducts as $prd){
+                $products[] = $prd['type_id'];
+            }
+        }
+
+        return ['events'=>$events,'products'=>$products];
+    }
+    public function forgotPassword(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return generate_response(true, $validator->errors()->all());
+        }
+
+        $user = User::with('university', 'connectycube_user')->where('email', $request->get('email'))->first();
+
+        
+        if ($user) {            
+            $token = mt_rand(100000,999999);
+            $user->remember_token = $token;
+            $user->save();
+
+
+            Mail::send([], [], function ($message) use ($request, $user,$token) {
+                $message->to($request->get('email'))
+                    ->subject('Forgot Password Code')
+                // here comes what you want
+                // ->setBody('Hi, welcome user!') // assuming text/plain
+                // or:
+                    ->setBody('<h1>Hi, welcome ' . $user->first_name . '!</h1><p>Your one time password reset code is '.$token.'</p>
+                    
+                    ', 'text/html'); // for HTML rich messages
+            });
+
+
+        }
+
+       
+        $body = [];
+        $msg = $user ? 'User  Found' : ["Email Not found"];
+        $error = $user ? false : true;
+
+        return generate_response($error, $msg, $body);
+    }
+    public function updatePassword(Request $request){
+         $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'code'  => 'required',
+            'password'  => 'required',
+            'confirmpassword'=> 'required',
+        ]);
+        if ($validator->fails()) {
+            return generate_response(true, $validator->errors()->all());
+        }
+
+        $user = User::with('university', 'connectycube_user')->where('email', $request->get('email'))->where('remember_token', $request->get('code'))->first();
+
+        
+        if ($user) {           
+            
+            User::where(['id'=>$user->id])->update(['password'=>Hash::make($request->get('password')),'remember_token'=>'']);
+        }
+
+       
+        $body = [];
+        $msg = $user ? 'Password changed' : ["Password Not changed"];
+        $error = $user ? false : true;
+
+        return generate_response($error, $msg, $body);
+    }
+    public function resetPassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'oldpassword'  => 'required',
+            'password'  => 'required',
+            'confirmpassword'=> 'required',
+        ]);
+        if ($validator->fails()) {
+            return generate_response(true, $validator->errors()->all());
+        }
+
+        $user = User::where('id', $request->get('user_id'))->first();
+
+        
+        if ($user) {   
+            if ($user && !Hash::check($request->get('oldpassword'), $user->password)) {
+               return generate_response(true, ['Wrong old password']);
+            }
+            User::where(['id'=>$user->id])->update(['password'=>Hash::make($request->get('password'))]);
+        }
+
+       
+        $body = ['user'=>$user];
+        $msg = $user ? 'Password has been changed' : ["Password has been changed"];
+        $error = $user ? false : true;
+
+        return generate_response($error, $msg, $body);
     }
 }
