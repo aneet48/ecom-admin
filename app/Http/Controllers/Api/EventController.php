@@ -199,7 +199,7 @@ class EventController extends Controller
                 $promo_code = $existCode->id;
                 $promo_code_detail = $existCode;
             }else{
-                return generate_response(true,['Promo code is alreday used.']);
+                return generate_response(true,['Promo code is already used.']);
             }
         }
 

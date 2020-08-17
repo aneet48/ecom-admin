@@ -21,7 +21,7 @@ class Event extends Model
         'active',
         'event_price',
         'seller_id',
-        'coupan_id'
+        'coupan_id',
     ];
 
     public function seller()
