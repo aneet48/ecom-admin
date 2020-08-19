@@ -86,7 +86,7 @@
               <th class="text-left">Description</th>
               <th class="text-left">Type</th>
               <th class="text-left">Time Period</th>
-              <th class="text-left">University</th>
+              <!-- <th class="text-left">University</th> -->
               <th class="text-left">Action</th>
             </tr>
           </thead>
@@ -105,9 +105,9 @@
               <td>
                 <v-chip class="ma-2 chip" color="teal accent-4">{{item.type}}</v-chip>
               </td>
-              <td>
+              <!-- <td>
                 <v-chip class="ma-2 chip" color="teal accent-4">{{item.type}}</v-chip>
-              </td>
+              </td> -->
               <td>
               {{item.time_period ?item.time_period.charAt(0).toUpperCase() + item.time_period.slice(1):''}}
               </td>
