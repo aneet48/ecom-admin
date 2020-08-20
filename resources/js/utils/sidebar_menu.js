@@ -142,10 +142,23 @@ const menus = [
         link: ""
     },
     {
-        id: "25",
+        id: "27",
         title: "About",
         type: "link",
         link: "/about",
+        // icon: "calendar-multiple"
+    },
+    {
+        id: "28",
+        title: "Miscelleneous",
+        type: "subheader",
+        link: ""
+    },
+    {
+        id: "29",
+        title: "Contact Form",
+        type: "link",
+        link: "/Contact-form",
         // icon: "calendar-multiple"
     },
 ];

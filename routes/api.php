@@ -141,6 +141,12 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/feedback/{id}', 'Api\FeedbackController@update');
     Route::post('/feedback/delete/{id}', 'Api\FeedbackController@delete');
 
+//contact
+    Route::get('/contact', 'Api\ContactController@contacts');
+    Route::post('/contact', 'Api\ContactController@create');
+    Route::get('/contact/{id}', 'Api\ContactController@contact');
+    Route::post('/contact/delete/{id}', 'Api\ContactController@delete');
+
 //coupans
     Route::get('/coupans', 'Api\CoupanController@index');
     Route::post('/coupan', 'Api\CoupanController@create');
