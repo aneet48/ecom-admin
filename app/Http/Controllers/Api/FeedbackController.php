@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Validator;
 class FeedbackController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
+
        
-        $reviews = Feedback::paginate(15);
+        $reviews = Feedback::paginate( $paginate);
         
         return response()->json($reviews);
     }

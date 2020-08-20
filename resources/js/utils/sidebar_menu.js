@@ -135,6 +135,19 @@ const menus = [
         link: "/events-categories",
         icon: "calendar-multiple"
     },
+    {
+        id: "26",
+        title: "CMS Pages",
+        type: "subheader",
+        link: ""
+    },
+    {
+        id: "25",
+        title: "About",
+        type: "link",
+        link: "/about",
+        // icon: "calendar-multiple"
+    },
 ];
 
 export default menus;

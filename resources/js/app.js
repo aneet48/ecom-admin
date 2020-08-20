@@ -12,11 +12,13 @@ import VueRouter from "vue-router";
 import VueSweetalert2 from "vue-sweetalert2";
 import store from "./store";
 import VueVideoPlayer from "vue-video-player";
+import Editor from 'vue-editor-js'
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
 Vue.use(VueVideoPlayer);
+Vue.use(Editor)
 
 // axios.defaults.baseURL = "http://woodbox.test/api";
 
@@ -53,6 +55,7 @@ import Wait from "./pages/Wait.vue";
 import ProductCategories from "./pages/Products/Categories.vue";
 import Events from "./pages/Events/EventsList.vue";
 import EventCategories from "./pages/Events/Categories.vue";
+import About from "./pages/cms-pages/About.vue";
 
 const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
@@ -62,6 +65,7 @@ const routes = [
     { path: "/states", component: States, name: "States" },
     { path: "/cities", component: Cities, name: "Cities" },    
     { path: "/colleges", component: Universities, name: "Colleges" },
+    { path: "/about", component: About, name: "About" },
     { path: "/products-list", component: Products, name: "Products" },
     // { path: "/products-categories", component: ProductCategories, name: "Products Categories" },
     {
