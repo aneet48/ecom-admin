@@ -23,6 +23,8 @@ class ProductController extends Controller
 
         // }
         $query = Product::with('category', 'seller', 'seller.connectycube_user', 'seller.university', 'images', 'university');
+        $university = '';
+        $city = '';
         if (!$show_all) {
             $query = $query->where('active', 1);
         }
@@ -46,6 +48,7 @@ class ProductController extends Controller
         }
         if ($request->has('m_uni') && $request->get('m_uni')) {
             $university = University::wherein('name', explode(',', $request->get('m_uni')))->pluck('id');
+            
             if ($university) {
                 $query = $query->where(function ($query) use ($university) {
                     $query->orwherein('university_id', $university);
@@ -56,9 +59,9 @@ class ProductController extends Controller
             $city = City::wherein('name', explode(',', $request->get('m_city')))->pluck('id');
             if ($city) {
                 // $query = $query->where(function ($query) use ($city) {
-                    $query = $query->orwhereHas('university', function ($query) use ($city) {
-                        $query->wherein('city_id', $city);
-                    });
+                $query = $query->orwhereHas('university', function ($query) use ($city) {
+                    $query->wherein('city_id', $city);
+                });
                 // });
             }
         }
@@ -107,6 +110,23 @@ class ProductController extends Controller
         $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
 
         $products = $query->orderBy('id', 'DESC')->paginate($paginate);
+        if (!count($products) && $request->has('m_uni') && !$request->has('m_city')) {
+            $city_ids = University::wherein('name', explode(',', $request->get('m_uni')))->pluck('city_id');
+        //    dd($city_ids);
+
+            if (count($city_ids)) {
+
+                // $query = $query->where(function ($query) use ($city) {
+                $query = $query->orwhereHas('university', function ($query) use ($city_ids) {
+                    $query->wherein('city_id', $city_ids);
+                });
+                // });
+            }
+            $products = $query->orderBy('id', 'DESC')->paginate($paginate);
+
+
+            // dd($query->tosql());
+        }
 
         return response()->json($products);
     }
