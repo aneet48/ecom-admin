@@ -24,6 +24,11 @@ class ProductCategory extends Model
         return $this->hasMany('App\ProductCategory', 'parent_id')->with('children');
     }
 
+    public function products()
+    {
+        return $this->hasMany('App\Product', 'category_id');
+    }
+
     public function getFixedAttribute()
     {
         $fixed_cats = config('constants.fixed_product_cats');

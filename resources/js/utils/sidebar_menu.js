@@ -135,19 +135,19 @@ const menus = [
         link: "/events-categories",
         icon: "calendar-multiple"
     },
-    {
-        id: "26",
-        title: "CMS Pages",
-        type: "subheader",
-        link: ""
-    },
-    {
-        id: "27",
-        title: "About",
-        type: "link",
-        link: "/about",
-        // icon: "calendar-multiple"
-    },
+    // {
+    //     id: "26",
+    //     title: "CMS Pages",
+    //     type: "subheader",
+    //     link: ""
+    // },
+    // {
+    //     id: "27",
+    //     title: "About",
+    //     type: "link",
+    //     link: "/about",
+    //     // icon: "calendar-multiple"
+    // },
     {
         id: "28",
         title: "Miscelleneous",

@@ -32,6 +32,8 @@
             <tr>
               <th class="text-left">Name</th>
               <th class="text-left">City</th>
+              <th class="text-left">Students</th>
+              <th class="text-left">Products</th>
               <th class="text-left">Active</th>
               <th class="text-left"></th>
             </tr>
@@ -40,6 +42,10 @@
             <tr v-for="(item , i) in posts" :key="i">
               <td>{{ item.name }}</td>
               <td>{{ item.city.name }}</td>
+              <td>{{ item.students_count }}
+              <td>{{ item.products_count }}
+
+              </td>
               <td>
                 <div v-if="item.active">
                   <v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip>

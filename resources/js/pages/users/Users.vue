@@ -2,9 +2,9 @@
   <div>
     <BreadCrumb />
      <PageHeader title="Users">
-      <v-btn class="ma-2 action-btn" color="teal accent-4" dark to="/users/create">
+      <!-- <v-btn class="ma-2 action-btn" color="teal accent-4" dark to="/users/create">
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
-      </v-btn>
+      </v-btn> -->
     </PageHeader>
     <v-container>
       <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader>

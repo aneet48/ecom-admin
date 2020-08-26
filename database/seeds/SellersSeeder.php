@@ -1,5 +1,6 @@
 <?php
 
+use App\ConnectyCube;
 use App\University;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -17,9 +18,9 @@ class SellersSeeder extends Seeder
         $faker = Faker\Factory::create();
         $branch = ['btech', 'bca', 'ba', 'bba'];
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $university = University::all()->random(1)->first();
-            App\User::create([
+            $user = App\User::create([
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'email' => $faker->email,
@@ -28,6 +29,14 @@ class SellersSeeder extends Seeder
                 'password' => Hash::make(Str::random(10)),
                 'university_id' => $university->id,
             ]);
+            $c_user = [
+                'email' => $user->email,
+                'password' => ConnectyCube::generatePassword(),
+                'external_user_id' => $user->id,
+            ];
+
+            ConnectyCube::signUp($c_user);
+
         }
 
     }

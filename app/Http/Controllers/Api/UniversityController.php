@@ -15,9 +15,9 @@ class UniversityController extends Controller
     public function universities($show_all = false)
     {
         if (!$show_all) {
-            $universities = University::with('city')->where('active', 1)->orderBy('name')->paginate(15);
+            $universities = University::with('city')->withCount('students')->withCount('newStudents')->withCount('products')->where('active', 1)->orderBy('name')->paginate(15);
         } else {
-            $universities = University::with('city')->orderBy('name')->paginate(15);
+            $universities = University::with('city')->withCount('students')->withCount('newStudents')->withCount('products')->orderBy('name')->paginate(15);
 
         }
         return response()->json($universities);

@@ -31,7 +31,7 @@ class ProductsSeeder extends Seeder
             'https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         ];
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $university = University::all()->random(1)->first();
             $seller = User::all()->random(1)->first();
             $category = ProductCategory::all()->random(1)->first();

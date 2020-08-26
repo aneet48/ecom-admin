@@ -25,6 +25,8 @@
             <tr>
               <th class="text-left">Name</th>
               <th class="text-left">Status</th>
+              <th class="text-left">Products</th>
+
               <!-- <th class="text-left">Sub Categories</th> -->
               <th class="text-left"></th>
             </tr>
@@ -32,6 +34,7 @@
           <tbody>
             <tr v-for="(item , i) in posts" :key="i">
               <td>{{ item.name }}</td>
+              <td>{{ item.products_count }}</td>
 
               <td>
                 <div v-if="item.active">

@@ -13,10 +13,11 @@ class ProductCategoryController extends Controller
     function list($show_all = false, $cat_id = 0) {
         if (!$show_all) {
             $categories = ProductCategory::with('children', 'parent')
+            ->withCount('products')
                 ->where(['active' => 1, 'parent_id' => $cat_id])
                 ->orderBy('name')->paginate(15);
         } else {
-            $categories = ProductCategory::with('children', 'parent')->where('parent_id', $cat_id)->orderBy('name')->paginate(15);
+            $categories = ProductCategory::with('children', 'parent')->withCount('products')->where('parent_id', $cat_id)->orderBy('name')->paginate(15);
         }
         $main_cat = ProductCategory::with('parent')->find($cat_id);
         $body = [
