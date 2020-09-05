@@ -22,6 +22,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
    Route::get('/', 'LoginController@dashboard');
    Route::get('/users', 'LoginController@dashboard');
+   Route::get('/get-block-data', 'DashboardController@getBlockData');
 
 
 });

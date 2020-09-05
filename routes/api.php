@@ -171,5 +171,8 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/update-password', 'Api\UserController@updatePassword');
     Route::post('/reset-password', 'Api\UserController@resetPassword');
 
+    // user visits
+    Route::post('/user-visit', 'Api\UserVisitsController@create');
+
 // });
 });
