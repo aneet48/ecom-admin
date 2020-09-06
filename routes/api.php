@@ -174,5 +174,8 @@ Route::group(['middleware' => 'cors'], function () {
     // user visits
     Route::post('/user-visit', 'Api\UserVisitsController@create');
 
+    // chat messages
+    Route::get('/dialogs/{user_id}', 'Api\ChatDialogController@userDialogs');
+
 // });
 });

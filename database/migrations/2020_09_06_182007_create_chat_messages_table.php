@@ -15,19 +15,18 @@ class CreateChatMessagesTable extends Migration
     {
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sender_id');
-            $table->bigInteger('reciever_id');
+            $table->unsignedBigInteger('dialog_id');
+            $table->bigInteger('user_id');
             $table->text('message')->nullable();
-            $table->text('type')->nullable()->default('text');
-            $table->text('value')->nullable();
-            $table->text('related');
-            $table->text('related_id');
-
-            $table->foreign('sender_id')->references('id')->on('users');
-            $table->foreign('receiver_id')->references('id')->on('users');
-
+            $table->string('message_type')->nullable()->default('text');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('chat_messages', function ($table) {
+            $table->foreign('dialog_id')->references('id')->on('chat_dialogs')->onDelete('cascade');
+        });
+
     }
 
     /**
