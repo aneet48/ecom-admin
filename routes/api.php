@@ -175,7 +175,13 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/user-visit', 'Api\UserVisitsController@create');
 
     // chat messages
+    Route::get('/temp-dialog/', 'Api\ChatDialogController@tempDialog');
+    Route::get('/dialog/{dialog_id}', 'Api\ChatDialogController@dialog');
+    Route::post('/dialog/delete/{dialog_id}', 'Api\ChatDialogController@delete');
     Route::get('/dialogs/{user_id}', 'Api\ChatDialogController@userDialogs');
+    
+    Route::get('/messages/{dialog_id}', 'Api\ChatMessageController@messages');
+    Route::post('/message/', 'Api\ChatMessageController@create');
 
 // });
 });
