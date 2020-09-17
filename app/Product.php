@@ -19,11 +19,16 @@ class Product extends Model
         'time_period'
     ];
 
-    // protected $appends = ['images', 'category', 'university', 'seller'];
+    protected $appends = ['thumbnail_image'];
 
     public function category()
     {
         return $this->belongsTo('App\ProductCategory', 'category_id');
+    }
+
+    public function getThumbnailImageAttribute()
+    {
+        return ProductMedia::where('product_id',$this->id)->first();
     }
 
     public function images()

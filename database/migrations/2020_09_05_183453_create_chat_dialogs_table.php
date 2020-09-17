@@ -19,6 +19,7 @@ class CreateChatDialogsTable extends Migration
             $table->string('chat_type')->nullable()->default('private');
             $table->string('related');
             $table->string('related_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }

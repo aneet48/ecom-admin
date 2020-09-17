@@ -11,7 +11,7 @@ class ChatMessageController extends Controller
 {
     public function messages(Request $request, $dialog_id)
     {
-        $paginate = $request->has('paginate') ? $request->get('paginate') : 20;
+        $paginate = $request->has('paginate') ? $request->get('paginate') : 10;
 
         $messages = ChatMessage::where('dialog_id', $dialog_id)
             ->latest()
@@ -23,8 +23,8 @@ class ChatMessageController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'dialog_id' => 'required|string|unique:chat_dialogs,id,' . $request->get('dialog_id'),
-            'user_id' => 'required|string|unique:users,id,' . $request->get('user_id'),
+            'dialog_id' => 'required|unique:chat_dialogs,id,' . $request->get('dialog_id'),
+            'user_id' => 'required|unique:users,id,' . $request->get('user_id'),
             'message' => 'required|string',
         ]);
 

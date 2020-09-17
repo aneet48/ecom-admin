@@ -21,7 +21,7 @@ class FakeChatsSeeder extends Seeder
 
         $types = ['event', 'product'];
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             // $another_id = User::all()->except($id)->random(1)->pluck('id');
             $related = $types[array_rand($types)];
             if ($related == 'event') {
@@ -36,6 +36,7 @@ class FakeChatsSeeder extends Seeder
                 // 'users' => json_encode([$id, $related_data->seller_id]),
                 'related' => $related,
                 'related_id' => $related_data->id,
+                'user_id'=>$id
             ]);
 
             $dialog_user = ChatDialogUser::updateOrCreate([
@@ -48,7 +49,7 @@ class FakeChatsSeeder extends Seeder
                 'user_id'=> $id
             ]);
             
-            for ($j = 0; $j < 20; $j++) {
+            for ($j = 0; $j < 50; $j++) {
                 // dd($another_id);
                 $message = ChatMessage::create([
                     'dialog_id' => $dialog->id,

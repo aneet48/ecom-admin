@@ -10,6 +10,7 @@ class ChatDialog extends Model
         'chat_type',
         'related',
         'related_id',
+        'user_id'
     ];
     protected $appends = ['related_data','last_message'];
 
@@ -18,9 +19,9 @@ class ChatDialog extends Model
     {
         $id = $this->related_id;
         if ($id == 'event') {
-            return Event::find($id);
+            return Event::with('images')->find($id);
         } else {
-            return Product::find($id);
+            return Product::with('images')->find($id);
         }
     }
 

@@ -12,6 +12,8 @@ class ChatMessage extends Model
         'message',
         'message_type',
         'file',
+        'read_at',
+        'read',
     ];
 
     protected $with = ['sender', 'reciever'];
@@ -35,6 +37,5 @@ class ChatMessage extends Model
     {
         return $this->belongsTo(User::class, 'reciever_id');
     }
-    
 
 }

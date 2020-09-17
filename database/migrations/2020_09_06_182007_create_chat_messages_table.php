@@ -18,6 +18,8 @@ class CreateChatMessagesTable extends Migration
             $table->unsignedBigInteger('dialog_id');
             $table->bigInteger('user_id');
             $table->text('message')->nullable();
+            $table->boolean('read')->nullable()->default(false);
+            $table->dateTime('read_at')->nullable();
             $table->string('message_type')->nullable()->default('text');
             $table->string('file')->nullable();
             $table->timestamps();

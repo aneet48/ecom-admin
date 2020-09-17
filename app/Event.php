@@ -23,6 +23,12 @@ class Event extends Model
         'seller_id',
         'coupan_id',
     ];
+    protected $appends = ['thumbnail_image'];
+
+    public function getThumbnailImageAttribute()
+    {
+        return EventMedia::where('event_id', $this->id)->first();
+    }
 
     public function seller()
     {
