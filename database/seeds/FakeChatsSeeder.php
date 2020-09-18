@@ -16,7 +16,7 @@ class FakeChatsSeeder extends Seeder
      */
     public function run()
     {
-        $id = 14;
+        $id = 13;
         $faker = Faker\Factory::create();
 
         $types = ['event', 'product'];

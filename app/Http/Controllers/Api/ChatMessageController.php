@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\ChatDialog;
 use App\ChatMessage;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,6 +41,41 @@ class ChatMessageController extends Controller
         ]);
 
         return response()->json($message);
+
+    }
+
+    public function unreadMessage(Request $request, $user_id)
+    {
+        $dialogs = ChatDialog::withCount([
+            'unreadMessages' => function ($query) use ($user_id) {
+                $query->where('user_id', '!=', $user_id);
+
+            }])
+            ->whereHas('users', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })
+            ->whereHas(
+                'unreadMessages', function ($query) use ($user_id) {
+                    $query->where('user_id', '!=', $user_id);
+
+                })
+            ->count();
+
+        return response()->json($dialogs);
+
+    }
+
+    public function markReadDialog($dialog_id, $user_id)
+    {
+        $update = ChatMessage::where('dialog_id', $dialog_id)
+            ->where('user_id', '!=', $user_id)
+            ->where('read', false)
+            ->update([
+                'read' => true,
+                'read_at' => Carbon::now()->toDateTimeString(),
+
+            ]);
+        return response()->json($update);
 
     }
 }

@@ -10,10 +10,9 @@ class ChatDialog extends Model
         'chat_type',
         'related',
         'related_id',
-        'user_id'
+        'user_id',
     ];
-    protected $appends = ['related_data','last_message'];
-
+    protected $appends = ['related_data', 'last_message'];
 
     public function getRelatedDataAttribute()
     {
@@ -30,9 +29,14 @@ class ChatDialog extends Model
         return $this->hasMany(ChatDialogUser::class, 'dialog_id');
     }
 
-     public function getLastMessageAttribute()
+    public function getLastMessageAttribute()
     {
-        return ChatMessage::where(['dialog_id'=>$this->id])->first();
+        return ChatMessage::where(['dialog_id' => $this->id])->first();
+
+    }
+    public function unreadMessages()
+    {
+        return $this->hasMany(ChatMessage::class, 'dialog_id')->where('read', false);
 
     }
 

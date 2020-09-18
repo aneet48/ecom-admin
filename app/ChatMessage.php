@@ -38,4 +38,9 @@ class ChatMessage extends Model
         return $this->belongsTo(User::class, 'reciever_id');
     }
 
+   public function dialog()
+    {
+        return $this->belongsTo(ChatDialog::class, 'dialog_id');
+    }
+
 }
