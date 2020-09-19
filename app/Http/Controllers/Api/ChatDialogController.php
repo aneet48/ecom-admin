@@ -49,13 +49,26 @@ class ChatDialogController extends Controller
 
             }
         }
+        $query = ChatDialog::with('users')->withCount([
+            'unreadMessages' => function ($query) use ($user_id) {
+                $query->where('user_id', '!=', $user_id);
+            }]);
 
-        $query = ChatDialogUser::with('dialog', 'dialog.users');
-        $query = $query->where('user_id', $user_id);
+        $query = $query->whereHas('users', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        });
         if ($selected_dialog && $selected_dialog->id) {
-            $query = $query->orderByRaw('IF(dialog_id = ' . $selected_dialog->id . ', 0,1)');
+            $query = $query->orderByRaw('IF(id = ' . $selected_dialog->id . ', 0,1)');
         }
+
         $dialogs = $query->latest()->paginate($paginate);
+
+        // $query = ChatDialogUser::with('dialog', 'dialog.users','dialog.unreadMessages');
+        // $query = $query->where('user_id', $user_id);
+        // if ($selected_dialog && $selected_dialog->id) {
+        //     $query = $query->orderByRaw('IF(dialog_id = ' . $selected_dialog->id . ', 0,1)');
+        // }
+        // $dialogs = $query->latest()->paginate($paginate);
         return response()->json($dialogs);
     }
 
