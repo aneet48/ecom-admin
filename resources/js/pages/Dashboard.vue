@@ -2,15 +2,22 @@
   <div>
     <BreadCrumb />
     <v-row>
-      <v-col cols="12" sm="7">
+      <v-col cols="12" sm="12">
         <v-row>
-          <v-col cols="12" sm="6" v-for="data in blockData" :key="data.id">
+          <v-col cols="12" sm="4" v-for="data in blockData" :key="data.id">
             <InfoBlock :data="data"/>
           </v-col>
         </v-row>
-      </v-col>
-      <v-col cols="12" sm="5">
-        <v-card class="pa-2" outlined tile>One of three columns</v-card>
+        <v-row>
+          <v-col cols="12" sm="4">
+            <apexchart width="90%" type="bar" :options="useroptions" :series="userseries"></apexchart>
+          </v-col>
+          <v-col cols="12" sm="1">
+          </v-col>
+          <v-col cols="12" sm="4">
+            <apexchart width="90%" type="bar" :options="productoptions" :series="productseries"></apexchart>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </div>
@@ -21,7 +28,9 @@ import Sidebar from "../components/Sidebar";
 import BreadCrumb from "../components/BreadCrumb";
 import ComingSoon from "../components/ComingSoon";
 import InfoBlock from "../components/InfoBlock";
-    import {Chart} from 'vue-chartjs';
+// import {Chart} from 'vue-chartjs';
+import VueApexCharts from 'vue-apexcharts'
+
 
 export default {
   components: {
@@ -29,6 +38,7 @@ export default {
     BreadCrumb,
     ComingSoon,
     InfoBlock,
+    apexchart: VueApexCharts
   },
   props: {
     source: String,
@@ -54,13 +64,54 @@ export default {
       },
       {
         id: 3,
-        title: "Repeat Users",
+        title: "Total Products",
         amount:400,
-        subtitle:'',
+        subtitle:'10 new today',
         bgFirstColor:'#f56527',
         bgSecondColor:'#fdba35',
       },
     ],
+    useroptions: {
+        chart: {
+          id: 'vuechart-example'
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          }
+        },
+        title: {
+          text: 'Users Added'
+        },
+        xaxis: {
+          categories: ['yesterday' , 'last 7 days', 'last month','last 3 months','last 6 months','last year']
+        }
+      },
+      userseries: [{
+        name: 'users',
+        data: [30, 40, 45, 30, 50, 60]
+      }],
+    productoptions: {
+        chart: {
+          id: 'vuechart-example'
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          }
+        },
+        title: {
+          text: 'Products Added'
+        },
+        colors:['#F44336'],
+        xaxis: {
+          categories: ['yesterday' , 'last 7 days', 'last month','last 3 months','last 6 months','last year']
+        }
+      },
+      productseries: [{
+        name: 'Products',
+        data: [30, 40, 45, 30, 50, 60]
+      }]
   }),
   methods: {
             renderChart() {
