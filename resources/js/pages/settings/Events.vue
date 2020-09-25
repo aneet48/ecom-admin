@@ -1,12 +1,20 @@
 <template>
-  <div>
+  <div class="formWrap">
+    <div class="form-container">
+       <v-row>
+      <v-col cols="12">
+        <h2>Enter the Event Price</h2>
+      </v-col>
+    </v-row>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="12">
         <v-text-field v-model="event_price" :rules="nameRules" label="Event Price" required></v-text-field>
       </v-col>
-      <v-btn dark color="pink " @click="saveSetting">Save</v-btn>
+      <v-col cols="12" md="12">
+        <v-btn dark color="pink " @click="saveSetting">Save</v-btn>
+      </v-col>
     </v-row>
-
+    </div>
     <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="5000">
       {{snackbarText}}
       <v-btn dark text @click="snackbar = false">Close</v-btn>
@@ -20,7 +28,7 @@ import MetaSetting from "../../components/MetaSetting";
 export default {
   data() {
     return {
-      nameRules: [(v) => !!v || "Name is required"],
+      nameRules: [(v) => !!v || "Number is required"],
       event_price: 0,
       snackbar: false,
       snackbarText: "",
@@ -83,5 +91,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+  .formWrap{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    height:100%
+  }
+  .form-container{
+    background: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+  }
+  .form-container button{
+    width:100%
+  }
 </style>

@@ -29,13 +29,13 @@ class SellersSeeder extends Seeder
                 'password' => Hash::make(Str::random(10)),
                 'university_id' => $university->id,
             ]);
-            $c_user = [
-                'email' => $user->email,
-                'password' => ConnectyCube::generatePassword(),
-                'external_user_id' => $user->id,
-            ];
+            // $c_user = [
+            //     'email' => $user->email,
+            //     'password' => ConnectyCube::generatePassword(),
+            //     'external_user_id' => $user->id,
+            // ];
 
-            ConnectyCube::signUp($c_user);
+            // ConnectyCube::signUp($c_user);
 
         }
 

@@ -18,7 +18,7 @@ class EventsSeeder extends Seeder
     {
         $faker = Faker\Factory::create();
         $imges = [
-            'https://images.pexels.com/photos/4319001/pexels-photo-4319001.jpeg',
+            // 'https://images.pexels.com/photos/4319001/pexels-photo-4319001.jpeg',
             'https://images.pexels.com/photos/3309967/pexels-photo-3309967.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
             'https://images.pexels.com/photos/1078958/pexels-photo-1078958.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
             'https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
