@@ -524,4 +524,11 @@ class UserController extends Controller
 
         return generate_response($error, $msg, $body);
     }
+
+    public function updateDeviceToken($userid, $token)
+    {
+        $user = User::whereId($userid)->update(['device_token' => $token]);
+        return response()->json($user);
+
+    }
 }

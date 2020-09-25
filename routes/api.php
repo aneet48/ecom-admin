@@ -82,6 +82,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/user/delete/{id}', 'Api\UserController@delete');
     Route::get('/user/search/{q}', 'Api\UserController@search');
     Route::post('/profile-img/update', 'Api\UserController@profileImgUpdate');
+    Route::get('/device-token/{userid}/{token}', 'Api\UserController@updateDeviceToken');
 
 // products
     Route::get('/products/{show_all?}', 'Api\ProductController@products');
@@ -179,7 +180,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('/dialog/{dialog_id}', 'Api\ChatDialogController@dialog');
     Route::post('/dialog/delete/{dialog_id}', 'Api\ChatDialogController@delete');
     Route::get('/dialogs/{user_id}', 'Api\ChatDialogController@userDialogs');
-    
+
     Route::get('/messages/{dialog_id}', 'Api\ChatMessageController@messages');
     Route::post('/message/', 'Api\ChatMessageController@create');
     Route::get('/unread-message/{user_id}', 'Api\ChatMessageController@unreadMessage');

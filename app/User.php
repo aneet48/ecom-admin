@@ -23,6 +23,7 @@ class User extends Authenticatable
         'branch',
         'password',
         'profile_img',
+        'device_token',
     ];
 
     /**
@@ -43,7 +44,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $append = ['name','university', 'connectycube_user'];
+    protected $append = ['name', 'university', 'connectycube_user'];
 
     public function university()
     {
