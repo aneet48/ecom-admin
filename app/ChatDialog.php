@@ -39,5 +39,10 @@ class ChatDialog extends Model
         return $this->hasMany(ChatMessage::class, 'dialog_id')->where('read', false);
 
     }
+    public function messages()
+    {
+        return $this->hasMany(ChatMessage::class, 'dialog_id');
+
+    }
 
 }
