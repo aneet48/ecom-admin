@@ -11,6 +11,8 @@ class ChatDialog extends Model
         'related',
         'related_id',
         'user_id',
+        'connecty_dialog_id',
+        'xmpp_room_jid'
     ];
     protected $appends = ['related_data', 'last_message'];
 
