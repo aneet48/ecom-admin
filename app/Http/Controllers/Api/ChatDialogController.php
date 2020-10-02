@@ -7,6 +7,7 @@ use App\ChatDialogUser;
 use App\ConnectyCube;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\ProductRequest;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,6 @@ class ChatDialogController extends Controller
         if ($request->has('type') && $request->has('id')) {
             $type = $request->get('type');
             $id = $request->get('id');
-
             if ($type == 'product') {
                 $dialog = ChatDialog::where([
                     'related' => $type,
@@ -53,6 +53,49 @@ class ChatDialogController extends Controller
                     $dialog_user = ChatDialogUser::updateOrCreate([
                         'dialog_id' => $dialog->id,
                         'user_id' => $related_data->seller_id,
+                    ]);
+
+                    $dialog_user = ChatDialogUser::updateOrCreate([
+                        'dialog_id' => $dialog->id,
+                        'user_id' => $user_id,
+                    ]);
+
+                }
+                $selected_dialog = $dialog;
+
+            }
+            if ($type == 'request') {
+                $dialog = ChatDialog::where([
+                    'related' => $type,
+                    'related_id' => $id,
+                    'user_id' => $user_id,
+                ])->get()->first();
+               
+
+                $related_data = ProductRequest::with('user','user.connectycube_user')->find($id);
+
+                if (!$dialog && $related_data) {
+                    // dd($related_data->seller->connectycube_user);
+
+                    $occupants_ids = [
+                        $related_data->user->connectycube_user->connectycube_id,
+                    ];
+                    $name = 'request_' . $related_data->id . '&user_' . $related_data->user_id;
+                    $data = ConnectyCube::createDialog($occupants_ids, $user->connectycube_user, $name);
+                    if (!$data['dialog_id']) {
+                        return generate_response(true, 'Dialog not created');
+
+                    }
+                    $dialog = ChatDialog::create([
+                        'related' => $type,
+                        'related_id' => $id,
+                        'user_id' => $user_id,
+                        'connecty_dialog_id' => $data['dialog_id'],
+                        'xmpp_room_jid' => $data['xmpp_room_jid'],
+                    ]);
+                    $dialog_user = ChatDialogUser::updateOrCreate([
+                        'dialog_id' => $dialog->id,
+                        'user_id' => $related_data->user_id,
                     ]);
 
                     $dialog_user = ChatDialogUser::updateOrCreate([

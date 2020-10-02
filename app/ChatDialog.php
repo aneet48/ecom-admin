@@ -19,8 +19,8 @@ class ChatDialog extends Model
     public function getRelatedDataAttribute()
     {
         $id = $this->related_id;
-        if ($id == 'event') {
-            return Event::with('images')->find($id);
+        if ($this->related == 'request') {
+            return ProductRequest::find($id);
         } else {
             return Product::with('images')->find($id);
         }
