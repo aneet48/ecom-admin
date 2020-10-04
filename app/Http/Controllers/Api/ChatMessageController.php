@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\ChatDialog;
 use App\ChatMessage;
 use App\Http\Controllers\Controller;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ChatMessageController extends Controller
@@ -76,6 +78,20 @@ class ChatMessageController extends Controller
 
             ]);
         return response()->json($update);
+
+    }
+
+    public function sendChatEmail(Request $request, $user_id)
+    {
+        $user = User::find($user_id);
+        if ($user) {
+            Mail::send([], [], function ($message) use ($request,$user) {
+                $message->to($user->email)
+                    ->subject('You have some unread messages')
+                    ->setBody('<h1>Hi, someone wants to have a chat with  you.Please check your inbox 
+                    ', 'text/html'); // for HTML rich messages
+            });
+        }
 
     }
 }

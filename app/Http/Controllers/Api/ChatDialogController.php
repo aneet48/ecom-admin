@@ -108,7 +108,7 @@ class ChatDialogController extends Controller
 
             }
         }
-        $query = ChatDialog::with('users')->withCount([
+        $query = ChatDialog::with(['users'])->withCount([
             'unreadMessages' => function ($query) use ($user_id) {
                 $query->where('user_id', '!=', $user_id);
             }]);

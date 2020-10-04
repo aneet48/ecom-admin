@@ -185,6 +185,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/message/', 'Api\ChatMessageController@create');
     Route::get('/unread-message/{user_id}', 'Api\ChatMessageController@unreadMessage');
     Route::get('/mark-read-dialog/{dialog_id}/{user_id}', 'Api\ChatMessageController@markReadDialog');
+    Route::post('/send-chat-message/{user_id}', 'Api\ChatMessageController@sendChatEmail');
 
 // });
 });
