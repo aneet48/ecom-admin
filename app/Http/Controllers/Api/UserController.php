@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\ConnectyCube;
 use App\Favourite;
 use App\Http\Controllers\Controller;
+use App\Mail\NewUser;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -110,6 +112,7 @@ class UserController extends Controller
         ];
 
         $msg = "User is created successfully";
+        Mail::to($user->email)->send(new NewUser($user));
 
         // Mail::send([], [], function ($message) use ($request, $password) {
         //     $message->to($request->get('email'))
@@ -147,6 +150,8 @@ class UserController extends Controller
             "password" => Hash::make($password),
             "google_id" => $request->get('google_id'),
             'api_token' => hash('sha256', $token),
+            'email_token' => hash('sha256', Str::random(10)),
+            'email_verified_at' => $request->has('google_id') ? Carbon::now() : null,
         ]);
 
         if ($user) {
@@ -160,7 +165,7 @@ class UserController extends Controller
 
             $user = User::with('university', 'connectycube_user')->where('id', $user->id)->first();
         }
-        $user->makeVisible(['api_token']);
+        $user->makeVisible(['api_token', 'email_token']);
 
         if ($user) {
             $fav = $this->getUsersFavouriteData($user->id);
@@ -174,6 +179,7 @@ class UserController extends Controller
         ];
 
         $msg = "User is created successfully";
+        Mail::to($user->email)->send(new NewUser($user));
 
         // Mail::send([], [], function ($message) use ($request, $password) {
         //     $message->to($request->get('email'))
@@ -529,6 +535,24 @@ class UserController extends Controller
     {
         $user = User::whereId($userid)->update(['device_token' => $token]);
         return response()->json($user);
+
+    }
+
+    public function verifyEmailToken($token)
+    {
+        $user = User::where('email_token', $token)->exists();
+        if ($user) {
+            User::where('email_token', $token)->update(['email_verified_at' => Carbon::now()]);
+        }
+        $user = User::with('university', 'connectycube_user')->where('email_token', $token)->first();
+
+        $user->makeVisible(['api_token']);
+
+        $body = ['user' => $user];
+        $msg = $user ? 'Email is verified' : 'User does not exist or invalid token';
+        $error = $user ? false : true;
+
+        return generate_response($error, $msg, $body);
 
     }
 }

@@ -17,7 +17,7 @@ class ProductsSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        $type = ['Buy', 'Rental'];
+        $type = ['buy', 'rental'];
         // $img_ids = [
         //     0, 1, 10, 100, 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1008, 1009, 1010, 101, 1011, 1012, 1013, 1014, 1015, 1016, 1018,
         //     1020, 1021, 1022, 1023, 1024, 1025,

@@ -117,7 +117,7 @@
                 <v-col cols="12" sm="6" md="6">
                   <v-select
                     v-model="p_type"
-                    :items="['Buy', 'Rental']"
+                    :items="['buy', 'rental']"
                     label="Buy or Rent"
                     required
                     :rules="requiredRules"

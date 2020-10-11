@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewUser;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Str;
 
 class LoginController extends Controller
@@ -47,9 +49,18 @@ class LoginController extends Controller
         return response()->json($user);
     }
 
-    public function logout(){
+    public function logout()
+    {
         $user = Auth::logout();
         return response()->json($user);
 
+    }
+
+    public function emailTest(Request $request)
+    {
+        $user = User::find(1);
+        Mail::to('test@test.com')->send(new NewUser( $user));
+
+        echo "test";
     }
 }

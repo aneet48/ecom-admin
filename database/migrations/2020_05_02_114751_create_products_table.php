@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('category_id');
             $table->bigInteger('university_id');
             $table->bigInteger('reciever_id')->nullable();
-            $table->bigInteger('time_period')->nullable();
+            $table->string('time_period')->nullable();
             $table->boolean('active')->default(0)->nullable();
             $table->string('type');
             $table->timestamps();
