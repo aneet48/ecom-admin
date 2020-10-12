@@ -1,8 +1,21 @@
+/* @license
+Papa Parse
+v5.1.1
+https://github.com/mholt/PapaParse
+License: MIT
+*/
+
 /*!
   * Bootstrap v4.4.1 (https://getbootstrap.com/)
   * Copyright 2011-2019 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
+
+/*!
+ * ApexCharts v3.21.0
+ * (c) 2018-2020 Juned Chhipa
+ * Released under the MIT License.
+ */
 
 /*!
  * Sizzle CSS Selector Engine v2.3.4
@@ -34,6 +47,27 @@
  *
  * Date: 2019-05-01T21:04Z
  */
+
+/*!
+ * vue-editor-js v2.0.0 
+ * (c) 2020 ChangJoo Park<pcjpcj2@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
 
 /*! ../../../directives/resize */
 
@@ -955,6 +989,8 @@
 
 /*! ./zh-Hant */
 
+/*! For license information please see editor.js.LICENSE.txt */
+
 /*! exports provided: Application */
 
 /*! exports provided: Application, Breakpoint, Goto, Icons, Lang, Presets, Theme */
@@ -1222,6 +1258,14 @@
 /*! exports provided: stack */
 
 /*! no static exports found */
+
+/*! svg.draggable.js - v2.2.2 - 2019-01-08
+  * https://github.com/svgdotjs/svg.draggable.js
+  * Copyright (c) 2019 Wout Fierens; Licensed MIT */
+
+/*! svg.filter.js - v2.0.2 - 2016-02-24
+  * https://github.com/wout/svg.filter.js
+  * Copyright (c) 2016 Wout Fierens; Licensed MIT */
 
 /*! vue */
 
@@ -3024,6 +3068,18 @@
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/**
+ * @license
+ * Video.js 6.13.0 <http://videojs.com/>
+ * Copyright Brightcove, Inc. <https://www.brightcove.com/>
+ * Available under Apache License Version 2.0
+ * <https://github.com/videojs/video.js/blob/master/LICENSE>
+ *
+ * Includes vtt.js <https://github.com/mozilla/vtt.js>
+ * Available under Apache License Version 2.0
+ * <https://github.com/mozilla/vtt.js/blob/master/LICENSE>
  */
 
 /**
