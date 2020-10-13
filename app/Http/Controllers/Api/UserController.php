@@ -543,13 +543,28 @@ class UserController extends Controller
         $user = User::where('email_token', $token)->exists();
         if ($user) {
             User::where('email_token', $token)->update(['email_verified_at' => Carbon::now()]);
-        }
-        $user = User::with('university', 'connectycube_user')->where('email_token', $token)->first();
+            $user = User::with('university', 'connectycube_user')->where('email_token', $token)->first();
 
-        $user->makeVisible(['api_token']);
+            $user->makeVisible(['api_token']);
+
+        }
 
         $body = ['user' => $user];
         $msg = $user ? 'Email is verified' : 'User does not exist or invalid token';
+        $error = $user ? false : true;
+
+        return generate_response($error, $msg, $body);
+
+    }
+    public function sendVerifyEmail($user_id)
+    {
+        $user = User::find($user_id);
+        if ($user) {
+            Mail::to($user->email)->send(new NewUser($user));
+        }
+
+        $body = ['user' => $user];
+        $msg = $user ? 'Mail Sent' : 'User does not exist or invalid token';
         $error = $user ? false : true;
 
         return generate_response($error, $msg, $body);

@@ -84,6 +84,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/profile-img/update', 'Api\UserController@profileImgUpdate');
     Route::get('/device-token/{userid}/{token}', 'Api\UserController@updateDeviceToken');
     Route::get('/verify-email-token/{token}', 'Api\UserController@verifyEmailToken');
+    Route::post('/send-verify-email/{user_id}', 'Api\UserController@sendVerifyEmail');
 
 // products
     Route::get('/products/{show_all?}', 'Api\ProductController@products');
