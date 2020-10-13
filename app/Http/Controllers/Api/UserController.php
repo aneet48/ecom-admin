@@ -222,6 +222,8 @@ class UserController extends Controller
             "google_id" => $request->get('google_id'),
             // "password" =>   $password,
             'api_token' => hash('sha256', $token),
+            'email_verified_at' => Carbon::now(),
+
         ]);
         if ($user) {
             if (!$user->connectycube_user) {
