@@ -225,6 +225,8 @@ class UserController extends Controller
             'email_verified_at' => Carbon::now(),
 
         ]);
+        User::where('email',$request->get('email'))->update(['email_verified_at' => Carbon::now()]);
+
         if ($user) {
             if (!$user->connectycube_user) {
                 $c_user = [
