@@ -1701,12 +1701,12 @@
             "version": "7.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pascalbaljetmedia/laravel-ffmpeg.git",
+                "url": "https://github.com/protonemedia/laravel-ffmpeg.git",
                 "reference": "1323e47a1f0124d0834b5ad587fb91f4ad2ad071"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pascalbaljetmedia/laravel-ffmpeg/zipball/1323e47a1f0124d0834b5ad587fb91f4ad2ad071",
+                "url": "https://api.github.com/repos/protonemedia/laravel-ffmpeg/zipball/1323e47a1f0124d0834b5ad587fb91f4ad2ad071",
                 "reference": "1323e47a1f0124d0834b5ad587fb91f4ad2ad071",
                 "shasum": ""
             },
@@ -6361,5 +6361,6 @@
     "platform": {
         "php": "^7.2.5"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

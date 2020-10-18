@@ -177,6 +177,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+
     ],
 
     /*
@@ -230,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

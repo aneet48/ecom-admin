@@ -18,6 +18,7 @@ Route::post('/login', 'LoginController@login')->name('login.check')->middleware(
 Route::get('/logout', 'LoginController@logout')->name('logout');
 Route::get('/auth-user', 'LoginController@authUser');
 Route::get('/test-email', 'LoginController@emailTest');
+Route::get('/generate-thumb/{height}/{width}/{original_url}', 'ImageOptimizeController@resize')->where('original_url', '.*');
 
 Route::middleware(['web', 'auth'])->group(function () {
 
