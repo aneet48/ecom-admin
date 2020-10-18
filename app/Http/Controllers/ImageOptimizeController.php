@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
@@ -25,7 +26,8 @@ class ImageOptimizeController extends Controller
 
             return $img->response('jpg');
 
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
+            dd($e->getMessage());
             $img = Image::canvas($width, $height, '#e5dfdf');
 
             return $img->response('png');
