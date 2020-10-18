@@ -11,7 +11,8 @@ class ImageOptimizeController extends Controller
     {
         $app_url = config('app.url');
         $file_path = str_replace($app_url, '', $original_url);
-        $extension = pathinfo($file_path, PATHINFO_EXTENSION);
+        $extension ='fdf';
+        // $extension = pathinfo($file_path, PATHINFO_EXTENSION);
         if ($request->get($height) == 'test') {
             dd($height, $width, $original_url, $app_url, $file_path, $extension);
 
