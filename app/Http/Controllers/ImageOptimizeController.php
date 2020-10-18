@@ -27,7 +27,7 @@ class ImageOptimizeController extends Controller
             return $img->response('jpg');
 
         } catch (Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             $img = Image::canvas($width, $height, '#e5dfdf');
 
             return $img->response('png');
