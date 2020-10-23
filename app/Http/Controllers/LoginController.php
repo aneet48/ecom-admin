@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\NewUser;
+use App\Mail\PostDeleted;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +59,8 @@ class LoginController extends Controller
     public function emailTest(Request $request)
     {
         $user = User::find(1);
-        Mail::to('rajneetkaur1511@gmail.com')->send(new NewUser( $user));
+        $title = 'test product';
+        Mail::to('rajneetkaur1511@gmail.com')->send(new PostDeleted($user, $title, 'Product'));
 
         echo "test";
     }

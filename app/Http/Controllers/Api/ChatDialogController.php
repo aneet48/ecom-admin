@@ -6,10 +6,12 @@ use App\ChatDialog;
 use App\ChatDialogUser;
 use App\ConnectyCube;
 use App\Http\Controllers\Controller;
+use App\Mail\PostDeleted;
 use App\Product;
 use App\ProductRequest;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ChatDialogController extends Controller
 {
@@ -70,9 +72,8 @@ class ChatDialogController extends Controller
                     'related_id' => $id,
                     'user_id' => $user_id,
                 ])->get()->first();
-               
 
-                $related_data = ProductRequest::with('user','user.connectycube_user')->find($id);
+                $related_data = ProductRequest::with('user', 'user.connectycube_user')->find($id);
 
                 if (!$dialog && $related_data) {
                     // dd($related_data->seller->connectycube_user);
@@ -156,5 +157,31 @@ class ChatDialogController extends Controller
         $data = [
             'type' => '',
         ];
+    }
+    public function updateOpenStatus(Request $request, $dialog_id, $status, $user_id)
+    {
+        $msg = '';
+        $user = User::find($user_id);
+        if ($status == 'yes') {
+            $chat = ChatDialog::where('id', $dialog_id)->update(['opened_by_seller' => true]);
+            $msg = 'updated';
+        }
+        if ($status == 'no') {
+            $chat_dialog = ChatDialog::find($dialog_id);
+            if ($chat_dialog) {
+                $title = $chat_dialog->related_data->title;
+                $chat = ChatDialog::where('id', $dialog_id)->delete();
+
+                $msg = 'deleted';
+                if ($user && $title) {
+                    Mail::to($user->email)->send(new PostDeleted($user, $title, 'Product'));
+
+                }
+
+            }
+
+        }
+        return generate_response(false, $msg);
+
     }
 }

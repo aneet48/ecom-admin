@@ -179,6 +179,7 @@ Route::group(['middleware' => 'cors'], function () {
 
     // chat messages
     Route::get('/temp-dialog/', 'Api\ChatDialogController@tempDialog');
+    Route::post('/update-open-status/{dialog_id}/{status}/{user_id}', 'Api\ChatDialogController@updateOpenStatus');
     Route::get('/dialog/{dialog_id}', 'Api\ChatDialogController@dialog');
     Route::post('/dialog/delete/{dialog_id}', 'Api\ChatDialogController@delete');
     Route::get('/dialogs/{user_id}', 'Api\ChatDialogController@userDialogs');
