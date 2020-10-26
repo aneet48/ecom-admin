@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Feedback;
 use App\Http\Controllers\Controller;
+use App\Mail\NewFeedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class FeedbackController extends Controller
@@ -14,19 +16,18 @@ class FeedbackController extends Controller
     {
         $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
 
-       
-        $reviews = Feedback::paginate( $paginate);
-        
+        $reviews = Feedback::paginate($paginate);
+
         return response()->json($reviews);
     }
     public function all()
     {
-       
-        $reviews = Feedback::orderby('id','desc')->get();
-        
+
+        $reviews = Feedback::orderby('id', 'desc')->get();
+
         return response()->json($reviews);
     }
-    
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -46,7 +47,7 @@ class FeedbackController extends Controller
             'name' => $request->get('name'),
             'rating' => $request->get('rating'),
             'text' => $request->get('text'),
-            'image'=> $imagename
+            'image' => $imagename,
         ]);
         $msg = $feedback ? 'Feedback created successfully' : "Something went wrong.";
         $error = $feedback ? false : true;
@@ -57,7 +58,8 @@ class FeedbackController extends Controller
 
         return generate_response($error, $msg, $body);
     }
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'rating' => 'required|integer',
@@ -68,17 +70,16 @@ class FeedbackController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $imagename = Feedback::where(['id'=>$id])->value('image');
-        if($request->get('image') && $request->get('image')!=''){
+        $imagename = Feedback::where(['id' => $id])->value('image');
+        if ($request->get('image') && $request->get('image') != '') {
             $imagename = Feedback::saveBase64Media($request->get('image'));
         }
-
 
         $feedback = Feedback::where('id', $id)->update([
             'name' => $request->get('name'),
             'rating' => $request->get('rating'),
             'text' => $request->get('text'),
-            'image'=> $imagename
+            'image' => $imagename,
         ]);
         $msg = $feedback ? 'Feedback updated successfully' : "Feedback not Found";
         $error = $feedback ? false : true;
@@ -94,5 +95,16 @@ class FeedbackController extends Controller
 
         return generate_response($error, $msg);
     }
-  
+
+    public function sendFeedbackEmail(Request $request)
+    {
+       
+        $mail = Mail::to('collegeplus2020@gmail.com')->send(new NewFeedback($request->all()));
+        $msg = $mail ? 'Feedback sent successfully' : "Feedback not sent";
+        $error = $mail ? false : true;
+
+        return generate_response($error, $msg);
+
+    }
+
 }
