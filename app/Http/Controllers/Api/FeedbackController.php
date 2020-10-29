@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Feedback;
 use App\Http\Controllers\Controller;
 use App\Mail\NewFeedback;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -98,14 +99,20 @@ class FeedbackController extends Controller
 
     public function sendFeedbackEmail(Request $request)
     {
-       
-        $mail = Mail::to('feedback.collegeplus@gmail.com')->send(new NewFeedback($request->all()));
-        // for testing purpose 
-        Mail::to('rajneetkaur1511@gmail.com')->send(new NewFeedback($request->all()));
-        $msg = $mail ? 'Feedback sent successfully' : "Feedback not sent";
-        $error = $mail ? false : true;
+        try {
 
-        return generate_response($error, $msg);
+            $mail = Mail::to('feedback.collegeplus@gmail.com')->send(new NewFeedback($request->all()));
+// for testing purpose
+            Mail::to('rajneetkaur1511@gmail.com')->send(new NewFeedback($request->all()));
+            $msg = $mail ? 'Feedback sent successfully' : "Feedback not sent";
+            $error = $mail ? false : true;
+
+            return generate_response($error, $msg);
+
+        } catch (Exception $e) {
+           return generate_response(true, $e->getMessage());
+
+        }
 
     }
 
