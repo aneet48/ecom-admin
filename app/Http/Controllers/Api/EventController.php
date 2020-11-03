@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\City;
+use App\Coupan;
 use App\Event;
 use App\EventCategory;
 use App\EventMedia;
-use App\Coupan;
 use App\Http\Controllers\Controller;
 use App\Setting;
 use App\University;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
+
 class EventController extends Controller
 {
     public function events(Request $request, $show_all = false)
@@ -187,19 +188,19 @@ class EventController extends Controller
 
         $promo_code = 0;
         $promo_code_detail = '';
-        if($request->get('promo_code') && $request->get('promo_code')!=''){
-            $code  = $request->get('promo_code');
-            $existCode  = Coupan::where(['code'=>$code])->whereDate('expiry_date', '>=', Carbon::now()->toDateString())->first();
-            if(empty($existCode)){
-                return generate_response(true,['Promo code is not valid']);
+        if ($request->get('promo_code') && $request->get('promo_code') != '') {
+            $code = $request->get('promo_code');
+            $existCode = Coupan::where(['code' => $code])->whereDate('expiry_date', '>=', Carbon::now()->toDateString())->first();
+            if (empty($existCode)) {
+                return generate_response(true, ['Promo code is not valid']);
             }
             //if coupan used limit is over
-            $count_users_that_used_coupan = Event::where(['coupan_id'=>$existCode->id])->count();
-            if($count_users_that_used_coupan<$existCode->users_can_use){
+            $count_users_that_used_coupan = Event::where(['coupan_id' => $existCode->id])->count();
+            if ($count_users_that_used_coupan < $existCode->users_can_use) {
                 $promo_code = $existCode->id;
                 $promo_code_detail = $existCode;
-            }else{
-                return generate_response(true,['Promo code is already used.']);
+            } else {
+                return generate_response(true, ['Promo code is already used.']);
             }
         }
 
@@ -209,7 +210,7 @@ class EventController extends Controller
         ])->first();
 
         $event = Event::create([
-            'event_price' => $event_price ? $event_price->meta_value : 0,
+            'event_price' => $event_price ? $event_price->meta_value : 100,
             'title' => $request->get('title'),
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
@@ -236,7 +237,7 @@ class EventController extends Controller
         $error = $event ? false : true;
         $body = [
             'event' => $event,
-            'promo_code'=>$promo_code_detail
+            'promo_code' => $promo_code_detail,
         ];
 
         return generate_response($error, $msg, $body);

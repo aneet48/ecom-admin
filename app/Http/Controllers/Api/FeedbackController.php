@@ -103,7 +103,6 @@ class FeedbackController extends Controller
 
             $mail = Mail::to('feedback.collegeplus@gmail.com')->send(new NewFeedback($request->all()));
 // for testing purpose
-            Mail::to('rajneetkaur1511@gmail.com')->send(new NewFeedback($request->all()));
             $msg = $mail ? 'Feedback sent successfully' : "Feedback not sent";
             $error = $mail ? false : true;
 

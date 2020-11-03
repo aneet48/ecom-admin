@@ -1,22 +1,28 @@
 <template>
   <div class="formWrap">
     <div class="form-container">
-       <v-row>
-      <v-col cols="12">
-        <h2>Enter the Event Price</h2>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12" md="12">
-        <v-text-field v-model="event_price" :rules="nameRules" label="Event Price" required></v-text-field>
-      </v-col>
-      <v-col cols="12" md="12">
-        <v-btn dark color="pink " @click="saveSetting">Save</v-btn>
-      </v-col>
-    </v-row>
+      <v-row>
+        <v-col cols="12">
+          <h2>Enter the Event Price</h2>
+          <span>cannot be 0</span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="12">
+          <v-text-field
+            v-model="event_price"
+            :rules="nameRules"
+            label="Event Price"
+            required
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-btn dark color="pink " @click="saveSetting">Save</v-btn>
+        </v-col>
+      </v-row>
     </div>
     <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="5000">
-      {{snackbarText}}
+      {{ snackbarText }}
       <v-btn dark text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
   </div>
@@ -47,7 +53,7 @@ export default {
         .get(`/api/setting/search/${this.meta_key}/${this.group}`)
         .then((res) => {
           if (res && res.data && res.data.meta_value) {
-            this.event_price = res.data.meta_value;
+            this.event_price = res.data.meta_value ? res.data.meta_value : 100;
           }
           console.log(res);
         })
@@ -92,19 +98,19 @@ export default {
 </script>
 
 <style scoped>
-  .formWrap{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-items:center;
-    height:100%
-  }
-  .form-container{
-    background: #fff;
-    padding: 2rem;
-    border-radius: 20px;
-  }
-  .form-container button{
-    width:100%
-  }
+.formWrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.form-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+}
+.form-container button {
+  width: 100%;
+}
 </style>
