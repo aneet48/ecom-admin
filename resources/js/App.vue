@@ -10,7 +10,7 @@
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 
         <div class="d-flex justify-flex-end">
-          <v-icon class="app-bar-icon">mdi-bell</v-icon>
+          <!-- <v-icon class="app-bar-icon">mdi-bell</v-icon> -->
           <v-icon class="app-bar-icon" link @click="logout">mdi-logout</v-icon>
         </div>
       </div>

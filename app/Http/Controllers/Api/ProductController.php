@@ -87,23 +87,23 @@ class ProductController extends Controller
         if ($request->has('s')) {
             $s = $request->get('s');
             $query = $query->where(function ($query) use ($s) {
-                $query->where('title', 'LIKE', '%' . $s . '%')
-                    ->orwhere('description', 'LIKE', '%' . $s . '%')
-                    ->orwhere('price', 'LIKE', '%' . $s . '%')
-                    ->orwhere('type', 'LIKE', '%' . $s . '%')
+                $query->where('title', 'LIKE', $s . '%')
+                    ->orwhere('description', 'LIKE', $s . '%')
+                    ->orwhere('price', 'LIKE', $s . '%')
+                    ->orwhere('type', 'LIKE', $s . '%')
                     ->orwhereHas('seller', function ($query) use ($s) {
-                        $query->where('first_name', 'LIKE', '%' . $s . '%');
-                        $query->orwhere('last_name', 'LIKE', '%' . $s . '%');
-                        $query->orwhere('email', 'LIKE', '%' . $s . '%');
-                        $query->orwhere('branch', 'LIKE', '%' . $s . '%');
+                        $query->where('first_name', 'LIKE', $s . '%');
+                        $query->orwhere('last_name', 'LIKE', $s . '%');
+                        $query->orwhere('email', 'LIKE', $s . '%');
+                        $query->orwhere('branch', 'LIKE', $s . '%');
                     })
                     ->orwhereHas('university', function ($query) use ($s) {
-                        $query->where('name', 'LIKE', '%' . $s . '%');
-                        $query->orwhere('slug', 'LIKE', '%' . $s . '%');
+                        $query->where('name', 'LIKE', $s . '%');
+                        $query->orwhere('slug', 'LIKE', $s . '%');
                     })
 
                     ->orwhereHas('category', function ($query) use ($s) {
-                        $query->where('name', 'LIKE', '%' . $s . '%');
+                        $query->where('name', 'LIKE', $s . '%');
                     });
             });
         }

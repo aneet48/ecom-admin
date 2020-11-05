@@ -18,7 +18,7 @@ const menus = [
         type: "subheader",
         link: ""
     },
-     {
+    {
         id: "30",
         title: "Feedback",
         type: "link",
@@ -73,7 +73,7 @@ const menus = [
     //     link: "/colleges",
     //     icon: "school"
     // },
-   
+
     {
         id: "8",
         title: "Cities",
@@ -135,19 +135,7 @@ const menus = [
         link: "/events-categories",
         icon: "calendar-multiple"
     },
-    // {
-    //     id: "26",
-    //     title: "CMS Pages",
-    //     type: "subheader",
-    //     link: ""
-    // },
-    // {
-    //     id: "27",
-    //     title: "About",
-    //     type: "link",
-    //     link: "/about",
-    //     // icon: "calendar-multiple"
-    // },
+
     {
         id: "28",
         title: "Miscelleneous",
@@ -158,9 +146,14 @@ const menus = [
         id: "29",
         title: "Contact Form",
         type: "link",
-        link: "/Contact-form",
-        // icon: "calendar-multiple"
+        link: "/Contact-form"
     },
+    // {
+    //     id: "32",
+    //     title: "Advertisements",
+    //     type: "link",
+    //     link: "/advertisements"
+    // }
 ];
 
 export default menus;

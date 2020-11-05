@@ -191,5 +191,8 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/send-chat-message/{user_id}', 'Api\ChatMessageController@sendChatEmail');
     Route::post('/send-feedback-message/', 'Api\FeedbackController@sendFeedbackEmail');
 
+    // advertisements
+    Route::get('/adverts', 'Api\AdvertController@index');
+
 // });
 });

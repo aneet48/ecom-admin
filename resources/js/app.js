@@ -55,6 +55,7 @@ import Events from "./pages/Events/EventsList.vue";
 import EventCategories from "./pages/Events/Categories.vue";
 import About from "./pages/cms-pages/About.vue";
 import Contact from "./pages/contact.vue";
+import Advert from "./pages/Advert.vue";
 
 const routes = [
     { path: "/", component: Dashboard, name: "Dashboard" },
@@ -80,13 +81,24 @@ const routes = [
         name: "Events Categories"
     },
     { path: "/login-redirect", component: Wait, name: "Login Redirect" },
-    { path: "/settings/events", component: EventsSettings, name: "EventsSettings" },
+    {
+        path: "/settings/events",
+        component: EventsSettings,
+        name: "EventsSettings"
+    },
     { path: "/feedback", component: Feedback, name: "Feedback" },
     { path: "/coupans", component: Coupan, name: "Coupan" },
     { path: "/contact-form", component: Contact, name: "Contact" },
-    { path: "/product-requests", component: RequestList, name: "Product Requests List" },
-
-
+    {
+        path: "/product-requests",
+        component: RequestList,
+        name: "Product Requests List"
+    },
+    {
+        path: "/advertisements",
+        component: Advert,
+        name: "Advertisements"
+    }
 ];
 
 Vue.component("SearchBar", () => import("./components/SearchBar"));

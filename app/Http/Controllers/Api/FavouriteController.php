@@ -72,7 +72,7 @@ class FavouriteController extends Controller
 
     public function userFavourites(Request $request,$user_id,$type){
 
-        $query = Favourite::with(['event.images','event.university','event.category','product'])->where(['user_id'=>$user_id,'type'=>$type])->orderBy('id', 'DESC');
+        $query = Favourite::with(['event.images','event.university','event.category','product','product.images','product.university','product.category'])->where(['user_id'=>$user_id,'type'=>$type])->orderBy('id', 'DESC');
         $paginate = $request->has('paginate') ? $request->get('paginate') : 12;
 
         $list = $query->orderBy('id', 'DESC')->paginate($paginate);
