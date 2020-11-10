@@ -4,20 +4,26 @@
 
     <v-card-title>After header</v-card-title>
 
-    <v-card-actions>
-      <v-btn color="deep-purple lighten-2" text>
-        <v-file-input
-          accept="image/*"
-          :placeholder="imagePlaceholder"
-          prepend-icon="mdi-image"
-          label="Image"
-          v-model="image"
-          ref="inputFile"
-          @change="uploadImage"
-        ></v-file-input>
-      </v-btn>
-      <v-btn color="deep-purple dark" @click="saveAdvert(title)"> Save  </v-btn>
-    </v-card-actions>
+    <v-btn color="deep-purple lighten-2" text>
+      <v-file-input
+        accept="image/*"
+        :placeholder="imagePlaceholder"
+        prepend-icon="mdi-image"
+        label="Image"
+        v-model="image"
+        ref="inputFile"
+        @change="uploadImage"
+      ></v-file-input>
+    </v-btn>
+    <v-col>
+      <v-text-field
+        v-model="openlink"
+        hint="On clicking the image user will go to this link"
+        label="Open Link"
+      ></v-text-field>
+  
+    <v-btn color="deep-purple dark" @click="saveAdvert(title)"> Save </v-btn>
+      </v-col>
   </v-card>
 </template>
 
@@ -48,24 +54,25 @@ export default {
           "Image size should be less than 2 MB!",
       ],
       imagePlaceholder: "Add Image",
+      openlink: "",
     };
   },
-   mounted() {
+  mounted() {
     // this.loader = true;
     this.fetchContacts();
   },
   methods: {
     uploadImage(fieldName, fileList) {
-        console.log(fieldName,fileList)
+      console.log(fieldName, fileList);
       var file = fieldName;
-    //   var file = document.querySelector("input[type=file]").files[0];
+      //   var file = document.querySelector("input[type=file]").files[0];
       if (!file) return;
       // this.$refs.inputFile.reset();
 
       var reader = new FileReader();
       reader.onload = function (e) {
-        this.m_image = e.target.result
-        console.log('test',e.target.result);
+        this.m_image = e.target.result;
+        console.log("test", e.target.result);
         // let api_url = "api/adverts";
         // axios({
         //   method: "post",
@@ -100,7 +107,7 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    
+
     fetchContacts() {
       axios
         .get("/api/adverts")
@@ -109,6 +116,7 @@ export default {
           this.overlay = false;
           this.loader = false;
           this.posts = res.data;
+          this.openlink = res.data[this.title]?res.data[this.title].openlink:''
           this.TotalPages = res.data.last_page;
         })
         .catch((err) => {
@@ -127,6 +135,7 @@ export default {
         data: {
           place: place,
           image: this.m_image,
+          openlink: this.openlink,
         },
       })
         .then((res) => {

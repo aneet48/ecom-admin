@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Advert extends Model
 {
-    protected $fillable = ['image', 'place'];
+    protected $fillable = ['image', 'place', 'openlink'];
     protected $appends = ['link'];
     public function getLinkAttribute()
     {

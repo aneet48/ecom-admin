@@ -10,7 +10,7 @@ class AdvertController extends Controller
 {
     public function index()
     {
-        $adverts = Advert::select('image','place')->get()->keyBy('place');
+        $adverts = Advert::select('image','place','openlink')->get()->keyBy('place');
         return response()->json($adverts);
     }
 
@@ -19,9 +19,9 @@ class AdvertController extends Controller
         $image = Advert::saveBase64Media($request->get('image'));
         $feedback = Advert::updateOrCreate([
             'place' => $request->get('place'),
-
         ], [
             'image' => $image,
+            'openlink' => $request->get('openlink'),
 
         ]);
         $msg = $feedback ? 'Feedback created successfully' : "Something went wrong.";
@@ -51,6 +51,7 @@ class AdvertController extends Controller
                 $msg = 'found';
                 $body = [
                     'image' => $path,
+                    'openlink'=>$advert->openlink
                 ];
             }
         }
