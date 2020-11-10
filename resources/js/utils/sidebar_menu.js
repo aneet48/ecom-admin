@@ -148,12 +148,12 @@ const menus = [
         type: "link",
         link: "/Contact-form"
     },
-    // {
-    //     id: "32",
-    //     title: "Advertisements",
-    //     type: "link",
-    //     link: "/advertisements"
-    // }
+    {
+        id: "32",
+        title: "Advertisements",
+        type: "link",
+        link: "/advertisements"
+    }
 ];
 
 export default menus;

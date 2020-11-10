@@ -193,6 +193,8 @@ Route::group(['middleware' => 'cors'], function () {
 
     // advertisements
     Route::get('/adverts', 'Api\AdvertController@index');
+    Route::post('/adverts', 'Api\AdvertController@saveImage');
+    Route::get('/advert/{place}', 'Api\AdvertController@getAdd');
 
 // });
 });

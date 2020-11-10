@@ -6,6 +6,9 @@
       <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader>
     </v-container>
 
+    <SingleAdvertSection title="header_image"></SingleAdvertSection>
+    <SingleAdvertSection title="test"></SingleAdvertSection>
+
     <v-snackbar
       v-model="snackbar"
       :color="snackbarColor"
@@ -25,6 +28,7 @@
 <script>
 import BreadCrumb from "../components/BreadCrumb";
 import PageHeader from "../components/PageHeader";
+import SingleAdvertSection from "./SingleAdvertSection";
 
 export default {
   data() {
@@ -41,11 +45,21 @@ export default {
       errors: [],
       overlay: false,
       snackbarColor: "info",
+      m_image: "",
+      image: [],
+      imageRules: [
+        (value) =>
+          !value ||
+          value.size < 2000000 ||
+          "Image size should be less than 2 MB!",
+      ],
+      imagePlaceholder: "Add Image",
     };
   },
   components: {
     BreadCrumb,
     PageHeader,
+    SingleAdvertSection,
   },
   mounted() {
     this.loader = true;
@@ -61,6 +75,48 @@ export default {
     },
   },
   methods: {
+    uploadImage() {
+      var file = document.querySelector("input[type=file]").files[0];
+      if (!file) return;
+      // this.$refs.inputFile.reset();
+
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        this.m_image = e.target.result;
+        // let api_url = "api/adverts";
+        // axios({
+        //   method: "post",
+        //   url: api_url,
+        //   data: {
+        //     place: "header_image",
+        //     image: this.m_image,
+        //   },
+        // })
+        //   .then((res) => {
+        //     let data = res.data;
+        //     if (data.error && data.msg) {
+        //       this.errors = data.msg;
+        //     } else {
+        //       this.overlay = false;
+        //       this.snackbarColor = "success";
+
+        //       this.snackbarText = data.msg;
+        //       this.snackbar = true;
+        //       // this.closeDialog();
+        //       // this.fetchFeedback();
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     this.unknownError();
+
+        //     console.log(err);
+        //   });
+      }.bind(this);
+      reader.onerror = function (error) {
+        alert(error);
+      };
+      reader.readAsDataURL(file);
+    },
     deleteItem(item) {
       this.$swal({
         title: "Are you sure?",
@@ -97,13 +153,47 @@ export default {
       axios
         .get("/api/adverts")
         .then((res) => {
+          // console.log(res.data)
           this.overlay = false;
           this.loader = false;
-          this.posts = res.data.data;
+          this.posts = res.data;
           this.TotalPages = res.data.last_page;
         })
         .catch((err) => {
           this.unknownError();
+          console.log(err);
+        });
+    },
+
+    saveAdvert(place) {
+      this.$refs.inputFile.reset();
+
+      let api_url = "api/adverts";
+      axios({
+        method: "post",
+        url: api_url,
+        data: {
+          place: place,
+          image: this.m_image,
+        },
+      })
+        .then((res) => {
+          let data = res.data;
+          if (data.error && data.msg) {
+            this.errors = data.msg;
+          } else {
+            this.overlay = false;
+            this.snackbarColor = "success";
+
+            this.snackbarText = data.msg;
+            this.snackbar = true;
+            // this.closeDialog();
+            // this.fetchFeedback();
+          }
+        })
+        .catch((err) => {
+          this.unknownError();
+
           console.log(err);
         });
     },

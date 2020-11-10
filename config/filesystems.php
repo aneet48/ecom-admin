@@ -71,6 +71,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public/feedback'),
         ],
+        'adverts' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/adverts'),
+        ],
 
         's3' => [
             'driver' => 's3',
