@@ -2,7 +2,7 @@
   <v-card class="mx-auto my-12">
     <v-img height="250" :src="posts[title].link" v-if="posts[title]"></v-img>
 
-    <v-card-title>After header</v-card-title>
+    <v-card-title>{{title}}</v-card-title>
 
     <v-btn color="deep-purple lighten-2" text>
       <v-file-input
@@ -18,6 +18,7 @@
     <v-col>
       <v-text-field
         v-model="openlink"
+        type="url"
         hint="On clicking the image user will go to this link"
         label="Open Link"
       ></v-text-field>

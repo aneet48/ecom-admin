@@ -6,8 +6,10 @@
       <v-skeleton-loader type="table" v-if="loader"></v-skeleton-loader>
     </v-container>
 
-    <SingleAdvertSection title="header_image"></SingleAdvertSection>
-    <SingleAdvertSection title="test"></SingleAdvertSection>
+    <SingleAdvertSection title="homepage1"></SingleAdvertSection>
+    <SingleAdvertSection title="homepage2"></SingleAdvertSection>
+    <SingleAdvertSection title="homepage3"></SingleAdvertSection>
+    <SingleAdvertSection title="homepage4"></SingleAdvertSection>
 
     <v-snackbar
       v-model="snackbar"
