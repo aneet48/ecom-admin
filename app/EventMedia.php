@@ -10,7 +10,7 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 class EventMedia extends Model
 {
     protected $fillable = ['name', 'event_id', 'type', 'thumbnail'];
-    protected $appends = ['link', 'thumbnail_link'];
+    protected $appends = ['link', 'thumbnail_link', 'absolute_path'];
 
     public function getLinkAttribute()
     {
@@ -24,7 +24,10 @@ class EventMedia extends Model
 
         return  $image;
     }
-
+    public function getAbsolutePathAttribute()
+    {
+        return '/storage/events/' . $this->thumbnail;
+    }
     public function getThumbnailLinkAttribute()
     {
         return url('storage/events/' . $this->thumbnail);

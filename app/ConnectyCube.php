@@ -99,10 +99,32 @@ class ConnectyCube extends Model
 
         $response = Http::withHeaders([
             'CB-Token' => $session_token,
-        ])->post($url, [
+        ])->post($url);
+        $response = $response->json();
+        if (isset($response['user'])) {
+            ConnectyCube::create([
+                'email' => $user['email'],
+                'password' => $user['password'],
+                'user_id' => $user['external_user_id'],
+                'connectycube_id' => $response['user']['id'],
+            ]);
+        }
+
+        return $response;
+    }
+
+    public static function remove($user)
+    {
+        $url = config('connectycube.api_url') . 'users/'.$user['connectycube_id'];
+        $session_token = self::getSessionToken();
+
+        $response = Http::withHeaders([
+            'CB-Token' => $session_token,
+        ])->delete($url, [
             'user' => $user,
         ]);
         $response = $response->json();
+        dd($response);
         if (isset($response['user'])) {
             ConnectyCube::create([
                 'email' => $user['email'],

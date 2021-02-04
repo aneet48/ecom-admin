@@ -328,6 +328,8 @@ class UserController extends Controller
     {
 
         $city = User::where('id', $id)->delete();
+        $user = User::with('university', 'connectycube_user')->find($id);
+    //    $response =  ConnectyCube::remove($user);
         $msg = $city ? 'User deleted successfully' : "User not Found";
         $error = $city ? false : true;
 

@@ -6,6 +6,7 @@ use App\University;
 use App\User;
 use Illuminate\Database\Seeder;
 use Intervention\Image\Facades\Image as Image;
+use Illuminate\Support\Facades\File;
 
 class EventsSeeder extends Seeder
 {
@@ -67,12 +68,15 @@ class EventsSeeder extends Seeder
                 'active' => true,
                 'university_id' => $university->id,
             ]);
+            $path = public_path("storage/events/");
 
+            //Lets create path for post_id if it doesn't exist yet e.g `public\blogpost\23`
+            if (!File::exists($path)) File::makeDirectory($path, 775);
             for ($j = 0; $j < 2; $j++) {
                 $path = $imges[array_rand($imges)];
                 // $path = 'https://i.picsum.photos/id/' . $img_ids[array_rand($img_ids)] . '/600/400.jpg';
                 $filename = 'pimg_' . time() . rand(10, 999) . '.jpg';
-
+               
                 Image::make($path)->save(public_path('storage/events/' . $filename));
 
                 // $image = $faker->image('public/storage/products', 640, 480, null, false);
