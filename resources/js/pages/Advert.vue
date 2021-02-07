@@ -10,6 +10,12 @@
     <SingleAdvertSection title="homepage2"></SingleAdvertSection>
     <SingleAdvertSection title="homepage3"></SingleAdvertSection>
     <SingleAdvertSection title="homepage4"></SingleAdvertSection>
+    <SingleAdvertSection title="productHeader"></SingleAdvertSection>
+    <SingleAdvertSection title="product1"></SingleAdvertSection>
+    <SingleAdvertSection title="product2"></SingleAdvertSection>
+    <SingleAdvertSection title="eventHeader"></SingleAdvertSection>
+    <SingleAdvertSection title="event1"></SingleAdvertSection>
+    <SingleAdvertSection title="event2"></SingleAdvertSection>
 
     <v-snackbar
       v-model="snackbar"
