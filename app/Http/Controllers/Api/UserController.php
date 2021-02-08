@@ -9,6 +9,7 @@ use App\Mail\NewUser;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -225,7 +226,7 @@ class UserController extends Controller
             'email_verified_at' => Carbon::now(),
 
         ]);
-        User::where('email',$request->get('email'))->update(['email_verified_at' => Carbon::now()]);
+        User::where('email', $request->get('email'))->update(['email_verified_at' => Carbon::now()]);
 
         if ($user) {
             if (!$user->connectycube_user) {
@@ -326,10 +327,13 @@ class UserController extends Controller
 
     public function delete($id)
     {
-
-        $city = User::where('id', $id)->delete();
         $user = User::with('university', 'connectycube_user')->find($id);
-    //    $response =  ConnectyCube::remove($user);
+        if($user->connectycube_user){
+
+            $response =  ConnectyCube::remove($user->connectycube_user);
+        }
+        
+        $city = User::where('id', $id)->delete();
         $msg = $city ? 'User deleted successfully' : "User not Found";
         $error = $city ? false : true;
 
@@ -475,7 +479,6 @@ class UserController extends Controller
                     ->setBody('<h1>Hi, welcome ' . $user->first_name . '!</h1><p>Your one time password reset code is ' . $token . '</p>
                     ', 'text/html'); // for HTML rich messages
             });
-
         }
 
         $body = [];
@@ -541,7 +544,6 @@ class UserController extends Controller
     {
         $user = User::whereId($userid)->update(['device_token' => $token]);
         return response()->json($user);
-
     }
 
     public function verifyEmailToken($token)
@@ -552,7 +554,6 @@ class UserController extends Controller
             $user = User::with('university', 'connectycube_user')->where('email_token', $token)->first();
 
             $user->makeVisible(['api_token']);
-
         }
 
         $body = ['user' => $user];
@@ -560,7 +561,6 @@ class UserController extends Controller
         $error = $user ? false : true;
 
         return generate_response($error, $msg, $body);
-
     }
     public function sendVerifyEmail($user_id)
     {
@@ -574,6 +574,17 @@ class UserController extends Controller
         $error = $user ? false : true;
 
         return generate_response($error, $msg, $body);
+    }
 
+    public function allusers()
+    {
+
+        $universities = DB::table('users')
+        ->join('universities', 'universities.id', '=', 'users.university_id')
+        ->select('users.first_name', 'users.last_name', 'users.phone_number', 'users.email', 'users.created_at', 'users.updated_at', 'universities.name as university')
+        ->get();
+        $data['data'] = $universities;
+        //$universities = json_decode(json_encode($universities),true);
+        return response()->json($data);
     }
 }

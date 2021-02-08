@@ -77,6 +77,8 @@ Route::group(['middleware' => 'cors'], function () {
 // users
 
     Route::get('/users', 'Api\UserController@users');
+    Route::get('/all-users', 'Api\UserController@allusers');
+
     Route::get('/user/{id}', 'Api\UserController@user');
     Route::post('/user/update/{id}', 'Api\UserController@update');
     Route::post('/user/delete/{id}', 'Api\UserController@delete');
@@ -88,6 +90,8 @@ Route::group(['middleware' => 'cors'], function () {
 
 // products
     Route::get('/products/{show_all?}', 'Api\ProductController@products');
+    Route::get('/all-products', 'Api\ProductController@allproducts');
+
     Route::get('/product/{id}', 'Api\ProductController@product');
     Route::post('/product', 'Api\ProductController@create');
     Route::post('/product/{id}', 'Api\ProductController@update');
@@ -111,6 +115,7 @@ Route::group(['middleware' => 'cors'], function () {
 // events
     Route::get('/events/{show_all?}', 'Api\EventController@events');
     Route::get('/event/{id}', 'Api\EventController@event');
+    Route::get('/all-events', 'Api\EventController@allevents');
     Route::post('/event', 'Api\EventController@create');
     Route::post('/event/{id}', 'Api\EventController@update');
     Route::post('/event/delete/{id}', 'Api\EventController@delete');

@@ -69,6 +69,17 @@
           </v-dialog>-->
           <!-- <v-btn class="filterBtn" depressed color="primary" @click="filterdialog = !filterdialog"> <v-icon class="filterIcon" dark small>shuffle</v-icon> Filter</v-btn> -->
         </v-col>
+        <v-btn class="ma-2 action-btn" color="teal accent-4" dark>
+          <JsonCSV
+            class="ma-2 action-btn"
+            color="teal accent-4"
+            dark
+            :data="all_products"
+          >
+            Export
+            <v-icon dark>mdi-cloud-download</v-icon>
+          </JsonCSV>
+        </v-btn>
         <v-col cols="12" :lg="3" :md="4" :sm="4">
           <SearchBar @handleSearch="handleSearch" />
         </v-col>
@@ -197,37 +208,61 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item , i) in posts" :key="i">
+            <tr v-for="(item, i) in posts" :key="i">
               <td>
                 <div class="product">
                   <div class="product__detail">
-                    <span class="product__name">{{item.title}}</span>
+                    <span class="product__name">{{ item.title }}</span>
                   </div>
                 </div>
               </td>
-              <td>{{item.category?item.category.name:''}}</td>
-              <td>{{item.description}}</td>
-              <td>₹{{item.price}}</td>
+              <td>{{ item.category ? item.category.name : "" }}</td>
+              <td>{{ item.description }}</td>
+              <td>₹{{ item.price }}</td>
               <td>
-                <v-chip class="ma-2 chip" color="teal accent-4">{{item.type}}</v-chip>
+                <v-chip class="ma-2 chip" color="teal accent-4">{{
+                  item.type
+                }}</v-chip>
               </td>
               <td>
                 <div v-if="item.active">
-                  <v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip>
+                  <v-chip class="ma-2 chip" color="teal accent-4"
+                    >Active</v-chip
+                  >
                 </div>
                 <div v-if="!item.active">
-                  <v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip>
+                  <v-chip class="ma-2 chip" color="grey accent-4"
+                    >Inactive</v-chip
+                  >
                 </div>
               </td>
               <td class="text-right">
                 <div class="d-none d-sm-block">
-                  <v-btn fab dark x-small color="blue" @click="editImages(item)">
+                  <v-btn
+                    fab
+                    dark
+                    x-small
+                    color="blue"
+                    @click="editImages(item)"
+                  >
                     <v-icon dark small>mdi-image</v-icon>
                   </v-btn>
-                  <v-btn fab dark x-small color="teal accent-4" @click="editProduct(item)">
+                  <v-btn
+                    fab
+                    dark
+                    x-small
+                    color="teal accent-4"
+                    @click="editProduct(item)"
+                  >
                     <v-icon dark small>mdi-pencil</v-icon>
                   </v-btn>
-                  <v-btn fab dark x-small color="pink" @click="deleteItem(item)">
+                  <v-btn
+                    fab
+                    dark
+                    x-small
+                    color="pink"
+                    @click="deleteItem(item)"
+                  >
                     <v-icon dark small>mdi-trash-can</v-icon>
                   </v-btn>
                 </div>
@@ -258,20 +293,36 @@
     </v-container>
 
     <div class="text-center" v-if="currentPage && TotalPages">
-      <v-pagination v-model="currentPage" :length="TotalPages" :total-visible="totalVisible"></v-pagination>
+      <v-pagination
+        v-model="currentPage"
+        :length="TotalPages"
+        :total-visible="totalVisible"
+      ></v-pagination>
     </div>
 
-    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="5000" :multi-line="multiLine">
-      {{snackbarText}}
+    <v-snackbar
+      v-model="snackbar"
+      :color="snackbarColor"
+      :timeout="5000"
+      :multi-line="multiLine"
+    >
+      {{ snackbarText }}
       <v-btn dark text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
 
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </v-overlay>
-    <v-dialog v-model="pmModal" width="800" :modalToggle="modalToggle" persistent>
+    <v-dialog
+      v-model="pmModal"
+      width="800"
+      :modalToggle="modalToggle"
+      persistent
+    >
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Product Images</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title
+          >Product Images</v-card-title
+        >
 
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -298,15 +349,31 @@
                 sm="6"
                 md="4"
                 text-center
-                v-for="(item , i) in p_item.images"
+                v-for="(item, i) in p_item.images"
                 :key="i"
               >
-                <v-img :src="item.thumbnail_link" height="150px" v-if="item.type=='image'"></v-img>
+                <v-img
+                  :src="item.thumbnail_link"
+                  height="150px"
+                  v-if="item.type == 'image'"
+                ></v-img>
 
-                <video height="150px" width="100%" controls v-if="item.type=='video'">
-                  <source :src="item.link"  />
+                <video
+                  height="150px"
+                  width="100%"
+                  controls
+                  v-if="item.type == 'video'"
+                >
+                  <source :src="item.link" />
                 </video>
-                <v-btn color="red" dark small @click="deleteImage(item)" width="100%">Delete</v-btn>
+                <v-btn
+                  color="red"
+                  dark
+                  small
+                  @click="deleteImage(item)"
+                  width="100%"
+                  >Delete</v-btn
+                >
               </v-col>
             </v-row>
           </v-form>
@@ -314,7 +381,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="pmModal=!pmModal">Close</v-btn>
+          <v-btn color="primary" @click="pmModal = !pmModal">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -326,10 +393,12 @@ import BreadCrumb from "../../components/BreadCrumb";
 import PageHeader from "../../components/PageHeader";
 // import SearchBar from "../../components/SearchBar";
 import ProductImages from "./partials/ProductImages";
+import JsonCSV from "vue-json-csv";
 
 export default {
   data() {
     return {
+      all_products:[],
       pmModal: false,
       p_images: [],
       p_image: [],
@@ -389,13 +458,15 @@ export default {
   components: {
     BreadCrumb,
     PageHeader,
-    ProductImages
+    ProductImages,
+    JsonCSV
     // SearchBar
   },
   mounted() {
     this.loader = true;
     this.fetchProducts();
     this.fetchStates();
+    this.fetchAllproducts()
   },
   watch: {
     searchSeller: function(val) {
@@ -436,6 +507,17 @@ export default {
     }
   },
   methods: {
+    fetchAllproducts() {
+      axios
+        .get("/api/all-products")
+        .then((res) => {
+          this.all_products = res.data.data;
+        })
+        .catch((err) => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
     handleSearch(val) {
       this.overlay = true;
       axios

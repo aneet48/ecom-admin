@@ -99,7 +99,9 @@ class ConnectyCube extends Model
 
         $response = Http::withHeaders([
             'CB-Token' => $session_token,
-        ])->post($url);
+        ])->post($url, [
+            'user' => $user,
+        ]);
         $response = $response->json();
         if (isset($response['user'])) {
             ConnectyCube::create([
@@ -115,24 +117,13 @@ class ConnectyCube extends Model
 
     public static function remove($user)
     {
-        $url = config('connectycube.api_url') . 'users/'.$user['connectycube_id'];
-        $session_token = self::getSessionToken();
+        $url = config('connectycube.api_url') . 'users/' . $user['connectycube_id'];
+        $session_token  = self::createUserSession($user);
 
         $response = Http::withHeaders([
             'CB-Token' => $session_token,
-        ])->delete($url, [
-            'user' => $user,
-        ]);
+        ])->delete($url);
         $response = $response->json();
-        dd($response);
-        if (isset($response['user'])) {
-            ConnectyCube::create([
-                'email' => $user['email'],
-                'password' => $user['password'],
-                'user_id' => $user['external_user_id'],
-                'connectycube_id' => $response['user']['id'],
-            ]);
-        }
 
         return $response;
     }
@@ -162,6 +153,5 @@ class ConnectyCube extends Model
             'dialog_id' => $dialog_id,
         ];
         return $data;
-
     }
 }

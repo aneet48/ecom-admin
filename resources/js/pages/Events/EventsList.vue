@@ -6,10 +6,20 @@
         <v-icon class="app-bar-icon">mdi-plus</v-icon>Add New
       </v-btn>
     </PageHeader>
+    <v-btn class="ma-2 action-btn" color="teal accent-4" dark>
+      <JsonCSV
+        class="ma-2 action-btn"
+        color="teal accent-4"
+        dark
+        :data="all_events"
+      >
+        Export
+        <v-icon dark>mdi-cloud-download</v-icon>
+      </JsonCSV>
+    </v-btn>
     <v-container fluid>
       <v-row>
-        <v-col cols="12" :lg="9" :md="8" :sm="8" class="text-right">
-        </v-col>
+        <v-col cols="12" :lg="9" :md="8" :sm="8" class="text-right"> </v-col>
         <v-col cols="12" :lg="3" :md="4" :sm="4">
           <SearchBar @handleSearch="handleSearch" />
         </v-col>
@@ -73,7 +83,7 @@
                     type="number"
                   ></v-text-field>
                 </v-col>
-                              
+
                 <v-col cols="12" md="12">
                   <v-autocomplete
                     label="College"
@@ -94,8 +104,14 @@
                 <v-col cols="12" sm="6" md="6">
                   <v-time-picker v-model="e_time"></v-time-picker>
                 </v-col>
-                
-                <v-col cols="12" sm="12" md="12" v-for="(sp, index) in e_social_profiles" :key="index">
+
+                <v-col
+                  cols="12"
+                  sm="12"
+                  md="12"
+                  v-for="(sp, index) in e_social_profiles"
+                  :key="index"
+                >
                   <v-text-field
                     label="Social Profile Text"
                     v-model="sp.text"
@@ -154,38 +170,62 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item , i) in posts" :key="i">
+            <tr v-for="(item, i) in posts" :key="i">
               <td>
                 <div class="event">
                   <div class="event__detail">
-                    <span class="event__name">{{item.title}}</span>
+                    <span class="event__name">{{ item.title }}</span>
                   </div>
                 </div>
               </td>
-              <td>{{item.category?item.category.name:''}}</td>
-              <td>{{item.description}}</td>
-              <td>₹{{item.price}}</td>
+              <td>{{ item.category ? item.category.name : "" }}</td>
+              <td>{{ item.description }}</td>
+              <td>₹{{ item.price }}</td>
               <td>
-                <v-chip class="ma-2 chip" color="teal accent-4">{{item.event_date}}</v-chip>
+                <v-chip class="ma-2 chip" color="teal accent-4">{{
+                  item.event_date
+                }}</v-chip>
               </td>
-              <td>{{item.event_time}}</td>
+              <td>{{ item.event_time }}</td>
               <td>
                 <div v-if="item.active">
-                  <v-chip class="ma-2 chip" color="teal accent-4">Active</v-chip>
+                  <v-chip class="ma-2 chip" color="teal accent-4"
+                    >Active</v-chip
+                  >
                 </div>
                 <div v-if="!item.active">
-                  <v-chip class="ma-2 chip" color="grey accent-4">Inactive</v-chip>
+                  <v-chip class="ma-2 chip" color="grey accent-4"
+                    >Inactive</v-chip
+                  >
                 </div>
               </td>
               <td class="text-right">
                 <div class="d-none d-sm-block">
-                  <v-btn fab dark x-small color="blue" @click="editImages(item)">
+                  <v-btn
+                    fab
+                    dark
+                    x-small
+                    color="blue"
+                    @click="editImages(item)"
+                  >
                     <v-icon dark small>mdi-image</v-icon>
                   </v-btn>
-                  <v-btn fab dark x-small color="teal accent-4" @click="editEvent(item)">
+                  <v-btn
+                    fab
+                    dark
+                    x-small
+                    color="teal accent-4"
+                    @click="editEvent(item)"
+                  >
                     <v-icon dark small>mdi-pencil</v-icon>
                   </v-btn>
-                  <v-btn fab dark x-small color="pink" @click="deleteItem(item)">
+                  <v-btn
+                    fab
+                    dark
+                    x-small
+                    color="pink"
+                    @click="deleteItem(item)"
+                  >
                     <v-icon dark small>mdi-trash-can</v-icon>
                   </v-btn>
                 </div>
@@ -216,20 +256,36 @@
     </v-container>
 
     <div class="text-center" v-if="currentPage && TotalPages">
-      <v-pagination v-model="currentPage" :length="TotalPages" :total-visible="totalVisible"></v-pagination>
+      <v-pagination
+        v-model="currentPage"
+        :length="TotalPages"
+        :total-visible="totalVisible"
+      ></v-pagination>
     </div>
 
-    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="5000" :multi-line="multiLine">
-      {{snackbarText}}
+    <v-snackbar
+      v-model="snackbar"
+      :color="snackbarColor"
+      :timeout="5000"
+      :multi-line="multiLine"
+    >
+      {{ snackbarText }}
       <v-btn dark text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
 
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </v-overlay>
-    <v-dialog v-model="pmModal" width="800" :modalToggle="modalToggle" persistent>
+    <v-dialog
+      v-model="pmModal"
+      width="800"
+      :modalToggle="modalToggle"
+      persistent
+    >
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Event Images</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title
+          >Event Images</v-card-title
+        >
 
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -256,15 +312,31 @@
                 sm="6"
                 md="4"
                 text-center
-                v-for="(item , i) in e_item.images"
+                v-for="(item, i) in e_item.images"
                 :key="i"
               >
-                <v-img :src="item.thumbnail_link" height="150px" v-if="item.type=='image'"></v-img>
+                <v-img
+                  :src="item.thumbnail_link"
+                  height="150px"
+                  v-if="item.type == 'image'"
+                ></v-img>
 
-                <video height="150px" width="100%" controls v-if="item.type=='video'">
-                  <source :src="item.link"  />
+                <video
+                  height="150px"
+                  width="100%"
+                  controls
+                  v-if="item.type == 'video'"
+                >
+                  <source :src="item.link" />
                 </video>
-                <v-btn color="red" dark small @click="deleteImage(item)" width="100%">Delete</v-btn>
+                <v-btn
+                  color="red"
+                  dark
+                  small
+                  @click="deleteImage(item)"
+                  width="100%"
+                  >Delete</v-btn
+                >
               </v-col>
             </v-row>
           </v-form>
@@ -272,7 +344,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="pmModal=!pmModal">Close</v-btn>
+          <v-btn color="primary" @click="pmModal = !pmModal">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -284,10 +356,12 @@ import BreadCrumb from "../../components/BreadCrumb";
 import PageHeader from "../../components/PageHeader";
 // import SearchBar from "../../components/SearchBar";
 import EventImages from "./partials/EventImages";
+import JsonCSV from "vue-json-csv";
 
 export default {
   data() {
     return {
+      all_events: [],
       pmModal: false,
       blockRemoval: true,
       e_images: [],
@@ -306,7 +380,7 @@ export default {
       m_name: "",
       m_type: "add",
       valid: false,
-      requiredRules: [v => !!v || "this is required"],
+      requiredRules: [(v) => !!v || "this is required"],
       snackbar: false,
       snackbarText: "",
       multiLine: true,
@@ -335,10 +409,10 @@ export default {
       iscatLoading: false,
       searchCat: "",
       imageRules: [
-        value =>
+        (value) =>
           !value ||
           value.size < 2000000 ||
-          "Image size should be less than 2 MB!"
+          "Image size should be less than 2 MB!",
       ],
       timeout: "",
       universities: [],
@@ -347,51 +421,53 @@ export default {
       sellers: [],
       p_seller: null,
       issellerLoading: false,
-      searchSeller: ""
+      searchSeller: "",
     };
   },
   components: {
     BreadCrumb,
     PageHeader,
-    EventImages
+    EventImages,
+    JsonCSV,
     // SearchBar
   },
   mounted() {
     this.loader = true;
     this.fetchEvents();
+    this.fetchAllEvents();
     this.fetchStates();
     this.addLine();
   },
   watch: {
-    searchSeller: function(val) {
+    searchSeller: function (val) {
       clearTimeout(this.timeout);
 
       var self = this;
-      this.timeout = setTimeout(function() {
+      this.timeout = setTimeout(function () {
         self.issellerLoading = true;
       }, 1000);
     },
-    searchUni: function(val) {
+    searchUni: function (val) {
       clearTimeout(this.timeout);
 
       var self = this;
-      this.timeout = setTimeout(function() {
+      this.timeout = setTimeout(function () {
         self.isuniLoading = true;
         self.fetchuni(val);
       }, 1000);
     },
-    searchCat: function(val) {
+    searchCat: function (val) {
       clearTimeout(this.timeout);
 
       var self = this;
-      this.timeout = setTimeout(function() {
+      this.timeout = setTimeout(function () {
         self.iscitiesLoading = true;
         self.fetchcat(val);
 
         console.log("searching:", val);
       }, 1000);
     },
-    currentPage: function(val) {
+    currentPage: function (val) {
       //do something when the data changes.
       if (val) {
         this.loader = true;
@@ -400,16 +476,27 @@ export default {
     },
   },
   methods: {
+    fetchAllEvents() {
+      axios
+        .get("/api/all-events")
+        .then((res) => {
+          this.all_events = res.data.data;
+        })
+        .catch((err) => {
+          this.unknownError();
+          console.log(err);
+        });
+    },
     handleSearch(val) {
       this.overlay = true;
       axios
         .get("/api/events/true?s=" + val)
-        .then(res => {
+        .then((res) => {
           this.overlay = false;
           this.posts = res.data.data;
           this.TotalPages = res.data.last_page;
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
           console.log(err);
         });
@@ -417,11 +504,11 @@ export default {
     fetchuni(val) {
       axios
         .get("/api/universities/search/" + val)
-        .then(res => {
+        .then((res) => {
           this.universities = res.data.data;
           this.isuniLoading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
           console.log(err);
         });
@@ -431,12 +518,12 @@ export default {
       this.overlay = true;
       axios
         .post("/api/event-media/delete/" + item.id)
-        .then(res => {
+        .then((res) => {
           //   this.overlay = false;
 
           this.fetchImages();
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
           console.log(err);
         });
@@ -445,12 +532,12 @@ export default {
       if (!this.e_item.id) return;
       axios
         .get("/api/event-media/" + this.e_item.id)
-        .then(res => {
+        .then((res) => {
           this.overlay = false;
           this.e_item.images = res.data;
           //   this.iscatLoading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
           console.log(err);
         });
@@ -462,11 +549,11 @@ export default {
       if (val) {
         axios
           .get("/api/event-categories-search/" + val)
-          .then(res => {
+          .then((res) => {
             this.categories = res.data.data;
             this.iscatLoading = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.unknownError();
             console.log(err);
           });
@@ -487,21 +574,22 @@ export default {
       formData.append("image", file, file.name);
       formData.append("event", this.e_item.id);
 
-      console.log(formData)
+      console.log(formData);
       axios({
         method: "post",
         url: "/api/event-media",
         data: formData,
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       })
-        .then(res => {
+        .then((res) => {
           let data = res.data;
           if (data.error && data.msg) {
             this.errors = data.msg;
           } else {
-            this.e_image = [];e_image
+            this.e_image = [];
+            e_image;
             this.fetchImages();
             console.log(data);
             // this.overlay = true;
@@ -513,7 +601,7 @@ export default {
             // this.fetchEvents();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
           console.log(err);
         });
@@ -555,13 +643,13 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#ff3860",
         // cancelButtonColor: "#fff",
-        confirmButtonText: "Yes, delete it!"
-      }).then(result => {
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
         if (result.value && item) {
           this.overlay = true;
           axios
             .post(`api/event/delete/${item.id}`)
-            .then(res => {
+            .then((res) => {
               let data = res.data;
               if (data.error && data.msg) {
                 this.errors = data.msg;
@@ -571,7 +659,7 @@ export default {
                 this.fetchEvents();
               }
             })
-            .catch(err => {
+            .catch((err) => {
               this.unknownError();
               console.log(err);
             });
@@ -586,9 +674,7 @@ export default {
       if (!is_valid) return;
 
       let api_url =
-        this.m_type == "edit"
-          ? `api/event/${this.editItem.id}`
-          : "api/event";
+        this.m_type == "edit" ? `api/event/${this.editItem.id}` : "api/event";
       console.log(this.m_type);
       console.log(api_url);
       const userInfo = localStorage.getItem("user");
@@ -608,10 +694,10 @@ export default {
           book_event_link: this.e_book_link,
           visit_website_link: this.e_web_link,
           social_profiles: this.e_social_profiles,
-          active: this.e_status
-        }
+          active: this.e_status,
+        },
       })
-        .then(res => {
+        .then((res) => {
           let data = res.data;
           if (data.error && data.msg) {
             this.errors = data.msg;
@@ -625,7 +711,7 @@ export default {
             this.fetchEvents();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
 
           console.log(err);
@@ -654,13 +740,13 @@ export default {
     fetchEvents() {
       axios
         .get("/api/events/true?page=" + this.currentPage)
-        .then(res => {
+        .then((res) => {
           this.overlay = false;
           this.loader = false;
           this.posts = res.data.data;
           this.TotalPages = res.data.last_page;
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
           console.log(err);
         });
@@ -668,11 +754,11 @@ export default {
     fetchStates() {
       axios
         .get("/api/states/true")
-        .then(res => {
+        .then((res) => {
           this.states = res.data;
           this.isStatesLoading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.unknownError();
           console.log(err);
         });
@@ -684,15 +770,15 @@ export default {
       this.snackbar = true;
       this.snackbarColor = "red";
     },
-    addLine () {
-      for(var i =0; i < 5; i++) {
-      this.e_social_profiles.push({
-        text: null,
-        link: null,
-      })
+    addLine() {
+      for (var i = 0; i < 5; i++) {
+        this.e_social_profiles.push({
+          text: null,
+          link: null,
+        });
       }
     },
-  }
+  },
 };
 </script>
 

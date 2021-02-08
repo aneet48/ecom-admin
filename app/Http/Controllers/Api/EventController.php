@@ -12,10 +12,42 @@ use App\Setting;
 use App\University;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
+    public function allevents()
+    {
+
+        $universities = DB::table('events')
+            ->join('universities', 'universities.id', '=', 'events.university_id')
+            ->join('event_categories', 'event_categories.id', '=', 'events.category_id')
+            ->join('users', 'users.id', '=', 'events.seller_id')
+            ->select(
+                'events.title',
+                'events.description',
+                'events.price',
+                'events.event_date',
+                'events.event_time',
+                'events.contact_number',
+                'events.created_at',
+                'events.updated_at',
+                'events.social_profiles',
+                'events.book_event_link',
+                'events.visit_website_link',
+                'events.active',
+                'event_price',
+                'universities.name as university',
+                'users.email as seller',
+                'event_categories.name as category',
+            )
+            ->get();
+        $data['data'] = $universities;
+        //$universities = json_decode(json_encode($universities),true);
+        return response()->json($data);
+    }
+
     public function events(Request $request, $show_all = false)
     {
         $query = Event::with('category', 'images', 'university');

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PostDeleted;
+use App\Rules\MatchOldPassword;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Str;
 
@@ -31,13 +33,11 @@ class LoginController extends Controller
         }
 
         return redirect()->back();
-
     }
 
     public function dashboard()
     {
         return view('dashboard');
-
     }
 
     public function authUser()
@@ -53,7 +53,6 @@ class LoginController extends Controller
     {
         $user = Auth::logout();
         return response()->json($user);
-
     }
 
     public function emailTest(Request $request)
@@ -63,5 +62,32 @@ class LoginController extends Controller
         Mail::to('rajneetkaur1511@gmail.com')->send(new PostDeleted($user, $title, 'Product'));
 
         echo "test";
+    }
+    /*
+       * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function changePassword()
+    {
+        return view('changePassword');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function updtaePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required'],
+            'new_confirm_password' => ['same:new_password'],
+        ]);
+
+        User::find(auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
+        Auth::logout();
+        return redirect('/');
     }
 }

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
+Route::get('change-password', 'LoginController@changePassword');
+Route::post('change-password', 'LoginController@updtaePassword')->name('change.password');
 Route::get('/login', 'LoginController@index')->name('login')->middleware('guest');
 Route::post('/login', 'LoginController@login')->name('login.check')->middleware('guest');
 Route::get('/logout', 'LoginController@logout')->name('logout');

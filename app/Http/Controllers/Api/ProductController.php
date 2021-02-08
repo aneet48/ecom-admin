@@ -9,10 +9,35 @@ use App\ProductCategory;
 use App\ProductMedia;
 use App\University;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    public function allproducts()
+    {
+
+        $universities = DB::table('products')
+            ->join('universities', 'universities.id', '=', 'products.university_id')
+            ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
+            ->join('users', 'users.id', '=', 'products.seller_id')
+            ->select(
+                'products.title',
+                'products.description',
+                'products.price',
+                'products.type',
+                'products.time_period',
+                'products.created_at',
+                'products.updated_at',
+                'universities.name as university',
+                'users.email as seller',
+                'product_categories.name as category'
+            )
+            ->get();
+        $data['data'] = $universities;
+        //$universities = json_decode(json_encode($universities),true);
+        return response()->json($data);
+    }
 
     public function products(Request $request, $show_all = false)
     {
@@ -48,7 +73,7 @@ class ProductController extends Controller
         }
         if ($request->has('m_uni') && $request->get('m_uni')) {
             $university = University::wherein('name', explode(',', $request->get('m_uni')))->pluck('id');
-            
+
             if ($university) {
                 $query = $query->where(function ($query) use ($university) {
                     $query->orwherein('university_id', $university);
@@ -112,7 +137,7 @@ class ProductController extends Controller
         $products = $query->orderBy('id', 'DESC')->paginate($paginate);
         if (!count($products) && $request->has('m_uni') && !$request->has('m_city')) {
             $city_ids = University::wherein('name', explode(',', $request->get('m_uni')))->pluck('city_id');
-        //    dd($city_ids);
+            //    dd($city_ids);
 
             if (count($city_ids)) {
 
