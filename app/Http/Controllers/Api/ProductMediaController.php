@@ -98,7 +98,7 @@ class ProductMediaController extends Controller
 
         if ($validator->fails()) {
 
-            return generate_response(true, $error);
+            return generate_response(true,$validator->errors()->all());
         }
 
         $user = User::where('api_token', $request->get('api_token'))->first();

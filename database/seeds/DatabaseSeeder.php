@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call(CitiesSeeder::class);
         $this->call(UniversitiesSeeder::class);
         $this->call(ProductCategoriesSeeder::class);
-        $this->call(SellersSeeder::class);
-        $this->call(ProductsSeeder::class);
+        // $this->call(SellersSeeder::class);
+        // $this->call(ProductsSeeder::class);
         $this->call(EventCategoriesSeeder::class);
-        $this->call(EventsSeeder::class);
+        // $this->call(EventsSeeder::class);
 
     }
 }

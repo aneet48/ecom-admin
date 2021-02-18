@@ -9,6 +9,33 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <v-menu
+              v-model="menu2"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date"
+                  label="Select Date"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="date"
+                @input="menu2 = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="12" sm="8">
             <v-card class="text-center" outlined>
               <div class="headline mb-4">
@@ -25,7 +52,22 @@
                   <tbody>
                     <tr v-for="item in new_students_uni" :key="item.id">
                       <td>{{ item.name }}</td>
-                      <td>{{ item.new_students_count }}</td>
+                      <td>{{ item.students_count }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <v-simple-table v-if="!new_students_uni.length" height="300px">
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">University</th>
+                      <th class="text-left">New Students</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr >
+                      <td>No students added this day</td>
                     </tr>
                   </tbody>
                 </template>
@@ -67,7 +109,6 @@
               ></apexchart>
             </v-card>
           </v-col>
-          
         </v-row>
       </v-col>
     </v-row>
@@ -103,20 +144,31 @@ export default {
     productseries: null,
     eventsoptions: null,
     eventsseries: null,
+    date: new Date().toISOString().substr(0, 10),
+    menu2: false,
   }),
+  watch: {
+    date(val) {
+      console.log(val);
+      this.fetchNewsstudentsByUni(val);
+      this.fetchUserVisitChart(val);
+      this.fetchProductCount(val);
+      this.fetchEventsCount(val);
+    },
+  },
   methods: {
     fetchBlockData() {
       axios.get("/get-block-data").then(({ data }) => {
         this.blockData = data;
       });
     },
-    fetchNewsstudentsByUni() {
-      axios.get("/get-students_new_uni").then(({ data }) => {
+    fetchNewsstudentsByUni(date = "") {
+      axios.get("/get-students_new_uni?date=" + date).then(({ data }) => {
         this.new_students_uni = data.data;
       });
     },
-    fetchUserVisitChart() {
-      axios.get("/get-features_chart").then(({ data }) => {
+    fetchUserVisitChart(date = "") {
+      axios.get("/get-features_chart?date=" + date).then(({ data }) => {
         let options = {
           chart: {
             id: "vuechart-example",
@@ -144,8 +196,8 @@ export default {
         this.useroptions = options;
       });
     },
-    fetchProductCount() {
-      axios.get("/get-products_today").then(({ data }) => {
+    fetchProductCount(date = "") {
+      axios.get("/get-products_today?date=" + date).then(({ data }) => {
         let options = {
           chart: {
             id: "vuechart-example2",
@@ -174,8 +226,8 @@ export default {
         this.productoptions = options;
       });
     },
-    fetchEventsCount() {
-      axios.get("/get-events_today").then(({ data }) => {
+    fetchEventsCount(date = "") {
+      axios.get("/get-events_today?date=" + date).then(({ data }) => {
         let options = {
           chart: {
             id: "vuechart-example3",

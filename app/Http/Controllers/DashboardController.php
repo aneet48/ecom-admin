@@ -9,7 +9,7 @@ use App\User;
 use App\UserVisits;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -60,15 +60,20 @@ class DashboardController extends Controller
 
     public function getstudents_new_uni(Request $request)
     {
-        $students_new_uni = University::withCount('newStudents')->whereHas(
-            'newStudents')->orderBy('new_students_count', 'desc')->paginate(15);
+        $date = $request->get('date') ? : Carbon::today();
+        $students_new_uni = University::withCount('students')
+            ->whereHas('students', function ($query) use ($date) {
+                $query->whereDate('created_at', $date);
+            })->paginate(15);
+
+
 
         return response()->json($students_new_uni);
-
     }
     public function getfeatures_chart(Request $request)
     {
-        $repeated_users = UserVisits::whereDate('created_at', Carbon::today())
+        $date = $request->get('date') ?: Carbon::today();
+        $repeated_users = UserVisits::whereDate('created_at', $date)
             ->withCount('users')
             ->select(DB::raw('count(*) as total'), 'feature')
             ->groupBy('feature')
@@ -80,16 +85,17 @@ class DashboardController extends Controller
             'feature' => $feature,
         ];
         return response()->json($data);
-
     }
     public function getproducts_today(Request $request)
     {
-        $repeated_users = Product::whereDate('created_at', Carbon::today())
+        $date = $request->get('date') ?: Carbon::today();
+
+        $repeated_users = Product::whereDate('created_at', $date)
             ->with('category')
             ->select(DB::raw('count(*) as total'), 'category_id')
             ->groupBy('category_id')
             ->get();
-            
+
         $total = $repeated_users->pluck('total');
         $category = $repeated_users->pluck('category.name');
         $data = [
@@ -97,16 +103,17 @@ class DashboardController extends Controller
             'category' => $category,
         ];
         return response()->json($data);
-
     }
     public function getevents_today(Request $request)
     {
-        $repeated_users = Event::whereDate('created_at', Carbon::today())
+        $date = $request->get('date') ?: Carbon::today();
+
+        $repeated_users = Event::whereDate('created_at', $date)
             ->with('category')
             ->select(DB::raw('count(*) as total'), 'category_id')
             ->groupBy('category_id')
             ->get();
-            
+
         $total = $repeated_users->pluck('total');
         $category = $repeated_users->pluck('category.name');
         $data = [
@@ -114,6 +121,5 @@ class DashboardController extends Controller
             'category' => $category,
         ];
         return response()->json($data);
-
     }
 }

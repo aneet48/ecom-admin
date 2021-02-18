@@ -358,11 +358,11 @@ class UserController extends Controller
             'api_token' => 'required',
             'img' => 'required',
         ]);
-        $error = 'Oops!! there was some problem while updating. ';
+        $error = ['Oops!! there was some problem while updating. '];
 
         if ($validator->fails()) {
 
-            return generate_response(true, $error);
+            return generate_response(true, $validator->errors()->all());
         }
 
         $user = User::where('api_token', $request->get('api_token'))->first();
