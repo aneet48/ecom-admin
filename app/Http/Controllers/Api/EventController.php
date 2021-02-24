@@ -41,8 +41,7 @@ class EventController extends Controller
                 'universities.name as university',
                 'users.email as seller',
                 'event_categories.name as category',
-            )
-            ->get();
+            )->get();
         $data['data'] = $universities;
         //$universities = json_decode(json_encode($universities),true);
         return response()->json($data);
