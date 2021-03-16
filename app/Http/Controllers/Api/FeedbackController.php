@@ -101,10 +101,12 @@ class FeedbackController extends Controller
     {
         try {
 
-            $mail = Mail::to('feedback.collegeplus@gmail.com')->send(new NewFeedback($request->all()));
+            $mail = Mail::to('collegeplus2020@gmail.com')->send(new NewFeedback($request->all()));
 // for testing purpose
             $msg = $mail ? 'Feedback sent successfully' : "Feedback not sent";
             $error = $mail ? false : true;
+            $msg = 'Feedback sent successfully';
+            $error = false;
 
             return generate_response($error, $msg);
 

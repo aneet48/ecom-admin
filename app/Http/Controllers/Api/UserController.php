@@ -292,7 +292,7 @@ class UserController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $user = User::where('id', $id)->update([
+        $user = User::with('university', 'connectycube_user')->where('id', $id)->update([
             "first_name" => $request->get('first_name'),
             "last_name" => $request->get('last_name'),
             "phone_number" => $request->get('phone_number'),
@@ -365,7 +365,7 @@ class UserController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $user = User::where('api_token', $request->get('api_token'))->first();
+        $user = User::with('university', 'connectycube_user')->where('api_token', $request->get('api_token'))->first();
         if (!$user) {
             return generate_response(true, $error);
         }
@@ -503,7 +503,7 @@ class UserController extends Controller
 
         if ($user) {
 
-            User::where(['id' => $user->id])->update(['password' => Hash::make($request->get('password')), 'remember_token' => '']);
+            User::with('university', 'connectycube_user')->where(['id' => $user->id])->update(['password' => Hash::make($request->get('password')), 'remember_token' => '']);
         }
 
         $body = [];
@@ -524,13 +524,13 @@ class UserController extends Controller
             return generate_response(true, $validator->errors()->all());
         }
 
-        $user = User::where('id', $request->get('user_id'))->first();
+        $user = User::with('university', 'connectycube_user')->where('id', $request->get('user_id'))->first();
 
         if ($user) {
             if ($user && !Hash::check($request->get('oldpassword'), $user->password)) {
                 return generate_response(true, ['Wrong old password']);
             }
-            User::where(['id' => $user->id])->update(['password' => Hash::make($request->get('password'))]);
+            User::with('university', 'connectycube_user')->where(['id' => $user->id])->update(['password' => Hash::make($request->get('password'))]);
         }
 
         $body = ['user' => $user];
@@ -542,13 +542,13 @@ class UserController extends Controller
 
     public function updateDeviceToken($userid, $token)
     {
-        $user = User::whereId($userid)->update(['device_token' => $token]);
+        $user = User::with('university', 'connectycube_user')->whereId($userid)->update(['device_token' => $token]);
         return response()->json($user);
     }
 
     public function verifyEmailToken($token)
     {
-        $user = User::where('email_token', $token)->exists();
+        $user = User::with('university', 'connectycube_user')->where('email_token', $token)->exists();
         if ($user) {
             User::where('email_token', $token)->update(['email_verified_at' => Carbon::now()]);
             $user = User::with('university', 'connectycube_user')->where('email_token', $token)->first();
